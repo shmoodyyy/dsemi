@@ -1,0 +1,241 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\dsemi\core\layerstack.h" />
+    <ClInclude Include="include\dsemi\ecs\component.h" />
+    <ClInclude Include="include\dsemi\ecs\component_flag.h" />
+    <ClInclude Include="include\dsemi\ecs\component_array.h" />
+    <ClInclude Include="include\dsemi\ecs\ecs.h" />
+    <ClInclude Include="include\dsemi\ecs\ecs_defines.h" />
+    <ClInclude Include="include\dsemi\ecs\entity_array.h" />
+    <ClInclude Include="include\dsemi\ecs\world.h" />
+    <ClInclude Include="include\dsemi\ecs\world_query.h" />
+    <ClInclude Include="include\dsemi\fonts\opentype.h" />
+    <ClInclude Include="include\dsemi\fonts\opentype_tables.h" />
+    <ClInclude Include="include\dsemi\graphics\api_include.h" />
+    <ClInclude Include="include\dsemi\graphics\colour.h" />
+    <ClInclude Include="include\dsemi\graphics\directx\dxinclude.h" />
+    <ClInclude Include="include\dsemi\graphics\immediate2d.h" />
+    <ClInclude Include="include\dsemi\graphics\pipeline.h" />
+    <ClInclude Include="include\dsemi\graphics\resources\fragment_shader.h" />
+    <ClInclude Include="include\dsemi\graphics\resources\index_buffer.h" />
+    <ClInclude Include="include\dsemi\graphics\resources\input_layout.h" />
+    <ClInclude Include="include\dsemi\graphics\render_target.h" />
+    <ClInclude Include="include\dsemi\graphics\resources\resource_include.h" />
+    <ClInclude Include="include\dsemi\graphics\resources\vertex_buffer.h" />
+    <ClInclude Include="include\dsemi\graphics\resources\vertex_shader.h" />
+    <ClInclude Include="include\dsemi\graphics\device.h" />
+    <ClInclude Include="include\dsemi\graphics\graphics.h" />
+    <ClInclude Include="include\dsemi\graphics\swap_chain.h" />
+    <ClInclude Include="include\dsemi\ui\element.h" />
+    <ClInclude Include="include\dsemi\ui\frame.h" />
+    <ClInclude Include="include\dsemi\math\matrix4x4.h" />
+    <ClInclude Include="include\dsemi\math\point.h" />
+    <ClInclude Include="include\dsemi\math\rect.h" />
+    <ClInclude Include="include\dsemi\math\vector2.h" />
+    <ClInclude Include="include\dsemi\math\Vector\Vector2d.h" />
+    <ClInclude Include="include\dsemi\math\Vector\Vector2f.h" />
+    <ClInclude Include="include\dsemi\math\Vector\Vector2i.h" />
+    <ClInclude Include="include\dsemi\graphics\vertex.h" />
+    <ClInclude Include="include\dsemi\memory\bitset.h" />
+    <ClInclude Include="include\dsemi\platform\windows\dsemi_win32.h" />
+    <ClInclude Include="include\dsemi\util\assert.h" />
+    <ClInclude Include="include\dsemi\core\application.h" />
+    <ClInclude Include="include\dsemi\core\exceptions\dsemiexception.h" />
+    <ClInclude Include="include\dsemi\events\applicationevent.h" />
+    <ClInclude Include="include\dsemi.h" />
+    <ClInclude Include="include\dsemi\math\quaternion.h" />
+    <ClInclude Include="include\dsemi\math\random.h" />
+    <ClInclude Include="include\dsemi\util\binaryreader.h" />
+    <ClInclude Include="include\dsemi\util\logger.hpp" />
+    <ClInclude Include="include\dsemi\util\string.h" />
+    <ClInclude Include="include\dsemi\util\timer.h" />
+    <ClInclude Include="include\dsemi\core\dsemiwindows.h" />
+    <ClInclude Include="include\dsemi\events\event.h" />
+    <ClInclude Include="include\dsemi\core\layer.h" />
+    <ClInclude Include="include\dsemi\math\vector3f.h" />
+    <ClInclude Include="include\dsemi\events\keyboardevent.h" />
+    <ClInclude Include="include\dsemi\events\mouseevent.h" />
+    <ClInclude Include="include\dspch.h" />
+    <ClInclude Include="include\dsemi\core\exceptions\hresultexception.h" />
+    <ClInclude Include="include\dsemi\core\Input.h" />
+    <ClInclude Include="include\dsemi\core\window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\dsemi\Core\window_win32_impl.cpp" />
+    <ClCompile Include="src\dsemi\ecs\component.cpp" />
+    <ClCompile Include="src\dsemi\ecs\component_flag.cpp" />
+    <ClCompile Include="src\dsemi\ecs\component_array.cpp" />
+    <ClCompile Include="src\dsemi\ecs\entity_array.cpp" />
+    <ClCompile Include="src\dsemi\ecs\world.cpp" />
+    <ClCompile Include="src\dsemi\fonts\opentype.cpp" />
+    <ClCompile Include="src\dsemi\graphics\colour.cpp" />
+    <ClCompile Include="src\dsemi\graphics\directx\device_dx11_impl.cpp" />
+    <ClCompile Include="src\dsemi\graphics\directx\graphics_dx11_impl.cpp" />
+    <ClCompile Include="src\dsemi\graphics\graphics.cpp" />
+    <ClCompile Include="src\dsemi\graphics\pipeline.cpp" />
+    <ClCompile Include="src\dsemi\graphics\render_target.cpp" />
+    <ClCompile Include="src\dsemi\graphics\resources\fragment_shader.cpp" />
+    <ClCompile Include="src\dsemi\graphics\resources\vertex_buffer.cpp" />
+    <ClCompile Include="src\dsemi\graphics\resources\vertex_shader.cpp" />
+    <ClCompile Include="src\dsemi\graphics\swap_chain.cpp" />
+    <ClCompile Include="src\dsemi\graphics\device.cpp" />
+    <ClCompile Include="src\dsemi\math\rect.cpp" />
+    <ClCompile Include="src\dsemi\math\vector\Vector2d.cpp" />
+    <ClCompile Include="src\dsemi\math\vector\Vector2f.cpp" />
+    <ClCompile Include="src\dsemi\Core\Exceptions\dsemiexception.cpp" />
+    <ClCompile Include="src\dsemi\Core\application.cpp" />
+    <ClCompile Include="src\dsemi\Core\layer.cpp" />
+    <ClCompile Include="src\dsemi\Core\layerstack.cpp" />
+    <ClCompile Include="src\dsemi\math\quaternion.cpp" />
+    <ClCompile Include="src\dsemi\math\random.cpp" />
+    <ClCompile Include="src\dsemi\math\vector2.cpp" />
+    <ClCompile Include="src\dsemi\math\vector3.cpp" />
+    <ClCompile Include="src\dsemi\math\vector\Vector2i.cpp" />
+    <ClCompile Include="src\dsemi\Memory\bitset.cpp" />
+    <ClCompile Include="src\dsemi\ui\element.cpp" />
+    <ClCompile Include="src\dsemi\ui\frame.cpp" />
+    <ClCompile Include="src\dsemi\util\binaryreader.cpp" />
+    <ClCompile Include="src\dsemi\util\logger.cpp" />
+    <ClCompile Include="src\dsemi\util\string.cpp" />
+    <ClCompile Include="src\dsemi\util\timer.cpp" />
+    <ClCompile Include="src\dspch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">dspch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">dspch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\dsemi\Core\Exceptions\hresultexception.cpp" />
+    <ClCompile Include="src\dsemi\Core\Input.cpp" />
+    <ClCompile Include="src\dsemi\Core\window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="src\dsemi\graphics\shaders\rect2d_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)DevApp\shaders\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)DevApp\shaders\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="src\dsemi\graphics\shaders\rect2d_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)DevApp\shaders\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)DevApp\shaders\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="src\dsemi\graphics\shaders\default_ps.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)DevApp\shaders\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="src\dsemi\graphics\shaders\default_vs.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)DevApp\shaders\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{C785D6E4-5885-4E51-9E3F-C9A2B6EDBDFE}</ProjectGuid>
+    <RootNamespace>Dsemi</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)temp\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)temp\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DSEMI_WIN32;SEMI_ASSERT;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>dspch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)include</AdditionalIncludeDirectories>
+      <ShowIncludes>false</ShowIncludes>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DSEMI_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>dspch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)include</AdditionalIncludeDirectories>
+      <ShowIncludes>false</ShowIncludes>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

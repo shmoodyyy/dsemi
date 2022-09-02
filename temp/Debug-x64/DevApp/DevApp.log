@@ -1,0 +1,7 @@
+﻿  main.cpp
+E:\_CS\_VSProjects\Dsemi\Dsemi\include\dsemi\util\logger.hpp(30,14): warning C4834: discarding return value of function with 'nodiscard' attribute
+  coretestlayer.cpp
+E:\_CS\_VSProjects\Dsemi\Dsemi\include\dspch.h(34,1): warning C4005: '_CRT_SECURE_NO_WARNINGS': macro redefinition
+E:\_CS\_VSProjects\Dsemi\DevApp\src\testLayers\coretestlayer.cpp : message : see previous definition of '_CRT_SECURE_NO_WARNINGS'
+  Generating Code...
+device_dx11_impl.obj : fatal error LNK1163: invalid selection for COMDAT section 0x139B

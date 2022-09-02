@@ -1,0 +1,7 @@
+﻿  Application.cpp
+  logger.cpp
+  device.cpp
+  device_dx11_impl.cpp
+d:\_cs\vs projects\dsemi\dsemi\src\dsemi\graphics\directx\device_dx11_impl.cpp(206): warning C4244: '=': conversion from 'unsigned int' to 'FLOAT', possible loss of data
+d:\_cs\vs projects\dsemi\dsemi\src\dsemi\graphics\directx\device_dx11_impl.cpp(207): warning C4244: '=': conversion from 'unsigned int' to 'FLOAT', possible loss of data
+  Dsemi.vcxproj -> D:\_CS\VS Projects\Dsemi\bin\Release-x64\Dsemi\Dsemi.lib
