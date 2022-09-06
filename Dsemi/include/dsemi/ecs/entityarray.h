@@ -2,7 +2,7 @@
 #define ECS_ENTITY_POOL_H
 
 #include <queue>
-#include "Dsemi/ecs/component_flag.h"
+#include "Dsemi/ecs/componentflag.h"
 
 // number of new entities to support each time memory gets reallocated
 #define ECS_ENTITY_ARRAY_GROW_STRIDE 4096

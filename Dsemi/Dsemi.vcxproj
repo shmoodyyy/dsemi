@@ -12,18 +12,22 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\dsemi\core\layerstack.h" />
+    <ClInclude Include="include\dsemi\core\scene.h" />
     <ClInclude Include="include\dsemi\ecs\component.h" />
-    <ClInclude Include="include\dsemi\ecs\component_flag.h" />
-    <ClInclude Include="include\dsemi\ecs\component_array.h" />
+    <ClInclude Include="include\dsemi\ecs\components\graphics\polygon2dinstanced.h" />
+    <ClInclude Include="include\dsemi\ecs\components\graphics\polygon2d.h" />
+    <ClInclude Include="include\dsemi\ecs\componentflag.h" />
+    <ClInclude Include="include\dsemi\ecs\componentarray.h" />
     <ClInclude Include="include\dsemi\ecs\ecs.h" />
-    <ClInclude Include="include\dsemi\ecs\ecs_defines.h" />
-    <ClInclude Include="include\dsemi\ecs\entity_array.h" />
+    <ClInclude Include="include\dsemi\ecs\ecsdefines.h" />
+    <ClInclude Include="include\dsemi\ecs\entitynode.h" />
+    <ClInclude Include="include\dsemi\ecs\entityarray.h" />
     <ClInclude Include="include\dsemi\ecs\world.h" />
     <ClInclude Include="include\dsemi\ecs\world_query.h" />
     <ClInclude Include="include\dsemi\fonts\opentype.h" />
     <ClInclude Include="include\dsemi\fonts\opentype_tables.h" />
     <ClInclude Include="include\dsemi\graphics\api_include.h" />
-    <ClInclude Include="include\dsemi\graphics\colour.h" />
+    <ClInclude Include="include\dsemi\graphics\color.h" />
     <ClInclude Include="include\dsemi\graphics\directx\dxinclude.h" />
     <ClInclude Include="include\dsemi\graphics\immediate2d.h" />
     <ClInclude Include="include\dsemi\graphics\pipeline.h" />
@@ -70,9 +74,11 @@
     <ClInclude Include="include\dsemi\core\exceptions\hresultexception.h" />
     <ClInclude Include="include\dsemi\core\Input.h" />
     <ClInclude Include="include\dsemi\core\window.h" />
+    <ClInclude Include="include\dsemi\ecs\components\core\transform2d.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\dsemi\Core\window_win32_impl.cpp" />
+    <ClCompile Include="src\dsemi\core\scene.cpp" />
+    <ClCompile Include="src\dsemi\core\window_win32_impl.cpp" />
     <ClCompile Include="src\dsemi\ecs\component.cpp" />
     <ClCompile Include="src\dsemi\ecs\component_flag.cpp" />
     <ClCompile Include="src\dsemi\ecs\component_array.cpp" />
@@ -93,10 +99,10 @@
     <ClCompile Include="src\dsemi\math\rect.cpp" />
     <ClCompile Include="src\dsemi\math\vector\Vector2d.cpp" />
     <ClCompile Include="src\dsemi\math\vector\Vector2f.cpp" />
-    <ClCompile Include="src\dsemi\Core\Exceptions\dsemiexception.cpp" />
-    <ClCompile Include="src\dsemi\Core\application.cpp" />
-    <ClCompile Include="src\dsemi\Core\layer.cpp" />
-    <ClCompile Include="src\dsemi\Core\layerstack.cpp" />
+    <ClCompile Include="src\dsemi\core\Exceptions\dsemiexception.cpp" />
+    <ClCompile Include="src\dsemi\core\application.cpp" />
+    <ClCompile Include="src\dsemi\core\layer.cpp" />
+    <ClCompile Include="src\dsemi\core\layerstack.cpp" />
     <ClCompile Include="src\dsemi\math\quaternion.cpp" />
     <ClCompile Include="src\dsemi\math\random.cpp" />
     <ClCompile Include="src\dsemi\math\vector2.cpp" />
@@ -115,9 +121,9 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">dspch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">dspch.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="src\dsemi\Core\Exceptions\hresultexception.cpp" />
-    <ClCompile Include="src\dsemi\Core\Input.cpp" />
-    <ClCompile Include="src\dsemi\Core\window.cpp" />
+    <ClCompile Include="src\dsemi\core\Exceptions\hresultexception.cpp" />
+    <ClCompile Include="src\dsemi\core\Input.cpp" />
+    <ClCompile Include="src\dsemi\core\window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\dsemi\graphics\shaders\rect2d_ps.hlsl">

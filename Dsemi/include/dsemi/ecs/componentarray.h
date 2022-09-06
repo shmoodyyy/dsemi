@@ -1,7 +1,7 @@
 #ifndef ECS_COMPONENT_ARRAY_H
 #define ECS_COMPONENT_ARRAY_H
 
-#include "Dsemi/ecs/Component.h"
+#include "Dsemi/ecs/component.h"
 
 #ifndef ECS_COMPONENT_ARRAY_GROW_STRIDE
 // The number of entites to reserve memory for when the array needs to grow

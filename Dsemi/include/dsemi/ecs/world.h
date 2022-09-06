@@ -1,11 +1,10 @@
 #ifndef ECS_WORLD_H
 #define ECS_WORLD_H
 
-#include "Dsemi/ecs/entity_array.h"
-#include "Dsemi/ecs/component_array.h"
+#include "Dsemi/ecs/entityarray.h"
+#include "Dsemi/ecs/componentarray.h"
 
 namespace dsemi {
-
 	class ecs_entity_handle;
 
 	class ecs_world {
@@ -18,7 +17,7 @@ namespace dsemi {
 		T* add_component(size_t entity_id);
 
 		template<typename T>
-		T* get_component(size_t entity_id); // TODO: finish components of ecs (?)
+		T* get_component(size_t entity_id); // TODO: finish components of ecs (? what are my comments talking about)
 
 		ecs_component_array& get_component_array(size_t component_id);
 
@@ -72,8 +71,6 @@ namespace dsemi {
 	template<typename T>
 	T* ecs_world::get_component(size_t entity_id)
 	{
-		// TODO: implement better way of resizing all the arrays by registering new components
-		// relevant for when adding components via scriptin (lua or c# or stuffs)
 		/*if (T::ID > _component_arrays.capacity())
 			_component_arrays.resize(ECS_NUM_COMPONENTS);*/
 		return (T*)_component_arrays[T::ID].at(entity_id);

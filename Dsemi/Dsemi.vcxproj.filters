@@ -20,11 +20,11 @@
   <ItemGroup>
     <ClInclude Include="include\dspch.h" />
     <ClInclude Include="include\dsemi\ecs\component.h" />
-    <ClInclude Include="include\dsemi\ecs\component_array.h" />
-    <ClInclude Include="include\dsemi\ecs\component_flag.h" />
+    <ClInclude Include="include\dsemi\ecs\componentarray.h" />
+    <ClInclude Include="include\dsemi\ecs\componentflag.h" />
     <ClInclude Include="include\dsemi\ecs\ecs.h" />
-    <ClInclude Include="include\dsemi\ecs\ecs_defines.h" />
-    <ClInclude Include="include\dsemi\ecs\entity_array.h" />
+    <ClInclude Include="include\dsemi\ecs\ecsdefines.h" />
+    <ClInclude Include="include\dsemi\ecs\entityarray.h" />
     <ClInclude Include="include\dsemi\ecs\world.h" />
     <ClInclude Include="include\dsemi\ecs\world_query.h" />
     <ClInclude Include="include\dsemi\events\applicationevent.h">
@@ -82,7 +82,7 @@
     <ClInclude Include="include\dsemi\graphics\pipeline.h" />
     <ClInclude Include="include\dsemi\ui\element.h" />
     <ClInclude Include="include\dsemi\ui\frame.h" />
-    <ClInclude Include="include\dsemi\graphics\colour.h" />
+    <ClInclude Include="include\dsemi\graphics\color.h" />
     <ClInclude Include="include\dsemi\graphics\immediate2d.h" />
     <ClInclude Include="include\dsemi\core\window.h">
       <Filter>src\Platforms\Windows</Filter>
@@ -95,12 +95,17 @@
     </ClInclude>
     <ClInclude Include="include\dsemi.h" />
     <ClInclude Include="include\dsemi\core\layerstack.h" />
+    <ClInclude Include="include\dsemi\ecs\components\core\transform2d.h" />
+    <ClInclude Include="include\dsemi\ecs\components\graphics\polygon2d.h" />
+    <ClInclude Include="include\dsemi\core\scene.h" />
+    <ClInclude Include="include\dsemi\ecs\entitynode.h" />
+    <ClInclude Include="include\dsemi\ecs\components\graphics\polygon2dinstanced.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dspch.cpp" />
-    <ClCompile Include="src\dsemi\Core\Exceptions\dsemiexception.cpp" />
-    <ClCompile Include="src\dsemi\Core\Exceptions\hresultexception.cpp" />
-    <ClCompile Include="src\dsemi\Core\Input.cpp" />
+    <ClCompile Include="src\dsemi\core\Exceptions\dsemiexception.cpp" />
+    <ClCompile Include="src\dsemi\core\Exceptions\hresultexception.cpp" />
+    <ClCompile Include="src\dsemi\core\Input.cpp" />
     <ClCompile Include="src\dsemi\ecs\component.cpp" />
     <ClCompile Include="src\dsemi\ecs\component_array.cpp" />
     <ClCompile Include="src\dsemi\ecs\component_flag.cpp" />
@@ -133,19 +138,20 @@
     <ClCompile Include="src\dsemi\ui\element.cpp" />
     <ClCompile Include="src\dsemi\ui\frame.cpp" />
     <ClCompile Include="src\dsemi\graphics\colour.cpp" />
-    <ClCompile Include="src\dsemi\Core\window.cpp">
+    <ClCompile Include="src\dsemi\core\window.cpp">
       <Filter>src\Platforms\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="src\dsemi\Core\window_win32_impl.cpp" />
-    <ClCompile Include="src\dsemi\Core\layer.cpp">
+    <ClCompile Include="src\dsemi\core\window_win32_impl.cpp" />
+    <ClCompile Include="src\dsemi\core\layer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\dsemi\Core\application.cpp">
+    <ClCompile Include="src\dsemi\core\application.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\dsemi\Core\layerstack.cpp">
+    <ClCompile Include="src\dsemi\core\layerstack.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\dsemi\core\scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\dsemi\graphics\shaders\default_ps.hlsl" />

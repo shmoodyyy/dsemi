@@ -1,5 +1,5 @@
 #include "dspch.h"
-#include "Dsemi/ecs/entity_array.h"
+#include "Dsemi/ecs/entityarray.h"
 
 namespace dsemi {
 

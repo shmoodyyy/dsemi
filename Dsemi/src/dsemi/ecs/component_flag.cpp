@@ -1,5 +1,5 @@
 #include "dspch.h"
-#include "Dsemi/ecs/component_flag.h"
+#include "Dsemi/ecs/componentflag.h"
 
 #define min(x, y) (x < y ? x : y)
 #define max(x, y) (x < y ? y : x)

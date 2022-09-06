@@ -1,5 +1,5 @@
 #include <dsemi.h>
-#include "testLayers/coretestlayer.h"
+#include "scenes/testscene2d.h"
 
 class DevApp : public dsemi::application
 {
@@ -14,16 +14,16 @@ public:
 
 	virtual void on_create() override
 	{
-
+		active_scene = &test_scene;
 	}
 
 	virtual void on_event(dsemi::ievent& e) override
 	{
-		test_layer_core.on_event(e);
+		//test_layer_core.on_event(e);
 	}
 
 private:
-	test_layer_core test_layer_core;
+	test_scene2d test_scene;
 };
 
 dsemi::application* dsemi::create()

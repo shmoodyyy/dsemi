@@ -1,7 +1,7 @@
 #include "dspch.h"
-#include "Dsemi/ecs/component_array.h"
+#include "Dsemi/ecs/componentarray.h"
 
-#include "Dsemi/ecs/ecs_defines.h"
+#include "Dsemi/ecs/ecsdefines.h"
 
 namespace dsemi {
 

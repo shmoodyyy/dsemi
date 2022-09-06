@@ -90,15 +90,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app.cpp" />
-    <ClCompile Include="src\devlayer.cpp" />
     <ClCompile Include="src\ecs\polygon2d.cpp" />
+    <ClCompile Include="src\layers\testlayer2d.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\testLayers\coretestlayer.cpp" />
+    <ClCompile Include="src\layers\testlayercore.cpp" />
+    <ClCompile Include="src\scenes\testscene2d.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\devlayer.h" />
     <ClInclude Include="src\ecs\polygon2d.h" />
-    <ClInclude Include="src\testLayers\coretestlayer.h" />
+    <ClInclude Include="src\layers\testlayercore.h" />
+    <ClInclude Include="src\layers\testlayer2d.h" />
+    <ClInclude Include="src\scenes\testscene2d.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

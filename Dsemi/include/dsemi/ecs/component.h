@@ -1,18 +1,18 @@
 #ifndef ECS_COMPONENT_HEADER
 #define ECS_COMPONENT_HEADER
 
-#include "Dsemi/ecs/ecs_defines.h"
+#include "dsemi/ecs/ecsdefines.h"
 
-#define ECS_NUM_COMPONENTS dsemi::ECS::BaseComponent::CountComponentTypes()
+#define ECS_NUM_COMPONENTS dsemi::ecs::icomponent_base::CountComponentTypes()
 
 namespace dsemi {
-	namespace ECS {
+	namespace ecs {
 
-		struct BaseComponent {
+		struct icomponent_base {
 			size_t EntityID = ECS_INVALID_ENTITY;
 
 			static const size_t CountComponentTypes() noexcept {
-				return BaseComponent::s_nextComponentID;
+				return icomponent_base::s_nextComponentID;
 			}
 
 		protected:
@@ -24,18 +24,18 @@ namespace dsemi {
 
 
 		template<typename T>
-		struct IComponent : public BaseComponent {
-			using BaseComponent::BaseComponent;
+		struct icomponent : public icomponent_base {
+			using icomponent_base::icomponent_base;
 			//virtual inline const size_t GetID() const noexcept override { return ID; }
 			static const size_t ID;
 			static const size_t size;
 		};
 
 		template<typename T>
-		const size_t IComponent<T>::ID = BaseComponent::SetNextID();
+		const size_t icomponent<T>::ID = icomponent_base::SetNextID();
 
 		template<typename T>
-		const size_t IComponent<T>::size = sizeof(T);
+		const size_t icomponent<T>::size = sizeof(T);
 	}
 }
 

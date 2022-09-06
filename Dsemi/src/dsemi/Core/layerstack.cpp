@@ -21,7 +21,7 @@ namespace dsemi {
 
 	void layer_stack::push_layer(layer* layer)
 	{
-		_layer_iterator = _layers.emplace(_layer_iterator, layer);
+		_layer_iterator = _layers.emplace(_layer_iterator, layer) + 1;
 		layer->on_attach();
 	}
 
@@ -49,6 +49,32 @@ namespace dsemi {
 		{
 			(*it)->on_detach();
 			_layers.erase(it);
+		}
+	}
+
+	void layer_stack::call_update(const float dt)
+	{
+		for (auto it = _layers.begin(); it != _layers.end(); ++it)
+		{
+			(*it)->update(dt);
+		}
+	}
+
+	void layer_stack::send_event(ievent& e)
+	{
+		for (auto it = _layers.rbegin(); it != _layers.rend(); ++it)
+		{
+			(*it)->handle_event(e);
+			if (e.handled)
+				return;
+		}
+	}
+
+	void layer_stack::call_render(const float dt)
+	{
+		for (auto it = _layers.rbegin(); it != _layers.rend(); ++it)
+		{
+			(*it)->render(dt);
 		}
 	}
 }

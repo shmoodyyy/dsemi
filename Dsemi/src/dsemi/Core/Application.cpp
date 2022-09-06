@@ -78,6 +78,7 @@ namespace dsemi {
 		on_create();
 	}
 
+	// looping section of the application handling update, event handling and render calls
 	void application::run()
 	{
 #if 1
@@ -90,10 +91,13 @@ namespace dsemi {
 			init();
 			while (_running)
 			{
+				// TODO: replace with application-level message handling
 				_main_wnd->dispatch_events();
+
 				// Update
 				if (do_tick())
 				{
+					do_render();
 					/*m_pMainWnd->renderContext.NewFrame();
 					m_pMainWnd->renderContext.Present();*/
 				}
@@ -119,9 +123,10 @@ namespace dsemi {
 		logger::stop_logger();
 	}
 
-	void application::update(const float dt)
+	void application::do_update(const float dt)
 	{
 		on_update(dt);
+		active_scene->handle_update(dt);
 
 		Input::ResetMouseDelta();
 	}
@@ -136,13 +141,22 @@ namespace dsemi {
 			//m_dt -= m_timePerTick * numTicks;
 			_update_timer.Mark();
 
-			update(_delta_time);
+			do_update(_delta_time);
+			active_scene->handle_render(_delta_time);
 			return true;
 		}
 		else
 		{
 			return false;
 		}
+	}
+
+	void application::do_events()
+	{
+	}
+
+	void application::do_render()
+	{
 	}
 
 	// Event Handler
@@ -156,6 +170,8 @@ namespace dsemi {
 		if (!e.handled) {
 			on_event(e);
 		}
+
+		active_scene->handle_event(e);
 	}
 
 	// Event Functions

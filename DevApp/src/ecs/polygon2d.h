@@ -15,7 +15,7 @@ struct vertex_2d
 	float x, y;
 };
 
-struct polygon2d : dsemi::ECS::IComponent<polygon2d>
+struct polygon2d : dsemi::ecs::icomponent<polygon2d>
 {
 	polygon2d()
 		: vertices(0)
