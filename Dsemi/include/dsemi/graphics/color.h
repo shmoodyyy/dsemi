@@ -2,16 +2,18 @@
 #define GRAPHICS_COLOUR_H
 
 #include <stdint.h>
+#include "dsemi/util/assert.h"
 
 namespace dsemi {
-	struct color {
-		color(uint32_t rgba = 0xffffffff)
+	struct color32 
+	{
+		color32(int rgba)
 			: red   (( rgba & 0xff000000 ) >> 24 )
 			, green (( rgba & 0x00ff0000 ) >> 16 )
 			, blue  (( rgba & 0x0000ff00 ) >>  8 )
 			, alpha (( rgba & 0x000000ff )       )
 		{}
-		color(uint8_t r = 0xff, uint8_t g = 0xff, uint8_t b = 0xff, uint8_t a = 0xff)
+		color32(uint8_t r = 0xff, uint8_t g = 0xff, uint8_t b = 0xff, uint8_t a = 0xff)
 			: red   (r)
 			, green (g)
 			, blue  (b)

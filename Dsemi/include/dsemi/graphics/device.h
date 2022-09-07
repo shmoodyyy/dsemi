@@ -1,10 +1,12 @@
 #ifndef GRAPHICS_DEVICE_H
 #define GRAPHICS_DEVICE_H
 
-#include "Dsemi/graphics/api_include.h"
-#include "Dsemi/graphics/render_target.h"
-#include "Dsemi/graphics/swap_chain.h"
-#include "Dsemi/graphics/resources/resource_include.h"
+#include "dsemi/graphics/api_include.h"
+#include "dsemi/graphics/render_target.h"
+#include "dsemi/graphics/swap_chain.h"
+#include "dsemi/graphics/resources/resource_include.h"
+
+#include "dsemi/graphics/color.h"
 
 namespace dsemi {
 
@@ -41,8 +43,6 @@ namespace dsemi {
 		void bind_vertex_buffer(gfx_vertex_buffer* vertex_buffer);
 
 		//void bind_input_layout(gfx_input_layout* layout);
-		// each vertex shader has their own input layout instead, makes 50x more sense than directx's shit [i shouldve gone with vulkan]
-
 		void bind_vertex_shader(gfx_vertex_shader* vertex_shader);
 		void bind_fragment_shader(gfx_fragment_shader* fragment_shader);
 		void bind_render_target(gfx_render_target* render_target);
@@ -50,7 +50,8 @@ namespace dsemi {
 		/*===================
 		// state management
 		=====================*/
-		void set_clear_colour(float r, float g, float b);
+		void set_clear_color(float r, float g, float b, float a);
+		void set_clear_color(color32 rgba);
 
 
 		/*=============
@@ -61,24 +62,26 @@ namespace dsemi {
 		void draw_triangle();
 		void present();
 
+
 		/*===================
-		// temp dev stuff
+		// debugging
 		=====================*/
 		//void create_triangle_resources();
 
+
 	private:
 		void _initialize_impl();
+
 
 	private:
 		// TODO: render targets [OS window and textures as targets for drawing pipeline]
 		gfx_render_target* _active_render_target;
 		gfx_swap_chain _active_swap_chain;
 
-		float _clear_colour[4];
+		color32 _clear_color;
+		float* _clear_color_float;
 
-		/*====================
-		  DirectX Declaration
-		=====================*/
+
 #ifdef GFX_USING_DX11
 	private:
 		IDXGIFactory* _get_dxgi_factory();

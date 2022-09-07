@@ -8,26 +8,28 @@
 #define ECS_ENTITY_ARRAY_GROW_STRIDE 4096
 
 namespace dsemi {
-	class ecs_entity_array {
-	public:
-		ecs_entity_array(size_t num_components);
-		//~ecs_entity_array();
+	namespace ecs {
+		class entity_array {
+		public:
+			entity_array(size_t num_components);
+			//~entity_array();
 
-		size_t create_entity();
+			size_t create_entity();
 
-		void set_component(size_t entity_id, size_t component_id, bool value);
-		bool get_component(size_t entity_id, size_t component_id);
-		ecs_component_flag get_components(size_t entity_id);
+			void set_component(size_t entity_id, size_t component_id, bool value);
+			bool get_component(size_t entity_id, size_t component_id);
+			component_flag get_components(size_t entity_id);
 
-		ecs_component_flag operator[](size_t index);
+			component_flag operator[](size_t index);
 
-	private:
-		std::vector<uint64_t> _entity_bytes;
-		std::queue<size_t> _free_id_queue;
-		size_t _next_id;
-		size_t _entity_size;
-		size_t _num_chunks;
-	};
+		private:
+			std::vector<uint64_t> _entity_bytes;
+			std::queue<size_t> _free_id_queue;
+			size_t _next_id;
+			size_t _entity_size;
+			size_t _num_chunks;
+		};
+	}
 }
 
 #endif

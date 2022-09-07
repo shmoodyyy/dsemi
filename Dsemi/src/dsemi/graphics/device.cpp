@@ -9,6 +9,7 @@ namespace dsemi {
 
 	gfx_device::~gfx_device()
 	{
+		delete[] _clear_color_float;
 	}
 
 	// Goal: Create draw_triangle function that does not require _WIN32 check
@@ -21,20 +22,32 @@ namespace dsemi {
 	{
 		logger::info("[GFX] creating graphics_device");
 		_initialize_impl();
-		_clear_colour[0] = 0.2f; // R
-		_clear_colour[1] = 0.2f; // G
-		_clear_colour[2] = 0.2f; // B
-		_clear_colour[3] = 1.0f; // A
+		_clear_color.red = 0xffffffff;
+		_clear_color_float = new float[4];
+		set_clear_color(0x000000ff);
 	}
 
-	/*===================
-	// state management
-	=====================*/
-	void gfx_device::set_clear_colour(float r, float g, float b)
+	void gfx_device::set_clear_color(float r, float g, float b, float a = 1.0f)
 	{
-		_clear_colour[0] = r; // R
-		_clear_colour[1] = g; // G
-		_clear_colour[2] = b; // B
+		_clear_color.red      = (uint8_t)(r * 255.0f);
+		_clear_color.green    = (uint8_t)(g * 255.0f);
+		_clear_color.blue     = (uint8_t)(b * 255.0f);
+		_clear_color.alpha    = (uint8_t)(a * 255.0f);
+
+		_clear_color_float[0] = r;
+		_clear_color_float[1] = g;
+		_clear_color_float[2] = b;
+		_clear_color_float[3] = a;
+	}
+
+	void gfx_device::set_clear_color(color32 rgba)
+	{
+		_clear_color          = rgba;
+
+		_clear_color_float[0] = (float)rgba.red   / 255.0f;
+		_clear_color_float[1] = (float)rgba.green / 255.0f;
+		_clear_color_float[2] = (float)rgba.blue  / 255.0f;
+		_clear_color_float[3] = (float)rgba.alpha / 255.0f;
 	}
 
 #if (defined GFX_USING_DX11)

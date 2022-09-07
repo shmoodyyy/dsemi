@@ -26,7 +26,6 @@
     <ClInclude Include="include\dsemi\ecs\ecsdefines.h" />
     <ClInclude Include="include\dsemi\ecs\entityarray.h" />
     <ClInclude Include="include\dsemi\ecs\world.h" />
-    <ClInclude Include="include\dsemi\ecs\world_query.h" />
     <ClInclude Include="include\dsemi\events\applicationevent.h">
       <Filter>src\Events</Filter>
     </ClInclude>
@@ -83,7 +82,7 @@
     <ClInclude Include="include\dsemi\ui\element.h" />
     <ClInclude Include="include\dsemi\ui\frame.h" />
     <ClInclude Include="include\dsemi\graphics\color.h" />
-    <ClInclude Include="include\dsemi\graphics\immediate2d.h" />
+    <ClInclude Include="include\dsemi\graphics\2d\immediate2d.h" />
     <ClInclude Include="include\dsemi\core\window.h">
       <Filter>src\Platforms\Windows</Filter>
     </ClInclude>
@@ -100,6 +99,9 @@
     <ClInclude Include="include\dsemi\core\scene.h" />
     <ClInclude Include="include\dsemi\ecs\entitynode.h" />
     <ClInclude Include="include\dsemi\ecs\components\graphics\polygon2dinstanced.h" />
+    <ClInclude Include="include\dsemi\graphics\2d\camera2d.h" />
+    <ClInclude Include="include\dsemi\graphics\viewport.h" />
+    <ClInclude Include="include\dsemi\graphics\directx\directx11.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dspch.cpp" />
@@ -107,9 +109,9 @@
     <ClCompile Include="src\dsemi\core\Exceptions\hresultexception.cpp" />
     <ClCompile Include="src\dsemi\core\Input.cpp" />
     <ClCompile Include="src\dsemi\ecs\component.cpp" />
-    <ClCompile Include="src\dsemi\ecs\component_array.cpp" />
-    <ClCompile Include="src\dsemi\ecs\component_flag.cpp" />
-    <ClCompile Include="src\dsemi\ecs\entity_array.cpp" />
+    <ClCompile Include="src\dsemi\ecs\componentarray.cpp" />
+    <ClCompile Include="src\dsemi\ecs\componentflag.cpp" />
+    <ClCompile Include="src\dsemi\ecs\entityarray.cpp" />
     <ClCompile Include="src\dsemi\ecs\world.cpp" />
     <ClCompile Include="src\dsemi\fonts\opentype.cpp" />
     <ClCompile Include="src\dsemi\graphics\directx\device_dx11_impl.cpp" />
@@ -137,7 +139,6 @@
     <ClCompile Include="src\dsemi\graphics\pipeline.cpp" />
     <ClCompile Include="src\dsemi\ui\element.cpp" />
     <ClCompile Include="src\dsemi\ui\frame.cpp" />
-    <ClCompile Include="src\dsemi\graphics\colour.cpp" />
     <ClCompile Include="src\dsemi\core\window.cpp">
       <Filter>src\Platforms\Windows</Filter>
     </ClCompile>
@@ -152,11 +153,14 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\dsemi\core\scene.cpp" />
+    <ClCompile Include="src\dsemi\graphics\viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="src\dsemi\graphics\shaders\default_ps.hlsl" />
-    <FxCompile Include="src\dsemi\graphics\shaders\default_vs.hlsl" />
-    <FxCompile Include="src\dsemi\graphics\shaders\rect2d_ps.hlsl" />
-    <FxCompile Include="src\dsemi\graphics\shaders\rect2d_vs.hlsl" />
+    <FxCompile Include="src\dsemi\graphics\shaders\directx\default_ps.hlsl" />
+    <FxCompile Include="src\dsemi\graphics\shaders\directx\default_vs.hlsl" />
+    <FxCompile Include="src\dsemi\graphics\shaders\directx\rect2d_ps.hlsl" />
+    <FxCompile Include="src\dsemi\graphics\shaders\directx\rect2d_vs.hlsl" />
+    <FxCompile Include="src\dsemi\graphics\shaders\directx\default2d_vs.hlsl" />
+    <FxCompile Include="src\dsemi\graphics\shaders\directx\default2d_ps.hlsl" />
   </ItemGroup>
 </Project>

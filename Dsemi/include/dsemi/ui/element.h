@@ -2,7 +2,7 @@
 #define UI_ELEMENT_BASE_H
 
 #include "Dsemi/Math/vector2.h"
-#include "dsemi/graphics/colour.h"
+#include "dsemi/graphics/color.h"
 
 namespace dsemi {
 
@@ -27,8 +27,8 @@ namespace dsemi {
 		vector2f offset;
 		vector2f position;
 		vector2f size;
-		colour_rgba background_colour;
-		colour_rgba outline_colour;
+		color32 background_colour;
+		color32 outline_colour;
 		float outline_thickness;
 
 	protected:

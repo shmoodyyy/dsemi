@@ -1,5 +1,7 @@
 #include <dsemi.h>
+#include <iostream>
 #include "scenes/testscene2d.h"
+#include <dsemi/graphics/color.h>
 
 class DevApp : public dsemi::application
 {

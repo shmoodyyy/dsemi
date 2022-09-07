@@ -4,6 +4,7 @@
 #include <dsemi/core/layer.h>
 #include <dsemi/events/mouseevent.h>
 #include <dsemi/events/keyboardevent.h>
+#include <dsemi/ecs/ecs.h>
 
 class test_layer_2dgfx : public dsemi::layer 
 {

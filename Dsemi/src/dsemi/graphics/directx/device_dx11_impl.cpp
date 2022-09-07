@@ -245,7 +245,7 @@ namespace dsemi {
 
 	void gfx_device::clear()
 	{
-		_dx_context->ClearRenderTargetView(_active_render_target->_dx_render_target_view.Get(), _clear_colour);
+		_dx_context->ClearRenderTargetView(_active_render_target->_dx_render_target_view.Get(), _clear_color_float);
 	}
 
 	void gfx_device::draw(unsigned int num_vertices)

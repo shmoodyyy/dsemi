@@ -10,6 +10,8 @@ namespace dsemi {
 	public:
 		gfx_swap_chain() {}
 
+
+
 #if (defined GFX_USING_DX11)
 	private:
 		ComPtr<IDXGISwapChain> _dxgi_swap_chain;

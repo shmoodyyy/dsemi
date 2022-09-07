@@ -23,13 +23,14 @@
     <ClInclude Include="include\dsemi\ecs\entitynode.h" />
     <ClInclude Include="include\dsemi\ecs\entityarray.h" />
     <ClInclude Include="include\dsemi\ecs\world.h" />
-    <ClInclude Include="include\dsemi\ecs\world_query.h" />
     <ClInclude Include="include\dsemi\fonts\opentype.h" />
     <ClInclude Include="include\dsemi\fonts\opentype_tables.h" />
+    <ClInclude Include="include\dsemi\graphics\2d\camera2d.h" />
     <ClInclude Include="include\dsemi\graphics\api_include.h" />
     <ClInclude Include="include\dsemi\graphics\color.h" />
+    <ClInclude Include="include\dsemi\graphics\directx\directx11.h" />
     <ClInclude Include="include\dsemi\graphics\directx\dxinclude.h" />
-    <ClInclude Include="include\dsemi\graphics\immediate2d.h" />
+    <ClInclude Include="include\dsemi\graphics\2d\immediate2d.h" />
     <ClInclude Include="include\dsemi\graphics\pipeline.h" />
     <ClInclude Include="include\dsemi\graphics\resources\fragment_shader.h" />
     <ClInclude Include="include\dsemi\graphics\resources\index_buffer.h" />
@@ -41,6 +42,7 @@
     <ClInclude Include="include\dsemi\graphics\device.h" />
     <ClInclude Include="include\dsemi\graphics\graphics.h" />
     <ClInclude Include="include\dsemi\graphics\swap_chain.h" />
+    <ClInclude Include="include\dsemi\graphics\viewport.h" />
     <ClInclude Include="include\dsemi\ui\element.h" />
     <ClInclude Include="include\dsemi\ui\frame.h" />
     <ClInclude Include="include\dsemi\math\matrix4x4.h" />
@@ -80,12 +82,11 @@
     <ClCompile Include="src\dsemi\core\scene.cpp" />
     <ClCompile Include="src\dsemi\core\window_win32_impl.cpp" />
     <ClCompile Include="src\dsemi\ecs\component.cpp" />
-    <ClCompile Include="src\dsemi\ecs\component_flag.cpp" />
-    <ClCompile Include="src\dsemi\ecs\component_array.cpp" />
-    <ClCompile Include="src\dsemi\ecs\entity_array.cpp" />
+    <ClCompile Include="src\dsemi\ecs\componentflag.cpp" />
+    <ClCompile Include="src\dsemi\ecs\componentarray.cpp" />
+    <ClCompile Include="src\dsemi\ecs\entityarray.cpp" />
     <ClCompile Include="src\dsemi\ecs\world.cpp" />
     <ClCompile Include="src\dsemi\fonts\opentype.cpp" />
-    <ClCompile Include="src\dsemi\graphics\colour.cpp" />
     <ClCompile Include="src\dsemi\graphics\directx\device_dx11_impl.cpp" />
     <ClCompile Include="src\dsemi\graphics\directx\graphics_dx11_impl.cpp" />
     <ClCompile Include="src\dsemi\graphics\graphics.cpp" />
@@ -96,6 +97,7 @@
     <ClCompile Include="src\dsemi\graphics\resources\vertex_shader.cpp" />
     <ClCompile Include="src\dsemi\graphics\swap_chain.cpp" />
     <ClCompile Include="src\dsemi\graphics\device.cpp" />
+    <ClCompile Include="src\dsemi\graphics\viewport.cpp" />
     <ClCompile Include="src\dsemi\math\rect.cpp" />
     <ClCompile Include="src\dsemi\math\vector\Vector2d.cpp" />
     <ClCompile Include="src\dsemi\math\vector\Vector2f.cpp" />
@@ -126,7 +128,15 @@
     <ClCompile Include="src\dsemi\core\window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="src\dsemi\graphics\shaders\rect2d_ps.hlsl">
+    <FxCompile Include="src\dsemi\graphics\shaders\directx\default2d_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="src\dsemi\graphics\shaders\directx\default2d_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="src\dsemi\graphics\shaders\directx\rect2d_ps.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -134,7 +144,7 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)DevApp\shaders\%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)DevApp\shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="src\dsemi\graphics\shaders\rect2d_vs.hlsl">
+    <FxCompile Include="src\dsemi\graphics\shaders\directx\rect2d_vs.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
@@ -142,14 +152,14 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)DevApp\shaders\%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)DevApp\shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="src\dsemi\graphics\shaders\default_ps.hlsl">
+    <FxCompile Include="src\dsemi\graphics\shaders\directx\default_ps.hlsl">
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)DevApp\shaders\%(Filename).cso</ObjectFileOutput>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="src\dsemi\graphics\shaders\default_vs.hlsl">
+    <FxCompile Include="src\dsemi\graphics\shaders\directx\default_vs.hlsl">
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)DevApp\shaders\%(Filename).cso</ObjectFileOutput>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
