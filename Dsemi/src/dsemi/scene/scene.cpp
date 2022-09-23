@@ -1,5 +1,5 @@
 #include "dspch.h"
-#include "dsemi/core/scene.h"
+#include "dsemi/scene/scene.h"
 
 namespace dsemi {
 	scene::scene()
@@ -20,8 +20,14 @@ namespace dsemi {
 		_layer_stack.send_event(e);
 	}
 
-	void scene::handle_render(const float dt)
+	ecs::entity_handle scene::add_entity()
 	{
-		_layer_stack.call_render(dt);
+		return _entities.create_entity();
+	}
+
+	template<typename T>
+	void scene::add_component(ecs::entity_handle& entity)
+	{
+		_entities.add_component<T>(entity);
 	}
 }

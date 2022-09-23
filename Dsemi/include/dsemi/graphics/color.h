@@ -14,10 +14,10 @@ namespace dsemi {
 			, alpha (( rgba & 0x000000ff )       )
 		{}
 		color32(uint8_t r = 0xff, uint8_t g = 0xff, uint8_t b = 0xff, uint8_t a = 0xff)
-			: red   (r)
-			, green (g)
-			, blue  (b)
-			, alpha (a)
+			: red(r)
+			, green(g)
+			, blue(b)
+			, alpha(a)
 		{}
 
 		uint8_t red;
@@ -25,8 +25,8 @@ namespace dsemi {
 		uint8_t blue;
 		uint8_t alpha;
 
-		inline int rgba() const noexcept { return ( ((int)red) << 24) + ( ((int)green) << 16) + ( ((int)blue) << 8) + ((int)alpha); }
-		inline void rgba(int val) noexcept {
+		inline int get_rgba() const noexcept { return ( ((int)red) << 24) + ( ((int)green) << 16) + ( ((int)blue) << 8) + ((int)alpha); }
+		inline void set_rgba(int val) noexcept {
 			red   = (val & 0xff000000) >> 24;
 			green = (val & 0x00ff0000) >> 16;
 			blue  = (val & 0x0000ff00) >>  8;

@@ -30,11 +30,11 @@ namespace dsemi {
 
 		class entity_handle {
 			friend class world;
-			entity_handle(size_t id, world* world)
-				: _id(id), _world(world)
-			{}
 
 		public:
+			entity_handle(size_t id = 0, world* world = nullptr)
+				: _id(id), _world(world)
+			{}
 
 			template<typename T>
 			T* add_component()

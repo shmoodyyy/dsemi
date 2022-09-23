@@ -3,7 +3,7 @@
 #define HEADER_DSEMI_CORE_APPLICATION
 
 #include "dsemi/core/window.h"
-#include "dsemi/core/scene.h"
+#include "dsemi/scene/scene.h"
 
 #include "dsemi/events/applicationEvent.h"
 #include "dsemi/events/keyboardevent.h"
@@ -23,17 +23,20 @@ namespace dsemi {
 	public:
 		application();
 		virtual ~application();
-		static inline application& get() 
+		static inline application* get() 
 		{
 			ASSERT(_instance, "Attempted to access Application Instance before being initialized!");
-			return *_instance; 
+			return _instance; 
 		}
 
 		void init();
-		virtual void on_create() {};
-
 		void run();
 		void shutdown();
+		void cleanup();
+
+	protected:
+		virtual void _on_init() {};
+		virtual void _on_cleanup() {};
 
 		// Application runtime loop functions
 	private:
@@ -47,12 +50,7 @@ namespace dsemi {
 		bool do_tick();
 
 	public:
-		void set_tick_rate(unsigned int tickRate) noexcept 
-		{
-			_tick_rate_desired = tickRate;
-			if (tickRate != 0)
-				_time_per_tick = 1.0f / (float)tickRate;
-		}
+		void set_tick_rate(unsigned int tickRate) noexcept;
 		inline unsigned int get_tick_rate() const noexcept { return _tick_rate_desired;	}
 		inline float get_tick_rate_actual() const noexcept { return _tick_rate_actual; }
 
@@ -92,8 +90,6 @@ namespace dsemi {
 	private:
 		static application* _instance;
 	};
-
-	application* create();
 }
 
 #endif

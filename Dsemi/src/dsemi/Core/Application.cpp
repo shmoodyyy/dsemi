@@ -17,10 +17,12 @@ namespace dsemi {
 		,_tick_rate_desired(0)
 		,_time_per_tick(0)
 	{
+		ASSERT(!_instance, "APP: Application Instance already initialized.");
 		if (_instance)
 		{
 			throw std::exception("Application Instance already exists! Use Application::Get()");
 		}
+		_instance = this;
 	}
 
 	application::~application()
@@ -29,9 +31,10 @@ namespace dsemi {
 
 	void application::init()
 	{
-		ASSERT(!_instance, "APP: Application Instance already initialized.");
-
-		// WIN32 / WIN64 Console style
+#if 1
+		AllocConsole();
+		freopen("CONOUT$", "w", stdout);
+		// WIN32 Console style
 		CONSOLE_FONT_INFOEX cfi;
 		cfi.cbSize = sizeof(cfi);
 		cfi.nFont = 0;
@@ -41,6 +44,7 @@ namespace dsemi {
 		cfi.FontWeight = FW_NORMAL;
 		std::wcscpy(cfi.FaceName, L"Consolas");
 		SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
+#endif
 
 		logger::start_logger();
 #ifdef _DEBUG
@@ -49,8 +53,6 @@ namespace dsemi {
 		logger::set_level(logger::level::LOG_LEVEL_INFO);
 #endif
 		logger::info("dsemi::Appliation starting logger thread and initializing.");
-
-		_instance = this;
 
 		// Initialize DirectX and Direct3D
 		//Direct3D::InitD3D();
@@ -65,7 +67,7 @@ namespace dsemi {
 		_main_wnd->set_event_callback(BIND_EVENT(application::handle_event));
 
 		// initialize graphics framework
-		gfx_core::initialize();
+		graphics::device::initialize();
 
 		set_tick_rate(60u);
 
@@ -74,21 +76,16 @@ namespace dsemi {
 		//GFXResourceManager::InitSingleton();
 
 		//m_pMainWnd->renderContext.SetCamera(m_pMainCamera.get());
-		// Run the OnCreate function of client app
-		on_create();
+		
+		// run additional intialization routine
+		_on_init();
 	}
 
 	// looping section of the application handling update, event handling and render calls
 	void application::run()
 	{
-#if 1
-		AllocConsole();
-		freopen("CONOUT$", "w", stdout);
-#endif
-
 		try 
 		{
-			init();
 			while (_running)
 			{
 				// TODO: replace with application-level message handling
@@ -121,6 +118,14 @@ namespace dsemi {
 	void application::shutdown()
 	{
 		logger::stop_logger();
+
+		cleanup();
+	}
+
+	void application::cleanup()
+	{
+		// run additional cleanup routine
+		_on_cleanup();
 	}
 
 	void application::do_update(const float dt)
@@ -142,13 +147,20 @@ namespace dsemi {
 			_update_timer.Mark();
 
 			do_update(_delta_time);
-			active_scene->handle_render(_delta_time);
+			//active_scene->handle_render(_delta_time);
 			return true;
 		}
 		else
 		{
 			return false;
 		}
+	}
+
+	void application::set_tick_rate(unsigned int tickRate) noexcept
+	{
+		_tick_rate_desired = tickRate;
+		if (tickRate != 0)
+			_time_per_tick = 1.0f / (float)tickRate;
 	}
 
 	void application::do_events()
@@ -163,9 +175,9 @@ namespace dsemi {
 	void application::handle_event(ievent& e)
 	{
 		event_dispatcher dispatcher(e);
-		 dispatcher.dispatch<window_close_event>(BIND_EVENT(application::_on_window_close));
-		 dispatcher.dispatch<window_resize_event>(BIND_EVENT(application::_on_window_resize));
-		 dispatcher.dispatch<key_down_event>(BIND_EVENT(application::_on_key_down));
+		dispatcher.dispatch<window_close_event>(BIND_EVENT(application::_on_window_close));
+		dispatcher.dispatch<window_resize_event>(BIND_EVENT(application::_on_window_resize));
+		dispatcher.dispatch<key_down_event>(BIND_EVENT(application::_on_key_down));
 
 		if (!e.handled) {
 			on_event(e);
@@ -177,7 +189,7 @@ namespace dsemi {
 	// Event Functions
 	bool application::_on_window_close(window_close_event& e)
 	{
-		_running = false;
+		//_running = false;
 		return false;
 	}
 

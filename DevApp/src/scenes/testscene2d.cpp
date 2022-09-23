@@ -3,5 +3,5 @@
 test_scene2d::test_scene2d()
 {
 	_layer_stack.push_layer(new test_layer_core());
-	_layer_stack.push_layer(new test_layer_2dgfx());
+	_layer_stack.push_layer(new test_layer_2dgfx(&_entities));
 }

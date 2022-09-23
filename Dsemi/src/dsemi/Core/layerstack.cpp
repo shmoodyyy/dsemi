@@ -69,12 +69,4 @@ namespace dsemi {
 				return;
 		}
 	}
-
-	void layer_stack::call_render(const float dt)
-	{
-		for (auto it = _layers.rbegin(); it != _layers.rend(); ++it)
-		{
-			(*it)->render(dt);
-		}
-	}
 }

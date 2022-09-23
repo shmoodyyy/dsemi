@@ -92,14 +92,18 @@
     <ClCompile Include="src\app.cpp" />
     <ClCompile Include="src\ecs\polygon2d.cpp" />
     <ClCompile Include="src\layers\testlayer2d.cpp" />
+    <ClCompile Include="src\layers\testlayergfx.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\layers\testlayercore.cpp" />
     <ClCompile Include="src\scenes\testscene2d.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ecs\polygon2d.h" />
+    <ClInclude Include="src\ecs\test2dcomponents.h" />
+    <ClInclude Include="src\layers\testlayergfx.h" />
     <ClInclude Include="src\layers\testlayercore.h" />
     <ClInclude Include="src\layers\testlayer2d.h" />
+    <ClInclude Include="src\render\render2d\render2d.h" />
     <ClInclude Include="src\scenes\testscene2d.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

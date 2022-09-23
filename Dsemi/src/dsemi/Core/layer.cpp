@@ -23,19 +23,8 @@ namespace dsemi {
 		//EntitySystem.Update(dt);
 	}
 
-	// todo: i dont like the way this whole event thing works id much rather try using macros to bind events to event receivers
 	void layer::handle_event(ievent& e)
 	{
 		on_event(e);
-	}
-
-	void layer::render(const float dt)
-	{
-		if (!_render_active)
-			return;
-
-		on_render(dt);
-
-		//EntitySystem.Render();
 	}
 }

@@ -5,24 +5,22 @@
 #include "dsemi/graphics/color.h"
 
 namespace dsemi {
+	namespace graphics {
+		class render_target {
+			friend class device;
+		public:
+			render_target();
 
-	class gfx_render_target {
-		friend class gfx_device;
-	public:
-		gfx_render_target();
+			ID3D11RenderTargetView* get_view() noexcept;
 
-	protected:
-		color32 clear_color;
+		protected:
+			ComPtr<ID3D11Texture2D>        _dx_render_target;
+			ComPtr<ID3D11RenderTargetView> _dx_render_target_view;
+			D3D11_VIEWPORT                 _dx_view_port;
 
-#if (defined GFX_USING_DX11)
-	private:
-		ComPtr<ID3D11RenderTargetView> _dx_render_target_view;
-		ComPtr<IDXGISwapChain>         _dx_swap_chain;
-		D3D11_VIEWPORT                 _dx_view_port;
-
-		float* _clear_color_float;
-#endif
-	};
+			float* _clear_color_float;
+		};
+	}
 }
 
 #endif

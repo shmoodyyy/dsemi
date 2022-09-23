@@ -10,6 +10,8 @@
 
 namespace dsemi {
 
+	// TODO!!!!!!: bools are treated as a whole byte please rename this to byteset and use chars and fix everything about this mess (as is done in the bitflag class in the ecs module)
+	// in short this whole class is horrible
 	class Bitset {
 	public:
 		Bitset(size_t numBits, bool val = false);

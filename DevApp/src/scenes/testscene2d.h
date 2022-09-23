@@ -1,7 +1,8 @@
 #ifndef HEADER_DEVAPP_SCENES_TESTSCENE
 #define HEADER_DEVAPP_SCENES_TESTSCENE
 
-#include <dsemi/core/scene.h>
+#include <dsemi/scene/scene.h>
+#include <dsemi/ecs/world.h>
 
 #include "../layers/testlayercore.h"
 #include "../layers/testlayer2d.h"
@@ -12,8 +13,6 @@ public:
 	test_scene2d();
 
 private:
-
-
 };
 
 #endif

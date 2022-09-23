@@ -12,10 +12,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\dsemi\core\layerstack.h" />
-    <ClInclude Include="include\dsemi\core\scene.h" />
+    <ClInclude Include="include\dsemi\graphics\renderer.h" />
+    <ClInclude Include="include\dsemi\graphics\resources\input_layout.h" />
+    <ClInclude Include="include\dsemi\scene\scene.h" />
     <ClInclude Include="include\dsemi\ecs\component.h" />
-    <ClInclude Include="include\dsemi\ecs\components\graphics\polygon2dinstanced.h" />
-    <ClInclude Include="include\dsemi\ecs\components\graphics\polygon2d.h" />
     <ClInclude Include="include\dsemi\ecs\componentflag.h" />
     <ClInclude Include="include\dsemi\ecs\componentarray.h" />
     <ClInclude Include="include\dsemi\ecs\ecs.h" />
@@ -25,23 +25,20 @@
     <ClInclude Include="include\dsemi\ecs\world.h" />
     <ClInclude Include="include\dsemi\fonts\opentype.h" />
     <ClInclude Include="include\dsemi\fonts\opentype_tables.h" />
-    <ClInclude Include="include\dsemi\graphics\2d\camera2d.h" />
     <ClInclude Include="include\dsemi\graphics\api_include.h" />
     <ClInclude Include="include\dsemi\graphics\color.h" />
     <ClInclude Include="include\dsemi\graphics\directx\directx11.h" />
     <ClInclude Include="include\dsemi\graphics\directx\dxinclude.h" />
-    <ClInclude Include="include\dsemi\graphics\2d\immediate2d.h" />
-    <ClInclude Include="include\dsemi\graphics\pipeline.h" />
+    <ClInclude Include="include\dsemi\graphics\render_context.h" />
     <ClInclude Include="include\dsemi\graphics\resources\fragment_shader.h" />
     <ClInclude Include="include\dsemi\graphics\resources\index_buffer.h" />
-    <ClInclude Include="include\dsemi\graphics\resources\input_layout.h" />
     <ClInclude Include="include\dsemi\graphics\render_target.h" />
+    <ClInclude Include="include\dsemi\graphics\resources\resource.h" />
     <ClInclude Include="include\dsemi\graphics\resources\resource_include.h" />
     <ClInclude Include="include\dsemi\graphics\resources\vertex_buffer.h" />
     <ClInclude Include="include\dsemi\graphics\resources\vertex_shader.h" />
     <ClInclude Include="include\dsemi\graphics\device.h" />
     <ClInclude Include="include\dsemi\graphics\graphics.h" />
-    <ClInclude Include="include\dsemi\graphics\swap_chain.h" />
     <ClInclude Include="include\dsemi\graphics\viewport.h" />
     <ClInclude Include="include\dsemi\ui\element.h" />
     <ClInclude Include="include\dsemi\ui\frame.h" />
@@ -76,26 +73,23 @@
     <ClInclude Include="include\dsemi\core\exceptions\hresultexception.h" />
     <ClInclude Include="include\dsemi\core\Input.h" />
     <ClInclude Include="include\dsemi\core\window.h" />
-    <ClInclude Include="include\dsemi\ecs\components\core\transform2d.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\dsemi\core\scene.cpp" />
-    <ClCompile Include="src\dsemi\core\window_win32_impl.cpp" />
+    <ClCompile Include="src\dsemi\core\renderer.cpp" />
+    <ClCompile Include="src\dsemi\scene\scene.cpp" />
     <ClCompile Include="src\dsemi\ecs\component.cpp" />
     <ClCompile Include="src\dsemi\ecs\componentflag.cpp" />
     <ClCompile Include="src\dsemi\ecs\componentarray.cpp" />
     <ClCompile Include="src\dsemi\ecs\entityarray.cpp" />
     <ClCompile Include="src\dsemi\ecs\world.cpp" />
     <ClCompile Include="src\dsemi\fonts\opentype.cpp" />
-    <ClCompile Include="src\dsemi\graphics\directx\device_dx11_impl.cpp" />
-    <ClCompile Include="src\dsemi\graphics\directx\graphics_dx11_impl.cpp" />
     <ClCompile Include="src\dsemi\graphics\graphics.cpp" />
     <ClCompile Include="src\dsemi\graphics\pipeline.cpp" />
+    <ClCompile Include="src\dsemi\graphics\render_context.cpp" />
     <ClCompile Include="src\dsemi\graphics\render_target.cpp" />
     <ClCompile Include="src\dsemi\graphics\resources\fragment_shader.cpp" />
     <ClCompile Include="src\dsemi\graphics\resources\vertex_buffer.cpp" />
     <ClCompile Include="src\dsemi\graphics\resources\vertex_shader.cpp" />
-    <ClCompile Include="src\dsemi\graphics\swap_chain.cpp" />
     <ClCompile Include="src\dsemi\graphics\device.cpp" />
     <ClCompile Include="src\dsemi\graphics\viewport.cpp" />
     <ClCompile Include="src\dsemi\math\rect.cpp" />

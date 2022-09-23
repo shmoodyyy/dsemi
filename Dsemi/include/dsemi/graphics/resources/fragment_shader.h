@@ -4,27 +4,27 @@
 #include "Dsemi/graphics/api_include.h"
 
 namespace dsemi {
+	namespace graphics {
 
-	struct gfx_fragment_shader_desc {
-		const wchar_t* path = nullptr;
-	};
+		struct fragment_shader_desc {
+			const wchar_t* path = nullptr;
+		};
 
-	class gfx_fragment_shader {
-		friend class gfx_device;
-	public:
-		gfx_fragment_shader() 
-			: _dx_pixel_shader(nullptr), _dx_pixel_shader_blob(nullptr)
-		{}
+		class fragment_shader {
+			friend class device;
+		public:
+			fragment_shader()
+				: _dx_pixel_shader(nullptr), _dx_pixel_shader_blob(nullptr)
+			{}
 
-		void*  byte_code();
-		size_t byte_code_size();
+			void* byte_code();
+			size_t byte_code_size();
 
-#if (defined GFX_USING_DX11)
-	private:
-		ComPtr<ID3D11PixelShader> _dx_pixel_shader;
-		ComPtr<ID3DBlob>          _dx_pixel_shader_blob;
-#endif
-	};
+		private:
+			ComPtr<ID3D11PixelShader> _dx_pixel_shader;
+			ComPtr<ID3DBlob>          _dx_pixel_shader_blob;
+		};
+	}
 }
 
 #endif

@@ -8,7 +8,7 @@ namespace dsemi {
 	{
 		BITASSERT(numBits != 0);
 
-		pBits = new bool[numBits];;
+		pBits = new bool[numBits];
 
 		// initialize all but last bytes
 		for (size_t i = 0; i < bitCount; i++) 

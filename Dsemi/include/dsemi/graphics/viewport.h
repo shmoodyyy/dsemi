@@ -4,21 +4,20 @@
 #include "api_include.h"
 
 namespace dsemi {
-	class viewport
+	namespace graphics
 	{
-	public:
-		viewport();
-		~viewport();
+		class viewport
+		{
+		public:
+			viewport();
+			~viewport();
 
 
+		private:
+			D3D11_VIEWPORT _dx_viewport;
 
-#ifdef GFX_USING_DX11
-	private:
-		D3D11_VIEWPORT _dx_viewport;
-
-#endif
-
-	};
+		};
+	}
 }
 
 #endif

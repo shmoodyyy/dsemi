@@ -2,42 +2,58 @@
 #define GRAPHICS_VERTEXBUFFER_H
 
 #include "Dsemi/graphics/api_include.h"
+#include "dsemi/graphics/resources/resource.h"
 
 namespace dsemi {
+	namespace graphics {
+		class device;
 
-	// ==================
-	// Common declaration
-	// ==================
-
-	struct gfx_vertex_buffer_desc {
-		void*    data_pointer = nullptr;
-		uint32_t data_size    = 0u;
-		uint32_t data_stride  = 0u;
-	};
-
-	class gfx_vertex_buffer {
-		friend class gfx_device;
-	public:
-		gfx_vertex_buffer() 
-			: _dx_buffer(nullptr), _stride(0)
-		{}
-
-		inline uint32_t get_stride()
+		struct vertex_buffer_desc 
 		{
-			return _stride;
-		}
+			void* data_pointer = nullptr;
+			uint32_t data_size = 0u;
+			uint32_t data_stride = 0u;
+		};
 
-	private:
-		uint32_t _stride;
+		class vertex_layout
+		{
+		public:
+			struct element
+			{
 
-	// ======================
-	// DirectX 11 declaration
-	// ======================
-#ifdef GFX_USING_DX11
-	private:
-		ComPtr<ID3D11Buffer>      _dx_buffer;
-#endif
-	};
+			};
+
+		private:
+
+		};
+
+		class vertex_view
+		{
+
+		};
+
+		class vertex_buffer : public iresource
+		{
+		public:
+			vertex_buffer(device* device);
+			vertex_buffer(device* device);
+
+			inline uint32_t& get_stride()
+			{
+				return _stride;
+			}
+
+			void bind() const {};
+
+		private:
+			uint32_t _stride;
+			const device* _device;
+
+		private:
+			ComPtr<ID3D11Buffer>      _dx_buffer;
+		};
+
+	}
 }
 
 #endif

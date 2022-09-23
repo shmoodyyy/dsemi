@@ -16,7 +16,6 @@ namespace dsemi {
 
 		void call_update(const float dt);
 		void send_event(ievent& e);
-		void call_render(const float dt);
 
 		std::vector<layer*>::iterator begin() { return _layers.begin(); }
 		std::vector<layer*>::iterator end() { return _layers.end(); }

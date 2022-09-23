@@ -23,11 +23,9 @@ namespace dsemi {
 		virtual void on_detach() {}
 		virtual void on_update(const float dt) {}
 		virtual void on_event(ievent& e) {}
-		virtual void on_render(const float dt) {}
 
 		void update(const float dt);
 		void handle_event(ievent& e);
-		void render(const float dt);
 
 		inline void set_visible(bool val) { _render_active = val; }
 		inline bool is_visible() { return _render_active; }

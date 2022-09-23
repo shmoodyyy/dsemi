@@ -7,11 +7,8 @@
 #include "dsemi/Events/Event.h"
 #include "dsemi/core/DsemiWindows.h"
 
-namespace dsemi {
-
-	/*
-		Abstraction class for native OS windows
-	*/
+namespace dsemi 
+{
 	class window
 	{
 	public:
@@ -25,81 +22,65 @@ namespace dsemi {
 		void create(unsigned int width, unsigned int height, const std::wstring& title);
 		void close();
 
-		void dispatch_events();
+		HWND get_hwnd() const noexcept { return _hwnd; }
 
-		inline unsigned int width()  const noexcept { return _data.width; }
-		inline unsigned int height() const noexcept { return _data.height; }
+		unsigned int width() const noexcept;
+		unsigned int height() const noexcept;
+		bool         has_focus() const noexcept;
+		void         set_focus(bool val) noexcept;
+		void         set_event_callback(const event_callback_fn& callback);
 
-		inline bool get_focused() const noexcept { return _focused; }
-		inline void set_focused(bool val) noexcept { _focused = val; }
+		bool is_fullscreen() const noexcept;
+		void set_fullscreen(unsigned int monitor = 0u, bool val = false);
 
-		inline void set_event_callback(const event_callback_fn& callback) { _data.event_callback = callback; };
-
-		// Static members
-	public:
-
-
-		// this is temporary dear god please remove this when you start handling multi-window support
-	public:
-		static window* const get_wnd() noexcept;
 	private:
-		static window* main_wnd;
+		void _create_swap_chain();
 
-		// Per-object members
+		void _on_fullscreen();
+		void _on_windowed();
+		void _on_resize(unsigned int width, unsigned height);
+		void _on_focus();
+		void _on_focus_lost();
+
 	private:
-		bool _initialized;
 		bool _focused;
+		HWND _hwnd;
+		ComPtr<IDXGISwapChain>         _dx_swap_chain;
 
 		struct window_data
 		{
 			std::wstring title;
 			unsigned int width;
 			unsigned int height;
-
 			event_callback_fn event_callback;
-		};
-
-		window_data _data;
-
-		/*=== Per platform defines ===*/
-		/*----------------------------*/
-		/*=== WIN32/WIN64 ===*/
-#if ( defined _WIN32 | defined _WIN64 )
-	private:
-		static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-		static std::unordered_map<HWND, window*> _window_map;
+		} _data; // struct window_data
 
 	private:
-		// Win32 window objects
-		static WNDCLASSEX _wnd_class;
-		HWND _hwnd;
-		HINSTANCE _hinst;
+		static LRESULT CALLBACK _setup_wnd_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+		static LRESULT CALLBACK _redirect_wnd_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+		LRESULT _wnd_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-		// Mapping Window Handles to specific objects for event handling
-		//static window* _main_window; // adress for the main window for quit message handling (might not be neccessary actually)
+	private:
+		class win32_window_class
+		{
+		public:
+			//inline static WNDCLASSEX get_wnd_class() noexcept { return _instance._hinstance; };
+			inline static const wchar_t* get_name()      noexcept { return _win32_window_class_name; }
+			inline static HINSTANCE      get_hinstance() noexcept { return _instance._hinstance; };
 
+		private:
+			win32_window_class();
+			~win32_window_class();
+			win32_window_class(const win32_window_class&) = delete;
+			win32_window_class& operator=(const win32_window_class&) = delete;
 
-	public:
-		inline HWND hwnd() const noexcept {
-			return _hwnd;
-		}
+			static constexpr const wchar_t* _win32_window_class_name = L"Dsemi Win32 Window Class Singleton";
+			static win32_window_class       _instance;
+			HINSTANCE                       _hinstance;
+		}; // class win32_window_class
 
-		/*=== MacOSX ===*/
-#elif
-		// ahahaha yea sure buddy
+	}; // class window
 
-
-		/*=== Linux/UNIX ===*/
-#elif
-		// ahah
-
-
-#endif
-	};
-	
-#if (defined _WIN32 | defined _WIN64)
-
-#endif
-}
+} // namespace dsemi
 
 #endif

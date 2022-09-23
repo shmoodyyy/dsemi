@@ -43,7 +43,6 @@
     <ClInclude Include="include\dsemi\graphics\directx\dxinclude.h" />
     <ClInclude Include="include\dsemi\graphics\resources\fragment_shader.h" />
     <ClInclude Include="include\dsemi\graphics\resources\index_buffer.h" />
-    <ClInclude Include="include\dsemi\graphics\resources\input_layout.h" />
     <ClInclude Include="include\dsemi\graphics\resources\resource_include.h" />
     <ClInclude Include="include\dsemi\graphics\resources\vertex_buffer.h" />
     <ClInclude Include="include\dsemi\graphics\resources\vertex_shader.h" />
@@ -51,7 +50,6 @@
     <ClInclude Include="include\dsemi\graphics\device.h" />
     <ClInclude Include="include\dsemi\graphics\graphics.h" />
     <ClInclude Include="include\dsemi\graphics\render_target.h" />
-    <ClInclude Include="include\dsemi\graphics\swap_chain.h" />
     <ClInclude Include="include\dsemi\graphics\vertex.h" />
     <ClInclude Include="include\dsemi\memory\bitset.h" />
     <ClInclude Include="include\dsemi\platform\windows\dsemi_win32.h" />
@@ -78,11 +76,9 @@
       <Filter>src\Platforms\Windows</Filter>
     </ClInclude>
     <ClInclude Include="include\dsemi\core\Input.h" />
-    <ClInclude Include="include\dsemi\graphics\pipeline.h" />
     <ClInclude Include="include\dsemi\ui\element.h" />
     <ClInclude Include="include\dsemi\ui\frame.h" />
     <ClInclude Include="include\dsemi\graphics\color.h" />
-    <ClInclude Include="include\dsemi\graphics\2d\immediate2d.h" />
     <ClInclude Include="include\dsemi\core\window.h">
       <Filter>src\Platforms\Windows</Filter>
     </ClInclude>
@@ -94,14 +90,14 @@
     </ClInclude>
     <ClInclude Include="include\dsemi.h" />
     <ClInclude Include="include\dsemi\core\layerstack.h" />
-    <ClInclude Include="include\dsemi\ecs\components\core\transform2d.h" />
-    <ClInclude Include="include\dsemi\ecs\components\graphics\polygon2d.h" />
-    <ClInclude Include="include\dsemi\core\scene.h" />
+    <ClInclude Include="include\dsemi\scene\scene.h" />
     <ClInclude Include="include\dsemi\ecs\entitynode.h" />
-    <ClInclude Include="include\dsemi\ecs\components\graphics\polygon2dinstanced.h" />
-    <ClInclude Include="include\dsemi\graphics\2d\camera2d.h" />
     <ClInclude Include="include\dsemi\graphics\viewport.h" />
     <ClInclude Include="include\dsemi\graphics\directx\directx11.h" />
+    <ClInclude Include="include\dsemi\graphics\resources\resource.h" />
+    <ClInclude Include="include\dsemi\graphics\render_context.h" />
+    <ClInclude Include="include\dsemi\graphics\renderer.h" />
+    <ClInclude Include="include\dsemi\graphics\resources\input_layout.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dspch.cpp" />
@@ -114,15 +110,12 @@
     <ClCompile Include="src\dsemi\ecs\entityarray.cpp" />
     <ClCompile Include="src\dsemi\ecs\world.cpp" />
     <ClCompile Include="src\dsemi\fonts\opentype.cpp" />
-    <ClCompile Include="src\dsemi\graphics\directx\device_dx11_impl.cpp" />
-    <ClCompile Include="src\dsemi\graphics\directx\graphics_dx11_impl.cpp" />
     <ClCompile Include="src\dsemi\graphics\resources\fragment_shader.cpp" />
     <ClCompile Include="src\dsemi\graphics\resources\vertex_buffer.cpp" />
     <ClCompile Include="src\dsemi\graphics\resources\vertex_shader.cpp" />
     <ClCompile Include="src\dsemi\graphics\device.cpp" />
     <ClCompile Include="src\dsemi\graphics\graphics.cpp" />
     <ClCompile Include="src\dsemi\graphics\render_target.cpp" />
-    <ClCompile Include="src\dsemi\graphics\swap_chain.cpp" />
     <ClCompile Include="src\dsemi\math\vector\Vector2d.cpp" />
     <ClCompile Include="src\dsemi\math\vector\Vector2f.cpp" />
     <ClCompile Include="src\dsemi\math\vector\Vector2i.cpp" />
@@ -142,7 +135,6 @@
     <ClCompile Include="src\dsemi\core\window.cpp">
       <Filter>src\Platforms\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="src\dsemi\core\window_win32_impl.cpp" />
     <ClCompile Include="src\dsemi\core\layer.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -152,8 +144,10 @@
     <ClCompile Include="src\dsemi\core\layerstack.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\dsemi\core\scene.cpp" />
+    <ClCompile Include="src\dsemi\scene\scene.cpp" />
     <ClCompile Include="src\dsemi\graphics\viewport.cpp" />
+    <ClCompile Include="src\dsemi\graphics\render_context.cpp" />
+    <ClCompile Include="src\dsemi\core\renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\dsemi\graphics\shaders\directx\default_ps.hlsl" />

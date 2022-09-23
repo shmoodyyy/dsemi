@@ -5,37 +5,35 @@
 #include "Dsemi/graphics/resources/input_layout.h"
 
 namespace dsemi {
+	namespace graphics {
 
-	struct gfx_vertex_shader_desc {
-		const wchar_t*     path            = nullptr;
-		gfx_input_element* layout_elements = nullptr;
-		size_t             layout_size     = 1u;
-	};
+		struct vertex_shader_desc {
+			const wchar_t* path = nullptr;
+			input_element* layout_elements = nullptr;
+			size_t         layout_size = 1u;
+		};
 
-	class gfx_vertex_shader {
-		friend class gfx_device;
-	public:
-		gfx_vertex_shader() 
-			: _dx_vertex_shader(nullptr), _dx_vertex_shader_blob(nullptr)
-		{}
+		class vertex_shader {
+			friend class device;
+		public:
+			vertex_shader()
+				: _dx_vertex_shader(nullptr), _dx_vertex_shader_blob(nullptr)
+			{}
 
-		// todo: set return type based on what api we are using
-		void*  byte_code();
-		size_t byte_code_size();
-		inline const gfx_input_layout* input_layout() {
-			return &_input_layout;
-		}
+			void* byte_code();
+			size_t byte_code_size();
+			inline const input_layout* get_input_layout() {
+				return &_input_layout;
+			}
 
-	private:
-		gfx_input_layout _input_layout;
+		private:
+			input_layout _input_layout;
 
-#ifdef GFX_USING_DX11
-	private:
-		ComPtr<ID3D11VertexShader> _dx_vertex_shader;
-		ComPtr<ID3DBlob>           _dx_vertex_shader_blob;
-#endif
-	};
-
+		private:
+			ComPtr<ID3D11VertexShader> _dx_vertex_shader;
+			ComPtr<ID3DBlob>           _dx_vertex_shader_blob;
+		};
+	}
 }
 
 

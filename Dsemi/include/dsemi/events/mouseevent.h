@@ -78,10 +78,10 @@ namespace dsemi {
 		EVENT_CLASS_TYPE(EVENT_MOUSE_RELEASE);
 	};
 
-	class MouseScrolledEvent : public ievent
+	class mouse_scroll_event : public ievent
 	{
 	public:
-		MouseScrolledEvent(short scroll_delta)
+		mouse_scroll_event(short scroll_delta)
 			: _scroll_delta(scroll_delta)
 		{
 		}
@@ -93,7 +93,7 @@ namespace dsemi {
 			return ss.str();
 		}
 
-		inline short GetDelta() const
+		inline short scroll_delta() const
 		{
 			return _scroll_delta;
 		}

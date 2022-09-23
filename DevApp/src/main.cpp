@@ -14,9 +14,12 @@ public:
 	{
 	}
 
-	virtual void on_create() override
+private:
+	virtual void _on_init() override
 	{
-		active_scene = &test_scene;
+		active_scene = &_test_scene;
+		test.set_event_callback(BIND_EVENT(DevApp::handle_event));
+		test.create(640, 480, L"Test 2");
 	}
 
 	virtual void on_event(dsemi::ievent& e) override
@@ -25,17 +28,15 @@ public:
 	}
 
 private:
-	test_scene2d test_scene;
+	test_scene2d _test_scene;
+	dsemi::window test;
 };
-
-dsemi::application* dsemi::create()
-{
-	return new DevApp();
-}
 
 int main()
 {
 	DevApp app;
+
+	app.init();
 	app.run();
 
 	return 0;
