@@ -2,11 +2,12 @@
 #define HEADER_DSEMI_GRAPHICS_RENDERCONTEXT
 
 #include "dsemi/graphics/resources/resource_include.h"
-#include "dsemi/graphics/render_context.h"
+#include "dsemi/graphics/color.h"
 
 namespace dsemi {
 	namespace graphics {
 		class device;
+		class render_target;
 
 		// an abstraction of the directx device context
 		// to allow the set up of either an immediate
@@ -18,7 +19,7 @@ namespace dsemi {
 		public:
 			render_context(device* device);
 
-			void set_render_target(render_target* render_target);
+			void set_render_target(render_target* render_target) noexcept;
 			render_target* get_render_target() const noexcept;
 
 			device* get_device() const noexcept;
@@ -35,7 +36,7 @@ namespace dsemi {
 			void end();
 
 		public:
-			ID3D11DeviceContext* get_dx_context() const noexcept { return _dx_context.Get(); }
+			ID3D11DeviceContext* get_dx_context() const noexcept;
 
 		protected:
 			device* _device;

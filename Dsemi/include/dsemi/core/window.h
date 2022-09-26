@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 
+#include "dsemi/graphics/api_include.h"
 #include "dsemi/math/vector2.h"
 #include "dsemi/Events/Event.h"
 #include "dsemi/core/DsemiWindows.h"
@@ -27,8 +28,8 @@ namespace dsemi
 		unsigned int width() const noexcept;
 		unsigned int height() const noexcept;
 		bool         has_focus() const noexcept;
-		void         set_focus(bool val) noexcept;
-		void         set_event_callback(const event_callback_fn& callback);
+		void         set_focus(bool value) noexcept;
+		void         set_event_callback(event_callback_fn&& callback) noexcept;
 
 		bool is_fullscreen() const noexcept;
 		void set_fullscreen(unsigned int monitor = 0u, bool val = false);

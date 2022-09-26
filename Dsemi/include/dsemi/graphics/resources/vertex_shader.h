@@ -9,7 +9,7 @@ namespace dsemi {
 
 		struct vertex_shader_desc {
 			const wchar_t* path = nullptr;
-			input_element* layout_elements = nullptr;
+			//input_element* layout_elements = nullptr;
 			size_t         layout_size = 1u;
 		};
 
@@ -22,12 +22,12 @@ namespace dsemi {
 
 			void* byte_code();
 			size_t byte_code_size();
-			inline const input_layout* get_input_layout() {
-				return &_input_layout;
-			}
+			//inline const input_layout* get_input_layout() {
+			//	return &_input_layout;
+			//}
 
 		private:
-			input_layout _input_layout;
+			//input_layout _input_layout;
 
 		private:
 			ComPtr<ID3D11VertexShader> _dx_vertex_shader;

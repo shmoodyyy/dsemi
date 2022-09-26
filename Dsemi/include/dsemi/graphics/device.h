@@ -31,7 +31,7 @@ namespace dsemi {
 
 			static void initialize();
 
-			void create_vertex_buffer(vertex_buffer* vertex_buffer, vertex_buffer_desc desc);
+			void create_vertex_buffer(vertex_buffer* vertex_buffer);
 			void create_index_buffer(gfx_index_buffer* index_buffer, index_buffer_desc desc);
 			void create_vertex_shader(vertex_shader* vertex_shader, vertex_shader_desc desc);
 			void create_fragment_shader(fragment_shader* fragment_shader, fragment_shader_desc desc);
@@ -40,7 +40,7 @@ namespace dsemi {
 			render_context create_context(dsemi::window* target_window);
 
 			void bind_vertex_buffer(vertex_buffer* vertex_buffer);
-			void bind_input_layout(input_layout* layout);
+			//void bind_input_layout(input_layout* layout);
 			void bind_vertex_shader(vertex_shader* vertex_shader);
 			void bind_fragment_shader(fragment_shader* fragment_shader);
 			void bind_render_target(render_target* render_target);

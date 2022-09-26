@@ -10,7 +10,8 @@ namespace dsemi {
 			iresource() = default;
 			virtual ~iresource() = default;
 
-			virtual void bind(device& device) const = 0;
+			//virtual void bind(device& device) const {};
+		protected:
 
 		};
 	}

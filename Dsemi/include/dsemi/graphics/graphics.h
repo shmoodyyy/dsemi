@@ -61,8 +61,8 @@ namespace dsemi {
 		==================================*/
 
 		/* Resource Creation */
-		void create_vertex_buffer(vertex_buffer* buffer, vertex_buffer_desc desc);
-		void create_input_layout(input_layout* layout, input_element* layout_elements);
+		void create_vertex_buffer(vertex_buffer* buffer);
+		//void create_input_layout(input_layout* layout, input_element* layout_elements);
 		void create_vertex_shader(vertex_shader* shader, vertex_shader_desc desc);
 		void create_fragment_shader(fragment_shader* shader, fragment_shader_desc desc);
 
@@ -75,7 +75,7 @@ namespace dsemi {
 
 		inline void present()
 		{
-			core::get_device()->present();
+			//core::get_device()->present();
 		}
 
 		/*=================================

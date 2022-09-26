@@ -31,31 +31,31 @@ namespace dsemi
 			logger::info("[GFX] creating graphics_device");
 			_instance->_initialize_impl();
 			_instance->_clear_color_float = new float[4];
-			_instance->set_clear_color(0x000000ff);
+			//_instance->set_clear_color(0x000000ff);
 		}
 
-		void device::set_clear_color(float r, float g, float b, float a = 1.0f)
-		{
-			_clear_color.red = (uint8_t)(r * 255.0f);
-			_clear_color.green = (uint8_t)(g * 255.0f);
-			_clear_color.blue = (uint8_t)(b * 255.0f);
-			_clear_color.alpha = (uint8_t)(a * 255.0f);
+		//void device::set_clear_color(float r, float g, float b, float a = 1.0f)
+		//{
+		//	_clear_color.red = (uint8_t)(r * 255.0f);
+		//	_clear_color.green = (uint8_t)(g * 255.0f);
+		//	_clear_color.blue = (uint8_t)(b * 255.0f);
+		//	_clear_color.alpha = (uint8_t)(a * 255.0f);
 
-			_clear_color_float[0] = r;
-			_clear_color_float[1] = g;
-			_clear_color_float[2] = b;
-			_clear_color_float[3] = a;
-		}
+		//	_clear_color_float[0] = r;
+		//	_clear_color_float[1] = g;
+		//	_clear_color_float[2] = b;
+		//	_clear_color_float[3] = a;
+		//}
 
-		void device::set_clear_color(color32 rgba)
-		{
-			_clear_color = rgba;
+		//void device::set_clear_color(color32 rgba)
+		//{
+		//	_clear_color = rgba;
 
-			_clear_color_float[0] = (float)rgba.red / 255.0f;
-			_clear_color_float[1] = (float)rgba.green / 255.0f;
-			_clear_color_float[2] = (float)rgba.blue / 255.0f;
-			_clear_color_float[3] = (float)rgba.alpha / 255.0f;
-		}
+		//	_clear_color_float[0] = (float)rgba.red / 255.0f;
+		//	_clear_color_float[1] = (float)rgba.green / 255.0f;
+		//	_clear_color_float[2] = (float)rgba.blue / 255.0f;
+		//	_clear_color_float[3] = (float)rgba.alpha / 255.0f;
+		//}
 
 		void device::_initialize_impl()
 		{
@@ -80,7 +80,7 @@ namespace dsemi
 				D3D11_SDK_VERSION,
 				&_dx_device,
 				nullptr,
-				nullptr
+				&_dx_context
 			));
 
 			_dxgi_factory = _get_dxgi_factory();
@@ -128,7 +128,7 @@ namespace dsemi
 		// resource creation
 		======================*/
 		// D3D
-		void device::create_vertex_buffer(vertex_buffer* vertex_buffer, vertex_buffer_desc desc)
+		void device::create_vertex_buffer(vertex_buffer* vertex_buffer)
 		{
 			HRESULT hr;
 
@@ -136,14 +136,14 @@ namespace dsemi
 			bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 			bd.Usage = D3D11_USAGE_DEFAULT;
 			bd.MiscFlags = 0;
-			bd.ByteWidth = (UINT)desc.data_size;
-			bd.StructureByteStride = (UINT)desc.data_stride;
+			bd.ByteWidth = (UINT)0u;
+			//bd.StructureByteStride = (UINT)desc.data_stride;
 			D3D11_SUBRESOURCE_DATA sd = {};
-			sd.pSysMem = desc.data_pointer;
+			//sd.pSysMem = desc.data_pointer;
 
-			vertex_buffer->_stride = desc.data_stride;
+			//vertex_buffer->_stride = desc.data_stride;
 
-			GFX_THROW_FAILED(_dx_device->CreateBuffer(&bd, &sd, &vertex_buffer->_dx_buffer));
+			//GFX_THROW_FAILED(_dx_device->CreateBuffer(&bd, &sd, &vertex_buffer->_dx_buffer));
 		}
 
 		void device::create_index_buffer(gfx_index_buffer* index_buffer, index_buffer_desc desc)
@@ -174,17 +174,17 @@ namespace dsemi
 				&vertex_shader->_dx_vertex_shader
 			));
 
-			auto size = sizeof((D3D11_INPUT_ELEMENT_DESC*)desc.layout_elements);
+			//auto size = sizeof((D3D11_INPUT_ELEMENT_DESC*)desc.layout_elements);
 			auto size2 = sizeof(D3D11_INPUT_ELEMENT_DESC);
 
 			// Input Layout
-			GFX_THROW_FAILED(_dx_device->CreateInputLayout(
+			/*GFX_THROW_FAILED(_dx_device->CreateInputLayout(
 				desc.layout_elements,
 				desc.layout_size,
 				vertex_shader->_dx_vertex_shader_blob->GetBufferPointer(),
 				vertex_shader->_dx_vertex_shader_blob->GetBufferSize(),
 				&vertex_shader->_input_layout._dx_input_layout
-			));
+			));*/
 		}
 
 		void device::create_fragment_shader(fragment_shader* fragment_shader, fragment_shader_desc desc)
@@ -241,8 +241,8 @@ namespace dsemi
 			));
 			source->Release();
 
-			render_target->_dx_view_port.Width = window->width();
-			render_target->_dx_view_port.Height = window->height();
+			//render_target->_dx_view_port.Width = window->width();
+			//render_target->_dx_view_port.Height = window->height();
 			render_target->_dx_view_port.TopLeftX = 0u;
 			render_target->_dx_view_port.TopLeftY = 0u;
 			render_target->_dx_view_port.MinDepth = 0.0f;
@@ -252,13 +252,13 @@ namespace dsemi
 		void device::bind_vertex_buffer(vertex_buffer* vertex_buffer)
 		{
 			UINT offset = 0u;
-			_dx_context->IASetVertexBuffers(0u, 1u, vertex_buffer->get_dx_buffer().GetAddressOf(), &vertex_buffer->get_stride(), &offset);
+			//_dx_context->IASetVertexBuffers(0u, 1u, vertex_buffer->get_dx_buffer().GetAddressOf(), &vertex_buffer->get_stride(), &offset);
 		}
 
 		void device::bind_vertex_shader(vertex_shader* vertex_shader)
 		{
 			_dx_context->VSSetShader(vertex_shader->_dx_vertex_shader.Get(), nullptr, 0u);
-			_dx_context->IASetInputLayout(vertex_shader->_input_layout._dx_input_layout.Get());
+			//_dx_context->IASetInputLayout(vertex_shader->_input_layout._dx_input_layout.Get());
 		}
 
 		void device::bind_fragment_shader(fragment_shader* fragment_shader)
@@ -270,7 +270,7 @@ namespace dsemi
 		{
 			_dx_context->OMSetRenderTargets(1u, render_target->_dx_render_target_view.GetAddressOf(), nullptr);
 			_dx_context->RSSetViewports(1u, &render_target->_dx_view_port);
-			_active_render_target = render_target;
+			//_active_render_target = render_target;
 		}
 
 	} // namespace graphics

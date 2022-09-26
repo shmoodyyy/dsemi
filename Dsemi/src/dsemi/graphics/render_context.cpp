@@ -1,6 +1,7 @@
 #include "dspch.h"
 #include "dsemi/graphics/render_context.h"
 
+#include "dsemi/graphics/render_target.h"
 #include "dsemi/graphics/device.h"
 
 namespace dsemi {
@@ -22,10 +23,10 @@ namespace dsemi {
 			_render_target = render_target;
 		}
 
-		render_target* render_context::get_render_target() const noexcept
-		{
-			return _render_target;
-		}
+		//render_target* render_context::get_render_target() const noexcept
+		//{
+		//	return _render_target;
+		//}
 
 
 
@@ -35,24 +36,24 @@ namespace dsemi {
 
 		void render_context::clear()
 		{
-			_device->get_context()->ClearRenderTargetView(_render_target->_dx_render_target_view.Get(), _clear_color_float);
+			//get_dx_context()->ClearRenderTargetView(_render_target->_dx_render_target_view.Get(), _clear_color_float);
 		}
 
 		void render_context::draw(unsigned int num_vertices)
 		{
-			_dx_context->Draw(num_vertices, 0u);
+			get_dx_context()->Draw(num_vertices, 0u);
 		}
 
 		void render_context::draw_triangle()
 		{
-			_dx_context->Draw(3u, 0u);
+			get_dx_context()->Draw(3u, 0u);
 		}
 
 		void render_context::present()
 		{
 			HRESULT hr;
 
-			if (FAILED(hr = _active_swap_chain._dxgi_swap_chain->Present(0, 0)))
+			/*if (FAILED(hr = _active_swap_chain._dxgi_swap_chain->Present(0, 0)))
 			{
 				if (hr == DXGI_ERROR_DEVICE_REMOVED)
 				{
@@ -62,7 +63,11 @@ namespace dsemi {
 				{
 					GFX_THROW_FAILED(hr);
 				}
-			}
+			}*/
 		} // void device::present()
+		ID3D11DeviceContext* render_context::get_dx_context() const noexcept
+		{
+			return _device->get_context();
+		}
 	}
 }

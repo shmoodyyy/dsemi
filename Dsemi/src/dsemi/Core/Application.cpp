@@ -89,7 +89,7 @@ namespace dsemi {
 			while (_running)
 			{
 				// TODO: replace with application-level message handling
-				_main_wnd->dispatch_events();
+				//_main_wnd->dispatch_events();
 
 				// Update
 				if (do_tick())

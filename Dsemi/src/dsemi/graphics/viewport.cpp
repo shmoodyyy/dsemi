@@ -1,14 +1,18 @@
 #include "dspch.h"
 #include "dsemi/graphics/viewport.h"
 
-namespace dsemi {
-	viewport::viewport()
+namespace dsemi 
+{
+	namespace graphics
 	{
+		viewport::viewport()
+		{
 
-	}
+		}
 
-	viewport::~viewport()
-	{
+		viewport::~viewport()
+		{
 
+		}
 	}
 }

@@ -42,7 +42,14 @@ namespace dsemi {
 	{
 		close();
 	}
-
+	void window::set_focus(bool value) noexcept
+	{
+		_focused = value;
+	}
+	void window::set_event_callback(event_callback_fn&& callback) noexcept
+	{
+		_data.event_callback = callback;
+	}
 
 	void window::create(unsigned int width, unsigned int height, const std::wstring& title)
 	{
@@ -112,7 +119,7 @@ namespace dsemi {
 	{
 		// i hate this so much
 		// TODO: rewrite all this bullshit please
-		window* wnd;
+		window* wnd = nullptr;
 
 		if (!wnd)
 		{
