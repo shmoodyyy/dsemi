@@ -169,7 +169,7 @@ namespace dsemi {
 			template<typename ...param_types>
 			void emplace_back(param_types&&... params)
 			{
-				ASSERT(sizeof...(param_types) == _layout.get_element_count(), "Vertex parameter count doesn't match the specified vertex_array layout element count.");
+				//ASSERT(sizeof...(param_types) == _layout.get_element_count(), "Vertex parameter count doesn't match the specified vertex_array layout element count.");
 				_bytes.resize(_bytes.size() + _layout.get_stride());
 				_emplace_back_set_data(params...);
 			}

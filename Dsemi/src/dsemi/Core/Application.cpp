@@ -57,15 +57,6 @@ namespace dsemi {
 		// Initialize DirectX and Direct3D
 		//Direct3D::InitD3D();
 
-
-		// add loading in a config file for window resolution etc.
-		// ^ no dont do that
-		// id rather just have the window created in the dev application itself, this should just be a toolbox
-		// in other words: decouple the main application from graphics, window, audio, network, etc. systems
-		// but do that later on
-		_main_wnd = std::make_unique<window>(640, 480, L"Sample window");
-		_main_wnd->set_event_callback(BIND_EVENT(application::handle_event));
-
 		// initialize graphics framework
 		graphics::device::initialize();
 
@@ -86,17 +77,27 @@ namespace dsemi {
 	{
 		try 
 		{
+			MSG msg = {};
 			while (_running)
 			{
-				// TODO: replace with application-level message handling
-				//_main_wnd->dispatch_events();
-
-				// Update
-				if (do_tick())
+				if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) != 0)
 				{
-					do_render();
-					/*m_pMainWnd->renderContext.NewFrame();
-					m_pMainWnd->renderContext.Present();*/
+					// todo: some sort of event manager/handler separation?
+					TranslateMessage(&msg);
+					DispatchMessage(&msg);
+					// TODO: replace with application-level message handling
+					//_main_wnd->dispatch_events();
+					do_events();
+				}
+				else
+				{
+					// Update
+					if (do_tick())
+					{
+						do_render();
+						/*m_pMainWnd->renderContext.NewFrame();
+						m_pMainWnd->renderContext.Present();*/
+					}
 				}
 			}
 			shutdown();
@@ -141,7 +142,7 @@ namespace dsemi {
 		_delta_time = _update_timer.Peek();
 
 		if (_delta_time >= _time_per_tick)
-		{
+		{	
 			unsigned short numTicks = (unsigned short)floor(_delta_time / _time_per_tick); // Get the number of ticks that should have been processed since last frame
 			//m_dt -= m_timePerTick * numTicks;
 			_update_timer.Mark();

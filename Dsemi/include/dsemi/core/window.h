@@ -25,8 +25,8 @@ namespace dsemi
 
 		HWND get_hwnd() const noexcept { return _hwnd; }
 
-		unsigned int width() const noexcept;
-		unsigned int height() const noexcept;
+		inline unsigned int width()  const noexcept { return _data.width; }
+		inline unsigned int height() const noexcept { return _data.height; }
 		bool         has_focus() const noexcept;
 		void         set_focus(bool value) noexcept;
 		void         set_event_callback(event_callback_fn&& callback) noexcept;

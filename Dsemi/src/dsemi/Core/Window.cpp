@@ -112,21 +112,29 @@ namespace dsemi {
 
 	LRESULT CALLBACK window::_setup_wnd_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
+		if (msg == WM_NCCREATE)
+		{
+			const CREATESTRUCT* wnd_create = reinterpret_cast<CREATESTRUCT*>(lParam);
+			if (wnd_create->lpCreateParams)
+			{
+				window* wnd_ptr = reinterpret_cast<window*>(wnd_create->lpCreateParams);
+				SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(wnd_ptr));
+				SetWindowLongPtr(hwnd, GWLP_WNDPROC,  reinterpret_cast<LONG_PTR>(window::_redirect_wnd_proc));
+				return window::_redirect_wnd_proc(hwnd, msg, wParam, lParam);
+			}
+		}
 		return DefWindowProc(hwnd, msg, wParam, lParam);
+	}
+
+	LRESULT CALLBACK window::_redirect_wnd_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	{
+		window* wnd = reinterpret_cast<window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+		return wnd->_wnd_proc(hwnd, msg, wParam, lParam);
 	}
 
 	LRESULT window::_wnd_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
-		// i hate this so much
-		// TODO: rewrite all this bullshit please
-		window* wnd = nullptr;
-
-		if (!wnd)
-		{
-			//__debugbreak(); // summin must have gone horribly wrong // maybe not IDK AAAAAAAA AAA A A- one 12 gauge please thnka!
-			return DefWindowProc(hwnd, msg, wParam, lParam);
-		}
-
+		// we are at last in an instance-level function call
 		switch (msg)
 		{
 		case WM_ACTIVATE:
@@ -158,65 +166,65 @@ namespace dsemi {
 		{
 			key_release_event e((unsigned int)wParam);
 			Input::Instance()->OnKeyUp(wParam);
-			wnd->_data.event_callback(e);
+			_data.event_callback(e);
 		}
 		break;
 		// verbose boilerplate for supporting different mouse buttons
 		case WM_LBUTTONDOWN:
 		{
 			mouse_press_event e(1);
-			wnd->_data.event_callback(e);
+			_data.event_callback(e);
 		}
 		break;
 		case WM_LBUTTONUP:
 		{
 			mouse_release_event e(1);
-			wnd->_data.event_callback(e);
+			_data.event_callback(e);
 		}
 		break;
 		case WM_RBUTTONDOWN:
 		{
 			mouse_press_event e(2);
-			wnd->_data.event_callback(e);
+			_data.event_callback(e);
 		}
 		break;
 		case WM_RBUTTONUP:
 		{
 			mouse_release_event e(2);
-			wnd->_data.event_callback(e);
+			_data.event_callback(e);
 		}
 		break;
 		case WM_MBUTTONDOWN:
 		{
 			mouse_press_event e(3);
-			wnd->_data.event_callback(e);
+			_data.event_callback(e);
 		}
 		break;
 		case WM_MBUTTONUP:
 		{
 			mouse_release_event e(3);
-			wnd->_data.event_callback(e);
+			_data.event_callback(e);
 		}
 		break;
 		case WM_XBUTTONDOWN:
 		{
 			short button_code = HIWORD(wParam);
 			mouse_press_event e(3 + button_code);
-			wnd->_data.event_callback(e);
+			_data.event_callback(e);
 		}
 		break;
 		case WM_XBUTTONUP:
 		{
 			short button_code = HIWORD(wParam);
 			mouse_release_event e(3 + button_code);
-			wnd->_data.event_callback(e);
+			_data.event_callback(e);
 		}
 		break;
 		case WM_MOUSEWHEEL:
 		{
 			short zDelta = GET_WHEEL_DELTA_WPARAM(wParam);
 			mouse_scroll_event e(zDelta);
-			wnd->_data.event_callback(e);
+			_data.event_callback(e);
 		}
 		break;
 		case WM_MOUSEMOVE:
@@ -228,38 +236,38 @@ namespace dsemi {
 				Input::s_mouseDelta += Input::s_mousePos - newPos;
 			}
 			Input::s_mousePos = newPos;
-			wnd->_data.event_callback(e);
+			_data.event_callback(e);
 		}
 		break;
 		case WM_SIZE:
 		{
 			// prevent memory access exceptions, as WM_SIZE is called as soon as the window is created
-			if (!wnd->_data.event_callback)
+			if (!_data.event_callback)
 			{
 				break;
 			}
-			wnd->_data.width = LOWORD(lParam);
-			wnd->_data.height = HIWORD(lParam);
+			_data.width = LOWORD(lParam);
+			_data.height = HIWORD(lParam);
 
 			// resize render context
 			// renderContext.UpdateBuffers(vector2f((float)m_Data.Width, (float)m_Data.Height));
 
 			// send event
-			window_resize_event e(wnd->_data.width, wnd->_data.height);
-			wnd->_data.event_callback(e);
+			window_resize_event e(_data.width, _data.height);
+			_data.event_callback(e);
 		}
 		break;
 		case WM_CLOSE:
 		{
-			window_close_event e(wnd);
-			wnd->_data.event_callback(e);
-			wnd->close();
+			window_close_event e(this);
+			_data.event_callback(e);
+			close();
 		}
 		break;
 		case WM_QUIT:
 		{
-			window_close_event e(wnd);
-			wnd->_data.event_callback(e);
+			window_close_event e(this);
+			_data.event_callback(e);
 			PostQuitMessage(0);
 		}
 		break;
@@ -286,7 +294,6 @@ namespace dsemi {
 		default:
 			return DefWindowProc(hwnd, msg, wParam, lParam);
 		}
-		return 0;
 	}
 
 	// win32 window class
@@ -296,19 +303,19 @@ namespace dsemi {
 	{
 		_hinstance = GetModuleHandle(nullptr);
 
-		WNDCLASSEX wnd_class = {};
-		wnd_class.cbSize = sizeof(WNDCLASSEX);
-		wnd_class.style = CS_HREDRAW | CS_VREDRAW;
-		wnd_class.lpfnWndProc = window::_setup_wnd_proc;
-		wnd_class.cbClsExtra = 0;
-		wnd_class.cbWndExtra = 0;
-		wnd_class.hInstance = _hinstance;
-		wnd_class.hIcon = nullptr;
-		wnd_class.hCursor = LoadCursor(NULL, IDC_ARROW);
+		WNDCLASSEX wnd_class    = {};
+		wnd_class.cbSize        = sizeof(WNDCLASSEX);
+		wnd_class.style         = CS_HREDRAW | CS_VREDRAW;
+		wnd_class.lpfnWndProc   = window::_setup_wnd_proc;
+		wnd_class.cbClsExtra    = 0;
+		wnd_class.cbWndExtra    = 0;
+		wnd_class.hInstance     = _hinstance;
+		wnd_class.hIcon         = nullptr;
+		wnd_class.hCursor       = LoadCursor(NULL, IDC_ARROW);
 		wnd_class.hbrBackground = nullptr;
-		wnd_class.lpszMenuName = nullptr;
+		wnd_class.lpszMenuName  = nullptr;
 		wnd_class.lpszClassName = _win32_window_class_name;
-		wnd_class.hIconSm = nullptr;
+		wnd_class.hIconSm       = nullptr;
 
 		if (!RegisterClassEx(&wnd_class))
 		{
