@@ -1,15 +1,17 @@
 #pragma once
-
-#include "Dsemi/graphics/api_include.h"
+#include "dsemi/graphics/api_include.h"
 #include "dsemi/graphics/resources/resource.h"
+#include "dsemi/graphics/bindable.h"
 #include <vector>
 
-namespace dsemi {
-	namespace graphics {
+namespace dsemi
+{
+	namespace graphics
+	{
 		class device;
 
 		// TODO: 
-		// consider possible issues that could (WILL) come up due to byte padding
+		// consider possible issues that could come up due to byte padding
 		// to keep 4-byte alignment of allocated memory
 		//
 
@@ -24,13 +26,12 @@ namespace dsemi {
 		{
 			switch (type)
 			{
-			case shader_data_type::FLOAT:   return 4u;
-			case shader_data_type::FLOAT2:  return 4u * 2u;
-			case shader_data_type::FLOAT3:  return 4u * 3u;
-			case shader_data_type::FLOAT4:  return 4u * 4u;
-			case shader_data_type::INVALID: return 0u;
+			case shader_data_type::FLOAT:	return 4u;
+			case shader_data_type::FLOAT2:	return 4u * 2u;
+			case shader_data_type::FLOAT3:	return 4u * 3u;
+			case shader_data_type::FLOAT4:	return 4u * 4u;
+			case shader_data_type::INVALID:	return 0u;
 			}
-
 			ASSERT(false, "Passed an invalid shader_data_type.");
 			return 0;
 		}
@@ -44,7 +45,7 @@ namespace dsemi {
 			case shader_data_type::FLOAT3:  return DXGI_FORMAT_R32G32B32_FLOAT;
 			case shader_data_type::FLOAT4:  return DXGI_FORMAT_R32G32B32A32_FLOAT;
 			}
-			ASSERT(false, "Passed an invalid shader_data_type.")
+			ASSERT(false, "Passed an invalid shader_data_type.");
 			return DXGI_FORMAT_UNKNOWN;
 		}
 
@@ -64,7 +65,7 @@ namespace dsemi {
 				// equivalent to the application lifetime
 				element() = default;
 				element(const std::string& semantic, shader_data_type type);
-				const std::string&       get_semantic()    const noexcept { return _semantic;}
+				const std::string& get_semantic()    const noexcept { return _semantic; }
 				shader_data_type         get_type()        const noexcept { return _type; }
 				// returns size_t in bytes
 				size_t                   get_size()        const noexcept { return _size; }
@@ -81,8 +82,8 @@ namespace dsemi {
 			vertex_layout();
 			vertex_layout(const std::initializer_list<element>& elements);
 
-			vertex_layout&                        append(const std::string& semantic, shader_data_type type);
-			
+			vertex_layout& append(const std::string& semantic, shader_data_type type);
+
 			// vertex size in bytes
 			size_t                                get_stride() const noexcept { return _stride; }
 			size_t                                get_element_count() const noexcept { return _elements.size(); }
@@ -98,7 +99,7 @@ namespace dsemi {
 			static element       _invalid_element;
 			std::vector<element> _elements;
 			size_t               _stride;
-		}; // class vertex_layout
+		};
 
 
 
@@ -113,9 +114,7 @@ namespace dsemi {
 			vertex_view(char* starting_byte, vertex_layout& layout);
 
 		public:
-			// returns element_type::INVALID if semantic not found
 			shader_data_type get_by_semantic(const std::string& semantic, void* pointer_to_element);
-			// returns element_type::INVALID if index out of range
 			shader_data_type get_by_index(size_t index, void* pointer_to_element);
 
 			template<typename T>
@@ -140,7 +139,7 @@ namespace dsemi {
 			template<typename param_first, typename ...param_rest>
 			void set_by_index(size_t index, param_first&& first, param_rest&&... rest)
 			{
-				set_by_index(index, std::forward<param_first>(first));	
+				set_by_index(index, std::forward<param_first>(first));
 				set_by_index(index + 1, std::forward<param_rest>(rest...));
 			}
 			/*template<typename T>
@@ -161,7 +160,7 @@ namespace dsemi {
 		public:
 			vertex_array(vertex_layout layout, size_t size = 0u);
 
-			char*                get_data()                noexcept { return _bytes.data(); }
+			char* get_data()                noexcept { return _bytes.data(); }
 			size_t               get_vertex_count()  const noexcept { return _bytes.size() / _layout.get_element_count(); }
 			size_t               get_vertex_stride() const noexcept { return _layout.get_stride(); };
 			const vertex_layout& get_layout()        const noexcept { return _layout; }
@@ -181,35 +180,31 @@ namespace dsemi {
 
 			}
 
-			std::vector<char> _bytes; // todo: storing vertices in cpu memory is dumb outside of a dynamic vertex buffer
+			std::vector<char> _bytes; // TODO: storing vertices in cpu memory is dumb outside of a dynamic vertex buffer
 			vertex_layout     _layout;
 		};
 
-
-
-		class vertex_buffer : public iresource
+		class vertex_buffer : public bindable
 		{
 		public:
-			vertex_buffer(device* device, vertex_array vertices);
+			vertex_buffer(device& device, vertex_array vertices);
 
 			inline uint32_t& get_stride()
 			{
 				return _stride;
 			}
 
-			void bind() const {};
+			inline virtual void bind() const noexcept override;
 			//vertex_view operator[](size_t i);
 
 
 		private:
-			uint32_t      _stride;
-			const device* _device;
-
-		private:
-			vertex_layout        _layout;
-			ComPtr<ID3D11Buffer> _dx_buffer;
-		}; // class vertex_buffer
+			uint32_t				_stride;
+			vertex_layout			_layout;
+			ComPtr<ID3D11Buffer>	_dx_buffer;
+		};
 
 		// TODO: dynamic vertex buffer class
-	} // namespace graphics
-} // namespace dsemi
+		//
+	}
+}

@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\dsemi\core\layerstack.h" />
+    <ClInclude Include="include\dsemi\graphics\bindable.h" />
     <ClInclude Include="include\dsemi\graphics\renderer.h" />
     <ClInclude Include="include\dsemi\graphics\resources\input_layout.h" />
     <ClInclude Include="include\dsemi\scene\scene.h" />
@@ -234,6 +235,7 @@
       <PrecompiledHeaderFile>dspch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)include</AdditionalIncludeDirectories>
       <ShowIncludes>false</ShowIncludes>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

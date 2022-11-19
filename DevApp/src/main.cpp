@@ -3,6 +3,12 @@
 #include "scenes/testscene2d.h"
 #include <dsemi/graphics/color.h>
 #include <dsemi/graphics/api_include.h>
+#include <dsemi/graphics/color.h>
+
+
+// temporary includes for writing the graphics abstractions
+#include <dsemi/graphics/render_target.h>
+
 
 class DevApp : public dsemi::application
 {
@@ -30,6 +36,7 @@ private:
 	{
 		dsemi::event_dispatcher dispatcher(e);
 		dispatcher.dispatch<dsemi::window_close_event>(BIND_EVENT(DevApp::_on_window_close));
+		dispatcher.dispatch<dsemi::window_resize_event>(BIND_EVENT(DevApp::_on_window_resize));
 	}
 
 	virtual void on_update(const float dt) override
@@ -45,6 +52,48 @@ private:
 		return true;
 	}
 
+	bool _on_window_resize(dsemi::window_resize_event& e)
+	{
+		if (_dx_context)
+		{
+			HRESULT hr;
+			DXGI_SWAP_CHAIN_DESC desc;
+
+			_rt_view = nullptr;
+
+			_dx_swap_chain->GetDesc(&desc);
+			_dx_swap_chain->ResizeBuffers(desc.BufferCount, 0u, 0u, DXGI_FORMAT_UNKNOWN, desc.Flags);
+
+			ComPtr<ID3D11Texture2D> framebuf = nullptr;
+			GFX_THROW_FAILED(_dx_swap_chain->GetBuffer(
+				0u,
+				__uuidof(ID3D11Texture2D),
+				&framebuf
+			));
+
+			GFX_THROW_FAILED(_dx_device->CreateRenderTargetView(
+				framebuf.Get(),
+				0u,
+				&_rt_view
+			));
+			_viewport.Width  = _gfx_window.width();
+			_viewport.Height = _gfx_window.height();
+			_dx_context->RSSetViewports(1u, &_viewport);
+
+			// update constant buffer for view dimensions
+			float view_w = _gfx_window.width();
+			float view_h = _gfx_window.height();
+			std::vector<float> view_scale_2d = {
+				view_w,
+				view_h
+			};
+			// send new view dimensions to GPU memory
+			_dx_context->UpdateSubresource(_view_const_buffer.Get(), 0u, NULL, view_scale_2d.data(), sizeof(float) * view_scale_2d.size(), 0u);
+			//_dx_context->VSSetConstantBuffers(0u, 1u, _view_const_buffer.GetAddressOf());
+		}
+		return true;
+	}
+
 private:
 	test_scene2d _test_scene;
 	dsemi::window _gfx_window;
@@ -53,6 +102,8 @@ private:
 
 	void _init_directx()
 	{
+		_clear_color = 0.0f;
+
 		// =======================================================
 		// 
 		//		CREATE DEVICE AND SWAP CHAIN
@@ -98,17 +149,14 @@ private:
 		_dx_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		std::stringstream sstream;
-		dsemi::logger::info("Created DirectX11 Device and Swapchain.");
+		dsemi::logger::info("Created DirectX11 Device and Swapchain. \n");
 		sstream << "DX11 selected feature level: " << feature_levels;
 		dsemi::logger::info(sstream.str());
 
 
 		// =======================================================
-		// 
 		//		CREATE RENDER TARGET VIEW
-		// 
 		// =======================================================
-
 
 		ComPtr<ID3D11Texture2D> framebuf = nullptr;
 		GFX_THROW_FAILED(_dx_swap_chain->GetBuffer(
@@ -125,23 +173,22 @@ private:
 		dsemi::logger::info("Created DX11 RenderTargetView.");
 
 		// =======================================================
-		// 
 		//		CREATE VIEW PORT
-		// 
 		// =======================================================
 
-		_viewport = {};
+
+		unsigned int vp_width  = _gfx_window.width();
+		unsigned int vp_height = _gfx_window.height();		
 		_viewport.TopLeftX = 0u;
 		_viewport.TopLeftY = 0u;
-		_viewport.Width    = _gfx_window.width();
-		_viewport.Height   = _gfx_window.height();
+		_viewport.Width    = vp_width;
+		_viewport.Height   = vp_height;
 		_viewport.MinDepth = 0u;
 		_viewport.MaxDepth = 1u;
 
+
 		// =======================================================
-		// 
 		//		CREATE VERTEX & PIXEL SHADERS
-		// 
 		// =======================================================
 
 		UINT shader_flags = D3DCOMPILE_ENABLE_STRICTNESS;
@@ -153,7 +200,9 @@ private:
 		ComPtr<ID3DBlob> ps_blob  = nullptr;
 		ComPtr<ID3DBlob> err_blob = nullptr;
 
+		// read from file
 		GFX_THROW_FAILED(D3DReadFileToBlob(L"shaders/default_vs.cso", &vs_blob));
+		// create in gpu
 		GFX_THROW_FAILED(_dx_device->CreateVertexShader(
 			vs_blob->GetBufferPointer(),
 			vs_blob->GetBufferSize(),
@@ -161,7 +210,12 @@ private:
 			&_vertex_shader
 		));
 
+		int* test = new int(4);
+		delete test;
+		
+		// read from file
 		GFX_THROW_FAILED(D3DReadFileToBlob(L"shaders/default_ps.cso", &ps_blob));
+		// create in gpu
 		GFX_THROW_FAILED(_dx_device->CreatePixelShader(
 			ps_blob->GetBufferPointer(),
 			ps_blob->GetBufferSize(),
@@ -170,14 +224,13 @@ private:
 		));
 
 		// =======================================================
-		// 
 		//		CREATE INPUT LAYOUT
-		// 
 		// =======================================================
-
+		// input parameters
 		const D3D11_INPUT_ELEMENT_DESC input_elements[] = {
 			{"Position", 0u, DXGI_FORMAT_R32G32_SINT, 0u, 0u, D3D11_INPUT_PER_VERTEX_DATA, 0u}
 		};
+		// create in gpu
 		GFX_THROW_FAILED(_dx_device->CreateInputLayout(
 			input_elements,
 			1u,
@@ -187,27 +240,57 @@ private:
 		));
 
 		// =======================================================
-		// 
-		//		CREATE VERTEX BUFFER
-		// 
+		//		CREATE CONSTANT BUFFER (2D VIEW MATRIX)
 		// =======================================================
+		// GOAL: map coordinates to pixels when zoom is at 1.0f (default)
+		// Matrix for 2D Viewport
+		// [ 1 0 ] -> [ 1/w  0   ]
+		// [ 0 1 ] -> [ 0    1/h ]
 
-		_vertices = {
-			{0, 1},
-			{1, -1},
-			{-1, -1},
+		float zoom_scale = 1.0f;
+		float view_w = _gfx_window.width();
+		float view_h = _gfx_window.height();
+		std::vector<float> view_scale_2d = {
+			view_w,
+			view_h
 		};
 
-		D3D11_BUFFER_DESC bd = {};
+		D3D11_BUFFER_DESC vmcbd   = {};
+		vmcbd.ByteWidth           = view_scale_2d.size() * sizeof(float) * 2.0f;
+		vmcbd.Usage               = D3D11_USAGE_DEFAULT;
+		vmcbd.BindFlags           = D3D11_BIND_CONSTANT_BUFFER;
+		vmcbd.CPUAccessFlags      = 0u;
+		vmcbd.MiscFlags           = 0u;
+		vmcbd.StructureByteStride = 0u;
+		
+		D3D11_SUBRESOURCE_DATA vmsrd = {};
+		vmsrd.pSysMem = view_scale_2d.data();
+
+		GFX_THROW_FAILED(_dx_device->CreateBuffer(&vmcbd, &vmsrd, &_view_const_buffer));
+
+		// =======================================================
+		//		CREATE VERTEX BUFFER
+		// =======================================================
+		int w = _gfx_window.width() / 2;
+		int h = _gfx_window.height() / 2;
+		_vertices = {
+			{0, h},
+			{w, -h},
+			{-w, -h},
+		};
+
+		// describe the buffer
+		D3D11_BUFFER_DESC bd   = {};
 		bd.ByteWidth           = _vertices.size() * sizeof(int) * 2u;
 		bd.Usage               = D3D11_USAGE_DEFAULT;
 		bd.BindFlags           = D3D11_BIND_VERTEX_BUFFER;
 		bd.CPUAccessFlags      = 0u;
 		bd.MiscFlags           = 0u;
 		bd.StructureByteStride = sizeof(int) * 2u;
+		// set data to be sent
 		D3D11_SUBRESOURCE_DATA bsrd = {};
 		bsrd.pSysMem = _vertices.data();
-
+		// create in gpu
 		GFX_THROW_FAILED(_dx_device->CreateBuffer(
 			&bd,
 			&bsrd,
@@ -215,17 +298,12 @@ private:
 		));
 		dsemi::logger::info("Created DX11 Vertex Buffer.");
 
-		_dx_context->RSSetViewports(1u, &_viewport);
 		_dx_context->VSSetShader(_vertex_shader.Get(), nullptr, 0u);
 		_dx_context->PSSetShader(_pixel_shader.Get(), nullptr, 0u);
 		_dx_context->IASetInputLayout(_input_layout.Get());
-	}
-
-	void _draw_triangle()
-	{
-		_dx_context->ClearRenderTargetView(_rt_view.Get(), _clear_color);
 		_dx_context->OMSetRenderTargets(1u, _rt_view.GetAddressOf(), nullptr);
-
+		_dx_context->RSSetViewports(1u, &_viewport);
+		_dx_context->VSSetConstantBuffers(0u, 1u, _view_const_buffer.GetAddressOf());
 		UINT strides = sizeof(int) * 2;
 		UINT offsets = 0u;
 		_dx_context->IASetVertexBuffers(
@@ -236,7 +314,12 @@ private:
 			&offsets
 		);
 
+	}
 
+	void _draw_triangle()
+	{
+		_dx_context->ClearRenderTargetView(_rt_view.Get(), _clear_color.as_array());
+		_dx_context->OMSetRenderTargets(1u, _rt_view.GetAddressOf(), nullptr);
 		_dx_context->Draw(_vertices.size(), 0u);
 
 		HRESULT hr;
@@ -251,21 +334,25 @@ private:
 				GFX_THROW_FAILED(hr);
 			}
 		}
+		switch (0);
 	}
 
 private:
-	ComPtr<ID3D11Device> _dx_device;
-	ComPtr<ID3D11DeviceContext> _dx_context;
-	ComPtr<IDXGISwapChain> _dx_swap_chain;
+	ComPtr<ID3D11Device>			_dx_device;
+	ComPtr<ID3D11DeviceContext>		_dx_context;
+	ComPtr<IDXGISwapChain>			_dx_swap_chain;
+	ComPtr<ID3D11Buffer>			_vertex_buffer;
+	ComPtr<ID3D11Buffer>			_view_const_buffer;
+	ComPtr<ID3D11VertexShader>		_vertex_shader;
+	ComPtr<ID3D11PixelShader>		_pixel_shader;
+	ComPtr<ID3D11RenderTargetView>	_rt_view;
+	ComPtr<ID3D11InputLayout>		_input_layout;
+	D3D11_VIEWPORT					_viewport;
+	dsemi::colorf					_clear_color;
 
-	ComPtr<ID3D11Buffer> _vertex_buffer;
-
-	ComPtr<ID3D11VertexShader> _vertex_shader;
-	ComPtr<ID3D11PixelShader> _pixel_shader;
-	ComPtr<ID3D11RenderTargetView> _rt_view;
-	ComPtr<ID3D11InputLayout> _input_layout;
-	D3D11_VIEWPORT _viewport;
-	float _clear_color[4] = {0.0f, 0.0f, 0.0f, 1.0f};
+	dsemi::graphics::render_target _render_target;
+	//dsemi::graphics::viewport _viewport;
+	//dsemi::graphics::viewport _viewport;
 
 	struct vertex
 	{
@@ -280,21 +367,21 @@ int main()
 	using namespace dsemi::graphics;
 	DevApp app;
 
-	vertex_layout layout = {
-		{"Position", shader_data_type::FLOAT3},
-		{"Normal", shader_data_type::FLOAT3},
-		{"TexCoord", shader_data_type::FLOAT2},
-	};
+	//vertex_layout layout = {
+	//	{"Position", shader_data_type::FLOAT3},
+	//	{"Normal", shader_data_type::FLOAT3},
+	//	{"TexCoord", shader_data_type::FLOAT2},
+	//};
 
-	vertex_array vertices(layout);
-	auto pos = { 5.0f, 5.0f, 5.0f };
-	auto nor = { 5.0f, 5.0f, 5.0f };
-	auto tex = { 5.0f, 5.0f};
-	vertices.emplace_back(
-		pos,
-		nor,
-		tex
-	);
+	//vertex_array vertices(layout);
+	//auto pos = { 5.0f, 5.0f, 5.0f };
+	//auto nor = { 5.0f, 5.0f, 5.0f };
+	//auto tex = { 5.0f, 5.0f};
+	//vertices.emplace_back(
+	//	pos,
+	//	nor,
+	//	tex
+	//);
 
 	app.init();
 	app.run();

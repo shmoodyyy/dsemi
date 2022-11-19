@@ -89,15 +89,13 @@ namespace dsemi {
 					//_main_wnd->dispatch_events();
 					do_events();
 				}
-				else
+
+				// Update
+				if (do_tick())
 				{
-					// Update
-					if (do_tick())
-					{
-						do_render();
-						/*m_pMainWnd->renderContext.NewFrame();
-						m_pMainWnd->renderContext.Present();*/
-					}
+					do_render();
+					/*m_pMainWnd->renderContext.NewFrame();
+					m_pMainWnd->renderContext.Present();*/
 				}
 			}
 			shutdown();

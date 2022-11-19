@@ -10,7 +10,6 @@
 
 namespace dsemi {
 	class window;
-
 	namespace graphics {
 		// singleton class to access graphics driver for resource and context creation
 		class device {
@@ -28,7 +27,6 @@ namespace dsemi {
 				ASSERT(_instance != nullptr, "Attempting to access graphics API device before having initialized it.");
 				return _instance;
 			}
-
 			static void initialize();
 
 			void create_vertex_buffer(vertex_buffer* vertex_buffer);
@@ -37,9 +35,7 @@ namespace dsemi {
 			void create_fragment_shader(fragment_shader* fragment_shader, fragment_shader_desc desc);
 			void create_render_target(render_target* render_target, ID3D11Resource* source); // temp pointer for until i implement own basic resource class
 
-			render_context create_context(dsemi::window* target_window);
-
-			void bind_vertex_buffer(vertex_buffer* vertex_buffer);
+			void bind_vertex_buffer(const vertex_buffer* vertex_buffer);
 			//void bind_input_layout(input_layout* layout);
 			void bind_vertex_shader(vertex_shader* vertex_shader);
 			void bind_fragment_shader(fragment_shader* fragment_shader);

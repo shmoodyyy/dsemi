@@ -137,6 +137,10 @@ namespace dsemi {
 		// we are at last in an instance-level function call
 		switch (msg)
 		{
+		case WM_ERASEBKGND: // avoid flickering when resizing window // doesn't fix it nevermind this.
+		{}
+		break;
+
 		case WM_ACTIVATE:
 		{
 			if (wParam == WA_ACTIVE || wParam == WA_CLICKACTIVE)
@@ -248,6 +252,25 @@ namespace dsemi {
 			}
 			_data.width = LOWORD(lParam);
 			_data.height = HIWORD(lParam);
+
+			// resize render context
+			// renderContext.UpdateBuffers(vector2f((float)m_Data.Width, (float)m_Data.Height));
+
+			// send event
+			window_resize_event e(_data.width, _data.height);
+			_data.event_callback(e);
+		}
+		break;
+		case WM_SIZING:
+		{
+			// prevent memory access exceptions, as WM_SIZE is called as soon as the window is created
+			if (!_data.event_callback)
+			{
+				break;
+			}
+			RECT cur_size = *(RECT*)lParam;
+			_data.width = cur_size.right - cur_size.left;
+			_data.height = cur_size.bottom - cur_size.top;
 
 			// resize render context
 			// renderContext.UpdateBuffers(vector2f((float)m_Data.Width, (float)m_Data.Height));

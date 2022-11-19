@@ -249,10 +249,10 @@ namespace dsemi
 			render_target->_dx_view_port.MaxDepth = 1.0f;
 		}
 
-		void device::bind_vertex_buffer(vertex_buffer* vertex_buffer)
+		void device::bind_vertex_buffer(const vertex_buffer* vertex_buffer)
 		{
 			UINT offset = 0u;
-			//_dx_context->IASetVertexBuffers(0u, 1u, vertex_buffer->get_dx_buffer().GetAddressOf(), &vertex_buffer->get_stride(), &offset);
+			_dx_context->IASetVertexBuffers(0u, 1u, vertex_buffer->get_dx_buffer().GetAddressOf(), &vertex_buffer->get_stride(), &offset);
 		}
 
 		void device::bind_vertex_shader(vertex_shader* vertex_shader)

@@ -1,5 +1,6 @@
 #include "dspch.h"
-#include "Dsemi/graphics/resources/vertex_buffer.h"
+#include "dsemi/graphics/resources/vertex_buffer.h"
+#include "dsemi/graphics/device.h"
 
 namespace dsemi 
 {
@@ -143,18 +144,19 @@ namespace dsemi
 		//
 		vertex_array::vertex_array(vertex_layout layout, size_t size /*= 0u*/)
 		{
-
 		}
-
-
 
 		// ------------------------------------------------------
 		// vertex_buffer implementation
 		//
-		vertex_buffer::vertex_buffer(device* device, vertex_array vertices)
-			: _device(device)
+		vertex_buffer::vertex_buffer(device& device, vertex_array vertices) : bindable(device), _layout(vertices.get_layout())
 		{
 			
+		}
+
+		void vertex_buffer::bind() const noexcept
+		{
+			_get_device().get_context()->IASetVertexBuffers(0u, 1u, this->_dx_buffer.GetAddressOf(), &this->_stride, nullptr);
 		}
 
 	} // namespace graphics

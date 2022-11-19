@@ -1,8 +1,10 @@
 #ifndef HEADER_DSEMI_GRAPHICS_RESOURCES_RESOUCE
 #define HEADER_DSEMI_GRAPHICS_RESOURCES_RESOURCE
 
-namespace dsemi {
-	namespace graphics {
+namespace dsemi 
+{
+	namespace graphics 
+	{
 		class device;
 
 		class iresource {
