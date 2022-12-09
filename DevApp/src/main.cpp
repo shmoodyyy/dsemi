@@ -1,10 +1,11 @@
-#include <dsemi.h>
+﻿#include <dsemi.h>
 #include <iostream>
 #include "scenes/testscene2d.h"
 #include <dsemi/graphics/color.h>
 #include <dsemi/graphics/api_include.h>
 #include <dsemi/graphics/color.h>
 
+#include <dsemi/graphics/resources/resource_include.h>
 
 // temporary includes for writing the graphics abstractions
 #include <dsemi/graphics/render_target.h>
@@ -27,8 +28,11 @@ private:
 	{
 		active_scene = &_test_scene;
 		_gfx_window.set_event_callback(BIND_EVENT(DevApp::on_event));
-		_gfx_window.create(640, 480, L"GFX Rendering Test Window");
+		_gfx_window.create(1280, 720, L"GFX Rendering Test Window");
 
+		_device = dsemi::graphics::device::get();
+		_dx_device = _device->get_dx_device();
+		_dx_context = _device->get_context();
 		_init_directx();
 	}
 
@@ -103,56 +107,35 @@ private:
 	void _init_directx()
 	{
 		_clear_color = 0.0f;
-
-		// =======================================================
-		// 
-		//		CREATE DEVICE AND SWAP CHAIN
-		// 
-		// =======================================================
-		UINT device_flags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
-#ifdef DEBUG
-		device_flags |= D3D11_CREATE_DEVICE_DEBUG;
-#endif
-
-		DXGI_SWAP_CHAIN_DESC sd = {};
-		sd.BufferDesc.Width                   = _gfx_window.width();
-		sd.BufferDesc.Height                  = _gfx_window.height();
-		sd.BufferDesc.Format                  = DXGI_FORMAT_B8G8R8A8_UNORM;
-		sd.BufferDesc.RefreshRate.Numerator   = 0;
-		sd.BufferDesc.RefreshRate.Denominator = 0;
-		sd.BufferDesc.Scaling                 = DXGI_MODE_SCALING_UNSPECIFIED;
-		sd.BufferDesc.ScanlineOrdering        = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-		sd.SampleDesc.Count                   = 1u;
-		sd.SampleDesc.Quality                 = 0u;
-		sd.BufferUsage                        = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-		sd.BufferCount                        = 2u;
-		sd.OutputWindow                       = _gfx_window.get_hwnd();
-		sd.Windowed                           = TRUE;
-		sd.SwapEffect                         = DXGI_SWAP_EFFECT_FLIP_DISCARD;
-
 		HRESULT hr;
-		D3D_FEATURE_LEVEL feature_levels;
-		GFX_THROW_FAILED(D3D11CreateDeviceAndSwapChain(
-			NULL,
-			D3D_DRIVER_TYPE_HARDWARE,
-			NULL,
-			device_flags,
-			nullptr,
-			0u,
-			D3D11_SDK_VERSION,
+
+		// =======================================================
+		//		CREATE SWAP CHAIN
+		// =======================================================
+		DXGI_SWAP_CHAIN_DESC sd = {};
+		sd.BufferDesc.Width = _gfx_window.width();
+		sd.BufferDesc.Height = _gfx_window.height();
+		sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+		sd.BufferDesc.RefreshRate.Numerator = 0;
+		sd.BufferDesc.RefreshRate.Denominator = 0;
+		sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+		sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+		sd.SampleDesc.Count = 1u;
+		sd.SampleDesc.Quality = 0u;
+		sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+		sd.BufferCount = 2u;
+		sd.OutputWindow = _gfx_window.get_hwnd();
+		sd.Windowed = TRUE;
+		sd.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+
+		auto dxgi_factory = _device->get_dx_factory();
+		GFX_THROW_FAILED(dxgi_factory->CreateSwapChain(
+			_dx_device.Get(),
 			&sd,
-			&_dx_swap_chain,
-			&_dx_device,
-			&feature_levels,
-			&_dx_context
+			&_dx_swap_chain
 		));
-		_dx_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		std::stringstream sstream;
-		dsemi::logger::info("Created DirectX11 Device and Swapchain. \n");
-		sstream << "DX11 selected feature level: " << feature_levels;
-		dsemi::logger::info(sstream.str());
-
+ 		GFX_LOG_DEBUG(L"created new swapchain for test window");
 
 		// =======================================================
 		//		CREATE RENDER TARGET VIEW
@@ -170,13 +153,11 @@ private:
 			0u,
 			&_rt_view
 		));
-		dsemi::logger::info("Created DX11 RenderTargetView.");
+		GFX_LOG_DEBUG(L"Created DX11 RenderTargetView.");
 
 		// =======================================================
 		//		CREATE VIEW PORT
 		// =======================================================
-
-
 		unsigned int vp_width  = _gfx_window.width();
 		unsigned int vp_height = _gfx_window.height();		
 		_viewport.TopLeftX = 0u;
@@ -228,7 +209,7 @@ private:
 		// =======================================================
 		// input parameters
 		const D3D11_INPUT_ELEMENT_DESC input_elements[] = {
-			{"Position", 0u, DXGI_FORMAT_R32G32_SINT, 0u, 0u, D3D11_INPUT_PER_VERTEX_DATA, 0u}
+			{"Position2", 0u, DXGI_FORMAT_R32G32_SINT, 0u, 0u, D3D11_INPUT_PER_VERTEX_DATA, 0u}
 		};
 		// create in gpu
 		GFX_THROW_FAILED(_dx_device->CreateInputLayout(
@@ -271,56 +252,31 @@ private:
 		// =======================================================
 		//		CREATE VERTEX BUFFER
 		// =======================================================
+		dsemi::graphics::vertex_layout layout;
+		layout.append("Position", dsemi::graphics::shader_data_type::SINT2);
+
+		dsemi::graphics::vertex_array vertices(layout);
 		int w = _gfx_window.width() / 2;
 		int h = _gfx_window.height() / 2;
-		_vertices = {
-			{0, h},
-			{w, -h},
-			{-w, -h},
-		};
+		vertices.emplace_back(0, h).emplace_back(w, -h).emplace_back(-w, -h);
+		_vbuf = std::make_unique<dsemi::graphics::vertex_buffer>(_device, vertices);
 
-		// describe the buffer
-		D3D11_BUFFER_DESC bd   = {};
-		bd.ByteWidth           = _vertices.size() * sizeof(int) * 2u;
-		bd.Usage               = D3D11_USAGE_DEFAULT;
-		bd.BindFlags           = D3D11_BIND_VERTEX_BUFFER;
-		bd.CPUAccessFlags      = 0u;
-		bd.MiscFlags           = 0u;
-		bd.StructureByteStride = sizeof(int) * 2u;
-		// set data to be sent
-		D3D11_SUBRESOURCE_DATA bsrd = {};
-		bsrd.pSysMem = _vertices.data();
-		// create in gpu
-		GFX_THROW_FAILED(_dx_device->CreateBuffer(
-			&bd,
-			&bsrd,
-			&_vertex_buffer
-		));
-		dsemi::logger::info("Created DX11 Vertex Buffer.");
-
+		uint32_t strides = 8u;
+		uint32_t offsets = 0u;
 		_dx_context->VSSetShader(_vertex_shader.Get(), nullptr, 0u);
 		_dx_context->PSSetShader(_pixel_shader.Get(), nullptr, 0u);
 		_dx_context->IASetInputLayout(_input_layout.Get());
 		_dx_context->OMSetRenderTargets(1u, _rt_view.GetAddressOf(), nullptr);
 		_dx_context->RSSetViewports(1u, &_viewport);
 		_dx_context->VSSetConstantBuffers(0u, 1u, _view_const_buffer.GetAddressOf());
-		UINT strides = sizeof(int) * 2;
-		UINT offsets = 0u;
-		_dx_context->IASetVertexBuffers(
-			0u,
-			1u,
-			_vertex_buffer.GetAddressOf(),
-			&strides,
-			&offsets
-		);
-
+		_vbuf->bind();
 	}
 
 	void _draw_triangle()
 	{
 		_dx_context->ClearRenderTargetView(_rt_view.Get(), _clear_color.as_array());
 		_dx_context->OMSetRenderTargets(1u, _rt_view.GetAddressOf(), nullptr);
-		_dx_context->Draw(_vertices.size(), 0u);
+		_dx_context->Draw(_vbuf->get_count(), 0u);
 
 		HRESULT hr;
 		if (FAILED(hr = _dx_swap_chain->Present(0, 0)))
@@ -334,10 +290,10 @@ private:
 				GFX_THROW_FAILED(hr);
 			}
 		}
-		switch (0);
 	}
 
 private:
+	dsemi::graphics::device*		_device;
 	ComPtr<ID3D11Device>			_dx_device;
 	ComPtr<ID3D11DeviceContext>		_dx_context;
 	ComPtr<IDXGISwapChain>			_dx_swap_chain;
@@ -354,12 +310,13 @@ private:
 	//dsemi::graphics::viewport _viewport;
 	//dsemi::graphics::viewport _viewport;
 
+	std::unique_ptr<dsemi::graphics::vertex_buffer> _vbuf;
+
 	struct vertex
 	{
 		int x;
 		int y;
 	};
-	std::vector<vertex> _vertices;
 };
 
 int main()

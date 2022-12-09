@@ -30,6 +30,6 @@ void test_layer_2dgfx::_on_create()
 
 bool test_layer_2dgfx::_on_mouse_press(dsemi::mouse_press_event& e)
 {
-	dsemi::logger::debug("[TestLayer2DGFX]: mouse_press_event successfully handled and consumed.");
+	dsemi::logger::debug(L"[TestLayer2DGFX]: mouse_press_event successfully handled and consumed.");
 	return true;
 }

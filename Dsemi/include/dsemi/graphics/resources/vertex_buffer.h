@@ -3,6 +3,7 @@
 #include "dsemi/graphics/resources/resource.h"
 #include "dsemi/graphics/bindable.h"
 #include <vector>
+#include <utility>
 
 namespace dsemi
 {
@@ -20,6 +21,8 @@ namespace dsemi
 		{
 			INVALID = 0,
 			FLOAT, FLOAT2, FLOAT3, FLOAT4,
+			SINT, SINT2, SINT3, SINT4,
+			UINT, UINT2, UINT3, UINT4,
 		}; // enum class shader_data_type
 
 		static size_t shader_data_type_size(shader_data_type type)
@@ -30,6 +33,10 @@ namespace dsemi
 			case shader_data_type::FLOAT2:	return 4u * 2u;
 			case shader_data_type::FLOAT3:	return 4u * 3u;
 			case shader_data_type::FLOAT4:	return 4u * 4u;
+			case shader_data_type::SINT:	return 4u;
+			case shader_data_type::SINT2:	return 4u * 2u;
+			case shader_data_type::SINT3:	return 4u * 3u;
+			case shader_data_type::SINT4:	return 4u * 4u;
 			case shader_data_type::INVALID:	return 0u;
 			}
 			ASSERT(false, "Passed an invalid shader_data_type.");
@@ -40,10 +47,14 @@ namespace dsemi
 		{
 			switch (type)
 			{
-			case shader_data_type::FLOAT:   return DXGI_FORMAT_R32_FLOAT;
-			case shader_data_type::FLOAT2:  return DXGI_FORMAT_R32G32_FLOAT;
-			case shader_data_type::FLOAT3:  return DXGI_FORMAT_R32G32B32_FLOAT;
-			case shader_data_type::FLOAT4:  return DXGI_FORMAT_R32G32B32A32_FLOAT;
+			case shader_data_type::FLOAT:	return DXGI_FORMAT_R32_FLOAT;
+			case shader_data_type::FLOAT2:	return DXGI_FORMAT_R32G32_FLOAT;
+			case shader_data_type::FLOAT3:	return DXGI_FORMAT_R32G32B32_FLOAT;
+			case shader_data_type::FLOAT4:	return DXGI_FORMAT_R32G32B32A32_FLOAT;
+			case shader_data_type::SINT:	return DXGI_FORMAT_R32_SINT;
+			case shader_data_type::SINT2:	return DXGI_FORMAT_R32G32_SINT;
+			case shader_data_type::SINT3:	return DXGI_FORMAT_R32G32B32_SINT;
+			case shader_data_type::SINT4:	return DXGI_FORMAT_R32G32B32A32_SINT;
 			}
 			ASSERT(false, "Passed an invalid shader_data_type.");
 			return DXGI_FORMAT_UNKNOWN;
@@ -160,24 +171,39 @@ namespace dsemi
 		public:
 			vertex_array(vertex_layout layout, size_t size = 0u);
 
-			char* get_data()                noexcept { return _bytes.data(); }
-			size_t               get_vertex_count()  const noexcept { return _bytes.size() / _layout.get_element_count(); }
-			size_t               get_vertex_stride() const noexcept { return _layout.get_stride(); };
-			const vertex_layout& get_layout()        const noexcept { return _layout; }
+			inline char*                get_data()                noexcept { return _bytes.data(); }
+			inline size_t               get_vertex_count()  const noexcept { return _bytes.size() / _layout.get_stride(); }
+			inline size_t               get_vertex_stride() const noexcept { return _layout.get_stride(); };
+			inline size_t               get_byte_width()    const noexcept { return _bytes.size(); };
+			inline const vertex_layout& get_layout()        const noexcept { return _layout; }
 
 			template<typename ...param_types>
-			void emplace_back(param_types&&... params)
+			vertex_array& emplace_back(param_types&&... params)
 			{
+				// TODO: assert that size and count of elements match to the vertex layout
 				//ASSERT(sizeof...(param_types) == _layout.get_element_count(), "Vertex parameter count doesn't match the specified vertex_array layout element count.");
-				_bytes.resize(_bytes.size() + _layout.get_stride());
-				_emplace_back_set_data(params...);
+				_emplace_back_set_data(std::forward<param_types>(params)...);
+				return *this;
 			}
 
 		private:
 			template<typename T, typename... types>
-			void _emplace_back_set_data(T&& param_first, types&&... param_rest)
+			void _emplace_back_set_data(T param_first, types... param_rest)
 			{
-
+				_emplace_back_set_data(param_first);
+				_emplace_back_set_data(param_rest...);
+			}
+			template<typename T>
+			void _emplace_back_set_data(T param)
+			{
+				_bytes.resize(_bytes.size() + sizeof(T));
+				auto tail = (_bytes.end() - sizeof(T));
+				auto dst = &*tail;
+				auto src = reinterpret_cast<char*>(&param);
+				memcpy(dst, src, sizeof(T));
+				/*_bytes.resize(_bytes.size() + sizeof(T));
+				auto tail = _bytes.end() - sizeof(T);*/
+				//*(reinterpret_cast<T*>(&(*tail))) = param;
 			}
 
 			std::vector<char> _bytes; // TODO: storing vertices in cpu memory is dumb outside of a dynamic vertex buffer
@@ -187,21 +213,25 @@ namespace dsemi
 		class vertex_buffer : public bindable
 		{
 		public:
-			vertex_buffer(device& device, vertex_array vertices);
+			vertex_buffer(device* device, vertex_array& vertices, uint32_t offset = 0u);
+			~vertex_buffer();
 
-			inline uint32_t& get_stride()
-			{
-				return _stride;
-			}
+			inline size_t get_stride() { return _stride; }
+			inline size_t get_count() { return _count; }
+			//inline size_t get_byte_width()
 
 			inline virtual void bind() const noexcept override;
 			//vertex_view operator[](size_t i);
 
+		protected:
+
 
 		private:
-			uint32_t				_stride;
-			vertex_layout			_layout;
-			ComPtr<ID3D11Buffer>	_dx_buffer;
+			uint32_t		_stride;
+			uint32_t		_offset;
+			uint32_t		_count;
+			vertex_layout	_layout;
+			ID3D11Buffer*	_dx_buffer;
 		};
 
 		// TODO: dynamic vertex buffer class

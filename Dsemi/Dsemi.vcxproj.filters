@@ -99,6 +99,8 @@
     <ClInclude Include="include\dsemi\graphics\renderer.h" />
     <ClInclude Include="include\dsemi\graphics\resources\input_layout.h" />
     <ClInclude Include="include\dsemi\graphics\bindable.h" />
+    <ClInclude Include="include\dsemi\graphics\resources\shader.h" />
+    <ClInclude Include="include\dsemi\graphics\util.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dspch.cpp" />

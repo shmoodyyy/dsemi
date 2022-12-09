@@ -1,6 +1,7 @@
 #include "dspch.h"
 #include "dsemi/graphics/resources/vertex_buffer.h"
 #include "dsemi/graphics/device.h"
+#include "dsemi/util/logger.hpp"
 
 namespace dsemi 
 {
@@ -44,7 +45,6 @@ namespace dsemi
 				ASSERT(element._semantic != semantic, "Attempted to append a duplicate semantic into a vertex layout, semantic indices aren't supported yet.");
 			}
 #endif
-			_elements.resize(_elements.size() + 1);
 			_elements.emplace_back(semantic, type);
 			element& elem = _elements.back();
 			elem._offset = _stride;
@@ -137,27 +137,54 @@ namespace dsemi
 			return (_layout.begin() + index)->get_type();
 		}
 
-
-
 		// ------------------------------------------------------
 		// vertex_array implementation
 		//
 		vertex_array::vertex_array(vertex_layout layout, size_t size /*= 0u*/)
+			: _layout(layout)
 		{
+
 		}
 
 		// ------------------------------------------------------
 		// vertex_buffer implementation
 		//
-		vertex_buffer::vertex_buffer(device& device, vertex_array vertices) : bindable(device), _layout(vertices.get_layout())
+		vertex_buffer::vertex_buffer(device* device, vertex_array& vertices, uint32_t offset /*= 0u*/) : bindable(device), _layout(vertices.get_layout()), _dx_buffer(nullptr), _stride(vertices.get_vertex_stride()), _offset(0u), _count(vertices.get_vertex_count())
 		{
-			
+			// =======================================================
+			//		CREATE VERTEX BUFFER
+			// =======================================================
+			D3D11_BUFFER_DESC bd   = {};
+			bd.ByteWidth           = vertices.get_byte_width();
+			bd.Usage               = D3D11_USAGE_DEFAULT;
+			bd.BindFlags           = D3D11_BIND_VERTEX_BUFFER;
+			bd.CPUAccessFlags      = 0u;
+			bd.MiscFlags           = 0u;
+			bd.StructureByteStride = vertices.get_vertex_stride();
+			D3D11_SUBRESOURCE_DATA bsrd = {};
+			bsrd.pSysMem = vertices.get_data();
+
+			HRESULT hr;
+			GFX_THROW_FAILED(_get_device()->get_dx_device()->CreateBuffer(
+				&bd,
+				&bsrd,
+				&_dx_buffer
+			));
+			GFX_LOG_DEBUG(L"created graphics::vertex_buffer");
+		}
+
+		vertex_buffer::~vertex_buffer()
+		{
+			if (_dx_buffer) { _dx_buffer->Release(); ; _dx_buffer = nullptr; }
+			GFX_LOG_DEBUG(L"released graphics::vertex_buffer");
 		}
 
 		void vertex_buffer::bind() const noexcept
 		{
-			_get_device().get_context()->IASetVertexBuffers(0u, 1u, this->_dx_buffer.GetAddressOf(), &this->_stride, nullptr);
+			_get_device()->get_context()->IASetVertexBuffers(0u, 1u, &this->_dx_buffer, &this->_stride, &_offset);
+			GFX_LOG_DEBUG(L"bound graphics::vertex_buffer to pipeline");
 		}
+
 
 	} // namespace graphics
 } // namespace dsemi

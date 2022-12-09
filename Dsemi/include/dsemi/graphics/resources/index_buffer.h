@@ -12,14 +12,14 @@ namespace dsemi
 		{
 			friend class device;
 		public:
-			index_buffer() 
-				: _dx_buffer(nullptr) 
+			index_buffer(device* device) 
+				: bindable(device), _dx_buffer(nullptr) 
 			{}
 
 			virtual void bind() const noexcept override;
 
 		private:
-			ComPtr<ID3D11Buffer> _dx_buffer;
+			ID3D11Buffer* _dx_buffer;
 
 		};
 	}

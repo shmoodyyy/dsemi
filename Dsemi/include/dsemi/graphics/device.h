@@ -23,14 +23,14 @@ namespace dsemi {
 			static device* _instance;
 
 		public:
-			inline device* get() {
-				ASSERT(_instance != nullptr, "Attempting to access graphics API device before having initialized it.");
-				return _instance;
+			inline static device* get() {
+				ASSERT(device::_instance != nullptr, "Attempting to access graphics API device before having initialized it.");
+				return device::_instance;
 			}
 			static void initialize();
 
 			void create_vertex_buffer(vertex_buffer* vertex_buffer);
-			void create_index_buffer(gfx_index_buffer* index_buffer, index_buffer_desc desc);
+			void create_index_buffer(index_buffer* index_buffer);
 			void create_vertex_shader(vertex_shader* vertex_shader, vertex_shader_desc desc);
 			void create_fragment_shader(fragment_shader* fragment_shader, fragment_shader_desc desc);
 			void create_render_target(render_target* render_target, ID3D11Resource* source); // temp pointer for until i implement own basic resource class

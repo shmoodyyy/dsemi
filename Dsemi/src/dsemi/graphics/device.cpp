@@ -28,7 +28,7 @@ namespace dsemi
 			ASSERT(_instance == nullptr, "Attempted to initialize the graphics API device multiple times.");
 			if (!_instance)
 				_instance = new device();
-			logger::info("[GFX] creating graphics_device");
+			GFX_LOG_DEBUG(L"creating graphics::device");
 			_instance->_initialize_impl();
 			_instance->_clear_color_float = new float[4];
 			//_instance->set_clear_color(0x000000ff);
@@ -60,8 +60,8 @@ namespace dsemi
 		void device::_initialize_impl()
 		{
 			// Initialize D3D
-			logger::info("[DX11] initializing graphics_device in dx11 mode...");
-			logger::info("[DX11] initializing direct3d...");
+			GFX_LOG_DEBUG(L"initializing graphics::device in dx11 mode...");
+			GFX_LOG_DEBUG(L"initializing direct3d...");
 
 			HRESULT hr;
 			UINT device_create_flags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
@@ -69,7 +69,7 @@ namespace dsemi
 			device_create_flags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-			logger::info("[DX11] creating d3d11device...");
+			GFX_LOG_DEBUG(L"creating d3d11device...");
 			GFX_THROW_FAILED(D3D11CreateDevice(
 				nullptr,
 				D3D_DRIVER_TYPE_HARDWARE,
@@ -103,8 +103,8 @@ namespace dsemi
 
 			GFX_THROW_FAILED(_dx_device->CreateRasterizerState(&rd, &_dx_rasterizer_state));
 
-			logger::info("[DX11] finished initializing direct3d.");
-			logger::info("[DX11] graphics_device finished initializing.");
+			GFX_LOG_DEBUG(L"finished initializing direct3d.");
+			GFX_LOG_DEBUG(L"graphics::device finished initializing.");
 		}
 
 		IDXGIFactory* device::_get_dxgi_factory() {
@@ -120,6 +120,8 @@ namespace dsemi
 			// until we find the factory responsible for creating the adapter/device?
 			IDXGIFactory* dxgi_factory;
 			GFX_THROW_FAILED(dxgi_adapter->GetParent(__uuidof(IDXGIFactory), (void**)&dxgi_factory));
+
+			GFX_LOG_DEBUG(L"initialized graphics::device::_dxgi_factory");
 
 			return dxgi_factory;
 		}
@@ -146,20 +148,20 @@ namespace dsemi
 			//GFX_THROW_FAILED(_dx_device->CreateBuffer(&bd, &sd, &vertex_buffer->_dx_buffer));
 		}
 
-		void device::create_index_buffer(gfx_index_buffer* index_buffer, index_buffer_desc desc)
+		void device::create_index_buffer(index_buffer* index_buffer)
 		{
 			HRESULT hr;
 
-			D3D11_BUFFER_DESC bd = {};
-			bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-			bd.Usage = D3D11_USAGE_DEFAULT;
-			bd.MiscFlags = 0;
-			bd.ByteWidth = (UINT)desc.data_size;
-			bd.StructureByteStride = (UINT)desc.data_stride;
-			D3D11_SUBRESOURCE_DATA sd = {};
-			sd.pSysMem = desc.data_pointer;
+			//D3D11_BUFFER_DESC bd = {};
+			//bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+			//bd.Usage = D3D11_USAGE_DEFAULT;
+			//bd.MiscFlags = 0;
+			//bd.ByteWidth = (UINT)desc.data_size;
+			//bd.StructureByteStride = (UINT)desc.data_stride;
+			//D3D11_SUBRESOURCE_DATA sd = {};
+			//sd.pSysMem = desc.data_pointer;
 
-			GFX_THROW_FAILED(_dx_device->CreateBuffer(&bd, &sd, &index_buffer->_dx_buffer));
+			//GFX_THROW_FAILED(_dx_device->CreateBuffer(&bd, &sd, &index_buffer->_dx_buffer));
 		}
 
 		void device::create_vertex_shader(vertex_shader* vertex_shader, vertex_shader_desc desc)
@@ -252,7 +254,7 @@ namespace dsemi
 		void device::bind_vertex_buffer(const vertex_buffer* vertex_buffer)
 		{
 			UINT offset = 0u;
-			_dx_context->IASetVertexBuffers(0u, 1u, vertex_buffer->get_dx_buffer().GetAddressOf(), &vertex_buffer->get_stride(), &offset);
+			//_dx_context->IASetVertexBuffers(0u, 1u, vertex_buffer->get_dx_buffer().GetAddressOf(), &vertex_buffer->get_stride(), &offset);
 		}
 
 		void device::bind_vertex_shader(vertex_shader* vertex_shader)

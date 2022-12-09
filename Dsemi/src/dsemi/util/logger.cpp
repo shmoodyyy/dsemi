@@ -7,7 +7,7 @@
 namespace dsemi {
 	std::queue<logger::log_entry_internal> logger::_log_queue;
 	std::string                            logger::_format;
-	std::ostringstream                     logger::_stream;
+	std::wostringstream                     logger::_stream;
 
 	logger::level logger::_log_level = logger::level::LOG_LEVEL_INFO;
 
@@ -41,43 +41,40 @@ namespace dsemi {
 	}
 	void logger::_process_entry(logger::log_entry_internal entry)
 	{
-		std::string str;
-
+		_stream << L"[";
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0);
 		switch (entry.log_level)
 		{
 		case LOG_LEVEL_DEBUG:
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
-			_stream << "[DEBUG";
+			_stream << L"DEBUG";
 			break;
 		case LOG_LEVEL_TRACE:
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-			_stream << "[TRACE";
+			_stream << L"TRACE";
 			break;
 		case LOG_LEVEL_INFO:
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-			_stream << "[INFO";
+			_stream << L"INFO";
 			break;
 		case LOG_LEVEL_WARN:
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-			_stream << "[WARN";
+			_stream << L"WARN";
 			break;
 		case LOG_LEVEL_ERROR:
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_INTENSITY);
-			_stream << "[ERROR";
+			_stream << L"ERROR";
 			break;
 		case LOG_LEVEL_CRITICAL:
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
-			_stream << "[CRITICAL";
+			_stream << L"CRITICAL";
 			break;
 		}
-		_stream << "] - ";
+		_stream << L"] - ";
+		std::wstring str;
 		str = _stream.str();
-		_stream.str("");
+		_stream.str(L"");
 		_stream.clear();
-
-		printf(str.c_str());
-		printf(entry.msg.c_str());
-		printf("\n");
+		wprintf(L"%s%s\n", str.c_str(), entry.msg.c_str());
 	}
 }

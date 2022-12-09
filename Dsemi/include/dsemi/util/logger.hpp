@@ -11,6 +11,13 @@
 
 namespace dsemi {
 
+#define LOG_DEBUG(x)	dsemi::logger::log(x, dsemi::logger::level::LOG_LEVEL_DEBUG);
+#define LOG_TRACE(x)	dsemi::logger::log(x, dsemi::logger::level::LOG_LEVEL_TRACE);
+#define LOG_INFO(x)		dsemi::logger::log(x, dsemi::logger::level::LOG_LEVEL_INFO);
+#define LOG_WARN(x)		dsemi::logger::log(x, dsemi::logger::level::LOG_LEVEL_WARN);
+#define LOG_ERROR(x)	dsemi::logger::log(x, dsemi::logger::level::LOG_LEVEL_ERROR);
+#define LOG_CRITICAL(x)	dsemi::logger::log(x, dsemi::logger::level::LOG_LEVEL_CRITICAL);
+
 	class logger {
 	public:
 		enum level {
@@ -22,7 +29,8 @@ namespace dsemi {
 			LOG_LEVEL_CRITICAL
 		};
 	public:
-		inline static void log(const std::string& msg, level log_level = LOG_LEVEL_TRACE) 
+		// TODO: change to std::wstring_view
+		inline static void log(const std::wstring& msg, level log_level = LOG_LEVEL_TRACE) 
 		{
 			if (log_level < _log_level)
 				return;
@@ -41,36 +49,30 @@ namespace dsemi {
 		}
 
 #pragma region Per Level Logging Functions
-		inline static void debug(const std::string& msg) {
-			log(msg, LOG_LEVEL_DEBUG);
-		}
-		inline static void trace(const std::string& msg) {
-			log(msg, LOG_LEVEL_TRACE);
-		}
-		inline static void info(const std::string& msg) {
-			log(msg, LOG_LEVEL_INFO);
-		}
-		inline static void warn(const std::string& msg) {
-			log(msg, LOG_LEVEL_WARN);
-		}
-		inline static void error(const std::string& msg) {
-			log(msg, LOG_LEVEL_ERROR);
-		}
-		inline static void critical(const std::string& msg) {
-			log(msg, LOG_LEVEL_CRITICAL);
-		}
+		// TODO: change to std::wstring_view
+		inline static void debug(const std::wstring& msg) { log(msg, LOG_LEVEL_DEBUG); }
+		// TODO: change to std::wstring_view
+		inline static void trace(const std::wstring& msg) { log(msg, LOG_LEVEL_TRACE); }
+		// TODO: change to std::wstring_view
+		inline static void info(const std::wstring& msg) { log(msg, LOG_LEVEL_INFO); }
+		// TODO: change to std::wstring_view
+		inline static void warn(const std::wstring& msg) { log(msg, LOG_LEVEL_WARN); }
+		// TODO: change to std::wstring_view
+		inline static void error(const std::wstring& msg) { log(msg, LOG_LEVEL_ERROR); }
+		// TODO: change to std::wstring_view
+		inline static void critical(const std::wstring& msg) { log(msg, LOG_LEVEL_CRITICAL); }
 #pragma endregion
 
 		inline static void start_logger()
 		{
-			std::ostringstream thread_start_str;
-			thread_start_str << "starting logger thread, thread_id = ";
+			std::wostringstream thread_start_str;
+			thread_start_str << L"starting logger | thread_id: ";
 
 			_active = true;
 			_thread = std::thread(_thread_begin);
 
 			thread_start_str << _thread.get_id();
-			logger::info(thread_start_str.str());
+			LOG_DEBUG(thread_start_str.str());
 		}
 
 		inline static std::thread::id get_id()
@@ -86,7 +88,8 @@ namespace dsemi {
 			_thread.join();
 		}
 
-		inline static void _on_new_log(const std::string& msg, level log_level) {
+		// TODO: change to std::wstring_view
+		inline static void _on_new_log(const std::wstring& msg, level log_level) {
 			// move this to input handler thread?
 			_log_queue.emplace(msg, log_level);
 			_cv.notify_all();
@@ -96,11 +99,12 @@ namespace dsemi {
 		struct log_entry_internal
 		{
 			log_entry_internal() {}
-			log_entry_internal(const std::string& msg, level log_level)
+			// TODO: change to std::wstring_view
+			log_entry_internal(const std::wstring& msg, level log_level)
 				: msg(msg), log_level(log_level)
 			{}
 
-			std::string msg;
+			std::wstring msg;
 			level log_level;
 		};
 
@@ -114,7 +118,7 @@ namespace dsemi {
 	private:
 		static std::queue<log_entry_internal> _log_queue;
 		static std::string                    _format;
-		static std::ostringstream             _stream;
+		static std::wostringstream            _stream;
 
 		static level _log_level;
 

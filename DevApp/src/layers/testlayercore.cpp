@@ -15,6 +15,6 @@ void test_layer_core::on_event(dsemi::ievent& e)
 
 bool test_layer_core::_on_mouse_press(dsemi::window_focus_event& e)
 {
-	dsemi::logger::debug("[TestLayerCore]: gained focus successfully handled and consumed.");
+	dsemi::logger::debug(L"[TestLayerCore]: gained focus successfully handled and consumed.");
 	return true;
 }

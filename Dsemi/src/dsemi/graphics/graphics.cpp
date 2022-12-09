@@ -30,18 +30,18 @@ namespace dsemi {
 		{
 			if (_instance)
 			{
-				logger::warn("[GFX] attempted to reinitialize graphics");
+				logger::warn(L"[GFX] attempted to reinitialize graphics");
 				return;
 			}
 
-			logger::info("[GFX_CORE] creating gfx_core instance");
+			logger::info(L"[GFX_CORE] creating gfx_core instance");
 			_instance = new core();
 			_instance->_initialize_instance();
 		}
 
 		void core::_initialize_instance()
 		{
-			logger::info("[GFX_CORE] initializing gfx_core instance");
+			logger::info(L"[GFX_CORE] initializing gfx_core instance");
 			_device.initialize();
 		}
 

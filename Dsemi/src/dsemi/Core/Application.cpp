@@ -3,10 +3,11 @@
 #include "dsemi/core/dsemiwindows.h"
 #include "dsemi/core/application.h"
 #include "dsemi/core/input.h"
-
 #include "dsemi/util/timer.h"
 #include "dsemi/util/assert.h"
-
+// TODO: check below includes on platform dependence
+#include "fcntl.h"
+#include "io.h"
 
 namespace dsemi {
 	application* application::_instance = nullptr;
@@ -42,17 +43,20 @@ namespace dsemi {
 		cfi.dwFontSize.Y = 14;
 		cfi.FontFamily = FF_DONTCARE;
 		cfi.FontWeight = FW_NORMAL;
+		//_setmode(_fileno(stdout), _O_U16TEXT);
 		std::wcscpy(cfi.FaceName, L"Consolas");
+		// TODO: below might be windows only
 		SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
 #endif
 
-		logger::start_logger();
 #ifdef _DEBUG
 		logger::set_level(logger::level::LOG_LEVEL_DEBUG);
 #else
 		logger::set_level(logger::level::LOG_LEVEL_INFO);
 #endif
-		logger::info("dsemi::Appliation starting logger thread and initializing.");
+		logger::start_logger();
+
+		LOG_DEBUG(L"dsemi::appliation initializing...");
 
 		// Initialize DirectX and Direct3D
 		//Direct3D::InitD3D();
@@ -70,6 +74,7 @@ namespace dsemi {
 		
 		// run additional intialization routine
 		_on_init();
+		LOG_DEBUG(L"dsemi::appliation done initializing.");
 	}
 
 	// looping section of the application handling update, event handling and render calls
