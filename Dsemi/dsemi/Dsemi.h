@@ -7,4 +7,4 @@
 #pragma comment(lib, "d2d1")
 #pragma comment(lib, "dwrite")
 
-#include "dsemi/core/application.h"
+

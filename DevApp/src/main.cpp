@@ -1,5 +1,4 @@
-﻿#include <dsemi.h>
-#include <iostream>
+﻿#include <iostream>
 #include "scenes/testscene2d.h"
 #include <dsemi/graphics/color.h>
 #include <dsemi/graphics/api_include.h>
