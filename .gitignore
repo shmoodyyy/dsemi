@@ -459,3 +459,5 @@ FodyWeavers.xsd
 # CMake takes care of Visual Studio solution files :d
 *.vcxproj
 *.vcxproj.filters
+*/*.vcxproj
+*/*.vcxproj.filters
