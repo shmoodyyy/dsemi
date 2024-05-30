@@ -4,7 +4,22 @@
     <ClCompile Include="D:\dev\dsemi\devapp\src\app.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="D:\dev\dsemi\devapp\src\ecs\polygon2d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\dev\dsemi\devapp\src\layers\testlayer2d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\dev\dsemi\devapp\src\layers\testlayercore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\dev\dsemi\devapp\src\layers\testlayergfx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="D:\dev\dsemi\devapp\src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\dev\dsemi\devapp\src\scenes\testscene2d.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

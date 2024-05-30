@@ -32,22 +32,22 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -78,7 +78,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -89,16 +89,16 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <UseFullPaths>false</UseFullPaths>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;_DEBUG;UNICODE;_UNICODE;_WIN32;_WIN64;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;UNICODE;_UNICODE;_WIN32;_WIN64;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -111,7 +111,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
@@ -120,18 +120,18 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <UseFullPaths>false</UseFullPaths>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_DEBUG;UNICODE;_UNICODE;_WIN32;_WIN64;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <DebugInformationFormat>
       </DebugInformationFormat>
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_DEBUG;UNICODE;_UNICODE;_WIN32;_WIN64;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -144,7 +144,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
@@ -153,18 +153,18 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <UseFullPaths>false</UseFullPaths>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_DEBUG;UNICODE;_UNICODE;_WIN32;_WIN64;CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <DebugInformationFormat>
       </DebugInformationFormat>
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_DEBUG;UNICODE;_UNICODE;_WIN32;_WIN64;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -177,7 +177,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -187,16 +187,16 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <UseFullPaths>false</UseFullPaths>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_DEBUG;UNICODE;_UNICODE;_WIN32;_WIN64;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_DEBUG;UNICODE;_UNICODE;_WIN32;_WIN64;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\dev\dsemi\dsemi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -265,7 +265,45 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\dspch.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\core\Application.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\core\Input.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\core\Window.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\core\exceptions\dsemiexception.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\core\exceptions\hresultexception.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\core\layer.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\core\layerstack.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\core\renderer.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\ecs\component.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\ecs\componentarray.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\ecs\componentflag.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\ecs\entityarray.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\ecs\world.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\fonts\opentype.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\graphics\device.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\graphics\graphics.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\graphics\pipeline.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\graphics\render_context.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\graphics\render_target.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\graphics\resources\fragment_shader.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\graphics\resources\vertex_buffer.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\graphics\resources\vertex_shader.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\graphics\viewport.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\math\Vector\Vector2d.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\math\Vector\Vector2f.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\math\Vector\Vector2i.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\math\quaternion.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\math\random.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\math\rect.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\math\vector2.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\math\vector3.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\memory\bitset.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\scene\scene.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\ui\element.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\ui\frame.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\util\binaryreader.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\util\logger.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\util\string.cpp" />
+    <ClCompile Include="D:\dev\dsemi\dsemi\dsemi\util\timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="D:\dev\dsemi\ZERO_CHECK.vcxproj">

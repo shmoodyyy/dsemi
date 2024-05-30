@@ -18,6 +18,7 @@ set(DSEMI_WIN_LIBS
     CACHE PATH "dsemi windows libs")
 
 target_include_directories(DSEMI PRIVATE ${DSEMI_INCLUDE})
-target_link_libraries(DSEMI PUBLIC ${DSEMI_WIN_LIBS})
+
+target_link_libraries(DSEMI PRIVATE ${DSEMI_WIN_LIBS})
 
 add_compile_definitions(_DEBUG UNICODE _UNICODE _WIN32 _WIN64)

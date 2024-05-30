@@ -317,7 +317,7 @@ private:
 	};
 };
 
-int main()
+int main(int argc, const char** argv)
 {
 	using namespace dsemi::graphics;
 	DevApp app;

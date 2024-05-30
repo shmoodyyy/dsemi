@@ -8,6 +8,7 @@
 #include "fcntl.h"
 #include "io.h"
 #include <cmath>
+#include <iostream>
 #include <string_view>
 using namespace std::literals;
 
@@ -109,10 +110,12 @@ namespace dsemi {
 		}
 		catch (dsemi_exception& e)
 		{
+            std::cout << e.what() << '\n' << e.type() << '\n';
 			display_except(e.what(), e.type());
 		}
 		catch (std::exception& e)
 		{
+            std::cout << e.what() << '\n' << "std Exception" << '\n';
 			display_except(e.what(), "Standard Exception");
 		}
 		catch (...)
