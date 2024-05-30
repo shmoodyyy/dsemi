@@ -1,8 +1,4 @@
-#include "dspch.h"
-
 #include "Dsemi/Core/LayerStack.h"
-
-
 
 namespace dsemi {
 	layer_stack::layer_stack()

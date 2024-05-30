@@ -1,12 +1,11 @@
-#include "dspch.h"
 #include "dsemi/core/dsemiwindows.h"
-#include "dsemi/util/logger.hpp"
+#include "dsemi/util/logger.h"
 
 #define NODEBUG
 
 namespace dsemi {
-	std::queue<logger::log_entry_internal> logger::_log_queue;
-	std::string                            logger::_format;
+	std::queue<logger::log_entry_internal>  logger::_log_queue;
+	std::string                             logger::_format;
 	std::wostringstream                     logger::_stream;
 
 	logger::level logger::_log_level = logger::level::LOG_LEVEL_INFO;

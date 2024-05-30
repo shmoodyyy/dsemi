@@ -1,4 +1,3 @@
-#include "dspch.h"
 #include "Dsemi/fonts/opentype.h"
 
 namespace dsemi {

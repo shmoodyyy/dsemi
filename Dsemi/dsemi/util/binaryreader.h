@@ -1,7 +1,7 @@
 #ifndef DSEMI_UTILITY_BINARY_READER_H
 #define DSEMI_UTILITY_BINARY_READER_H
-
-#include <iostream>
+#include <fstream>
+#include <cstdint>
 
 namespace dsemi {
 

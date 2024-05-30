@@ -34,7 +34,7 @@ namespace dsemi {
 		custom_exception(int line, const char* file, const char* comment);
 
 		virtual const char* what() const noexcept override;
-		virtual const char* type() const noexcept;
+		virtual const char* type() const noexcept override;
 
 		const std::string& comment() const noexcept;
 

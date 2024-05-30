@@ -1,7 +1,7 @@
 #ifndef ECS_COMPONENT_HEADER
 #define ECS_COMPONENT_HEADER
-
 #include "dsemi/ecs/ecsdefines.h"
+#include <cstddef>
 
 #define ECS_NUM_COMPONENTS dsemi::ecs::icomponent_base::CountComponentTypes()
 

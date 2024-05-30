@@ -1,13 +1,15 @@
-// Application.cpp
-#include "dspch.h"
-#include "dsemi/core/dsemiwindows.h"
-#include "dsemi/core/application.h"
+#include "dsemi/core/dsemiwindows.h" 
+#include "application.h"
+#include "dsemi/core/exceptions/dsemiexception.h"
 #include "dsemi/core/input.h"
 #include "dsemi/util/timer.h"
 #include "dsemi/util/assert.h"
 // TODO: check below includes on platform dependence
 #include "fcntl.h"
 #include "io.h"
+#include <cmath>
+#include <string_view>
+using namespace std::literals;
 
 namespace dsemi {
 	application* application::_instance = nullptr;
@@ -21,7 +23,7 @@ namespace dsemi {
 		ASSERT(!_instance, "APP: Application Instance already initialized.");
 		if (_instance)
 		{
-			throw std::exception("Application Instance already exists! Use Application::Get()");
+			CUSTOM_EXCEPT("Application Instance already exists! Use Application::Get()");
 		}
 		_instance = this;
 	}
@@ -146,7 +148,7 @@ namespace dsemi {
 
 		if (_delta_time >= _time_per_tick)
 		{	
-			unsigned short numTicks = (unsigned short)floor(_delta_time / _time_per_tick); // Get the number of ticks that should have been processed since last frame
+			unsigned short numTicks = (unsigned short)std::floor(_delta_time / _time_per_tick); // Get the number of ticks that should have been processed since last frame
 			//m_dt -= m_timePerTick * numTicks;
 			_update_timer.Mark();
 

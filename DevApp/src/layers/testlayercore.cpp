@@ -1,5 +1,5 @@
 #include "testlayercore.h"
-#include <dsemi/util/logger.hpp>
+#include <dsemi/util/logger.h>
 #include <iostream>
 
 void test_layer_core::on_update(const float dt)

@@ -1,5 +1,6 @@
-#include "dspch.h"
 #include "Dsemi/Core/DsemiWindows.h"
+#include <ios>
+#include <sstream>
 
 namespace dsemi {
 
@@ -11,9 +12,9 @@ namespace dsemi {
 	const char* hresult_exception::what() const noexcept
 	{
 		std::ostringstream oss;
-		oss << type() << std::endl
-			<< "[Error Code] 0x" << std::hex << std::uppercase << error_code() << std::dec << " (" << (unsigned long)error_code() << ")" << std::endl
-			<< "[Description] " << error_string() << std::endl
+		oss << type() << '\n'
+			<< "[Error Code] 0x" << std::hex << std::uppercase << error_code() << std::dec << " (" << (unsigned long)error_code() << ")" << '\n'
+			<< "[Description] " << error_string() << '\n'
 			<< origin_string();
 		_what_buf = oss.str();
 		return _what_buf.c_str();

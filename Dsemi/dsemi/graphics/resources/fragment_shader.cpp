@@ -1,4 +1,3 @@
-#include "dspch.h"
 #include "Dsemi/graphics/resources/fragment_shader.h"
 
 namespace dsemi {

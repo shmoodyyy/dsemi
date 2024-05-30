@@ -1,5 +1,5 @@
 #pragma once
-#include "dsemi/util/logger.hpp"
+#include "dsemi/util/logger.h"
 
 #define GFX_LOG_DEBUG(x) LOG_DEBUG(L"[GFX]"x)
 #define GFX_LOG_TRACE(x) LOG_TRACE(L"[GFX]"x)

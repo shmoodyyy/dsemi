@@ -1,12 +1,10 @@
-#include "dspch.h"
 #include "dsemi/util/binaryreader.h"
-
-#include <istream>
+#include "dsemi/util/assert.h"
 
 namespace dsemi {
 
 	binary_reader::binary_reader(const std::string& file_path, binary_mode mode)
-		: _file(file_path, std::ios::in || std::ios::binary), _mode(mode), _file_path(file_path)
+		: _file(file_path, std::ios::in | std::ios::binary), _mode(mode), _file_path(file_path)
 	{
 		ASSERT(((mode & (BINARY_BIG_ENDIAN | BINARY_LITTLE_ENDIAN)) < 0x03), "Can't set binary mode to both big and little endian");
 

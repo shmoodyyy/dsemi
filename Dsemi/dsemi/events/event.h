@@ -12,18 +12,18 @@ namespace dsemi {
 	{
 		None = 0,
 		// window events
-		EVENT_WINDOW_CLOSE, 
-		EVENT_WINDOW_RESIZE, 
-		EVENT_WINDOW_FOCUS, 
-		EVENT_WINDOW_FOCUS_LOST, 
+		EVENT_WINDOW_CLOSE,
+		EVENT_WINDOW_RESIZE,
+		EVENT_WINDOW_FOCUS,
+		EVENT_WINDOW_FOCUS_LOST,
 		EVENT_WINDOW_MOVE,
 		// application events
-		EVENT_APP_TICK, 
-		EVENT_APP_UPDATE, 
+		EVENT_APP_TICK,
+		EVENT_APP_UPDATE,
 		EVENT_APP_RENDER,
 		// keyboard events
-		EVENT_KEY_PRESS, 
-		EVENT_KEY_RELEASE, 
+		EVENT_KEY_PRESS,
+		EVENT_KEY_RELEASE,
 		EVENT_KEY_DOWN,
 		// mouse events
 		EVENT_MOUSE_PRESS, 
@@ -42,7 +42,7 @@ namespace dsemi {
 		EVENT_GROUP_MOUSE_BUTTON   = BIT_FLAG(4),
 	};
 
-#define EVENT_CLASS_TYPE(type) static event_type get_static_type() { return event_type::##type; } \
+#define EVENT_CLASS_TYPE(type) static event_type get_static_type() { return event_type::type; } \
                                virtual event_type get_event_type() const override { return get_static_type(); }
 #define EVENT_CLASS_GROUP(group) virtual int get_group_flags() const override { return group; }
 

@@ -1,7 +1,7 @@
 #include "testlayer2d.h"
 
 #include <iostream>
-#include <dsemi/util/logger.hpp>
+#include <dsemi/util/logger.h>
 #include <dsemi/ecs/ecs.h>
 #include "../ecs/test2dcomponents.h"
 

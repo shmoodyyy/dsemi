@@ -1,9 +1,7 @@
-#include "dspch.h"
-
 // move this include and ImGui implementation to a seperate graphics system
 #define DIRECTINPUT_VERSION 0x0800
 
-#include "Dsemi/core/window.h"
+#include "window.h"
 
 #include "dsemi/core/application.h"
 #include "dsemi/core/input.h"
@@ -14,9 +12,7 @@
 
 #include "dsemi/graphics/device.h"
 
-#include "dsemi/util/logger.hpp"
-
-
+#include "dsemi/util/logger.h"
 
 #include <iostream>
 

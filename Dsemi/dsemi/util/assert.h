@@ -4,7 +4,7 @@
 
 #include <sstream>
 
-#ifdef _DEBUG
+#ifndef NDEBUG
 #define ASSERT(x, msg) if(!(x)) { std::ostringstream oss; oss << "[Info] " << msg << std::endl << std::endl \
                                                               << "[File] " << __FILE__ << std::endl \
                                                               << "[Line] " << __LINE__; \

@@ -1,5 +1,6 @@
 #ifndef HEADER_DSEMI_ECS_COMPONENTFLAG
 #define HEADER_DSEMI_ECS_COMPONENTFLAG
+#include <cstdint>
 
 namespace dsemi {
 	namespace ecs {

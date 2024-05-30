@@ -1,5 +1,7 @@
 #ifndef DSEMI_FONTS_OPENTYPE_TYPES_H
 #define DSEMI_FONTS_OPENTYPE_TYPES_H
+#include <vector>
+#include <cstdint>
 
 namespace dsemi {
 	namespace font_opentypes_tables {

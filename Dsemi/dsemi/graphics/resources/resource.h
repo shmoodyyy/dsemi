@@ -12,7 +12,7 @@ namespace dsemi
 			iresource() {};
 			virtual ~iresource() { release(); };
 			virtual void create(device* device) = 0;
-			virtual void release() = 0;
+			virtual void release() {};
 		protected:
 			inline device* get_device() { return _device; }
 			device* _device;

@@ -1,5 +1,4 @@
-#include "dspch.h"
-#include "dsemi/scene/scene.h"
+#include "scene.h"
 
 namespace dsemi {
 	scene::scene()

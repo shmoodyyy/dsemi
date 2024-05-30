@@ -1,4 +1,3 @@
-#include "dspch.h"
 #include "polygon2d.h"
 
 void render_polygon2d(polygon2d* poly_component, dsemi::graphics::device* gfx)

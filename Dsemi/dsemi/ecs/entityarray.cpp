@@ -1,4 +1,3 @@
-#include "dspch.h"
 #include "dsemi/ecs/entityarray.h"
 
 namespace dsemi {

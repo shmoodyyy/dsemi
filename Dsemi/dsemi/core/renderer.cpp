@@ -1,5 +1,3 @@
-#include "dspch.h"
-
 #include "dsemi/graphics/renderer.h"
 
 #include "dsemi/core/window.h"

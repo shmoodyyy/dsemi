@@ -1,9 +1,9 @@
 #ifndef DSEMI_FONTS_OPENTYPE_H
 #define DSEMI_FONTS_OPENTYPE_H
-
-#include "Dsemi/fonts/opentype_tables.h"
-
+#include "dsemi/fonts/opentype_tables.h"
 #include "dsemi/util/binaryreader.h"
+#include <unordered_map>
+#include <string>
 
 namespace dsemi {
 

@@ -1,9 +1,8 @@
-#include "dspch.h"
 #include "dsemi/graphics/device.h"
 
 #include "dsemi/core/application.h"
 #include "dsemi/core/window.h"
-#include "dsemi/util/logger.hpp"
+#include "dsemi/util/logger.h"
 
 namespace dsemi 
 {

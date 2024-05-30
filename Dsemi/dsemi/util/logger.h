@@ -34,7 +34,6 @@ namespace dsemi {
 		{
 			if (log_level < _log_level)
 				return;
-
 			std::async(_on_new_log, msg, log_level);
 		}
 

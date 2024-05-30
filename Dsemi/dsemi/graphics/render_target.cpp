@@ -1,4 +1,3 @@
-#include "dspch.h"
 #include "dsemi/graphics/render_target.h"
 
 namespace dsemi {

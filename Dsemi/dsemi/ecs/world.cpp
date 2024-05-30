@@ -1,5 +1,5 @@
-#include "dspch.h"
 #include "dsemi/ecs/world.h"
+#include "dsemi/util/assert.h"
 
 namespace dsemi {
 	namespace ecs {

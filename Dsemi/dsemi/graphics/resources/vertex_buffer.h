@@ -2,6 +2,7 @@
 #include "dsemi/graphics/api_include.h"
 #include "dsemi/graphics/resources/resource.h"
 #include "dsemi/graphics/bindable.h"
+#include "dsemi/util/assert.h"
 #include <vector>
 #include <utility>
 
@@ -141,7 +142,7 @@ namespace dsemi
 			{
 				ASSERT(index > 0 && index < _layout.get_element_count(), "Index out of range");
 
-				ASSERT(_layout.get_by_index(index).get_size() == sizeof(T * values.size()), "Vertex parameter input memory size mismatch. \n [SEMANTIC: " + _layout.get_by_index(index).get_semantic() + "]");
+				ASSERT(_layout.get_by_index(index).get_size() == sizeof(T) * values.size(), "Vertex parameter input memory size mismatch. \n [SEMANTIC: " + _layout.get_by_index(index).get_semantic() + "]");
 				*(T**)_element_pointers[_layout.get_by_index(index).get_offset()] = values.begin();
 			}
 
@@ -151,7 +152,7 @@ namespace dsemi
 			void set_by_index(size_t index, param_first&& first, param_rest&&... rest)
 			{
 				set_by_index(index, std::forward<param_first>(first));
-				set_by_index(index + 1, std::forward<param_rest>(rest...));
+				set_by_index(index + 1, std::forward<param_rest>(rest)...);
 			}
 			/*template<typename T>
 			void set_by_index(size_t index, T&& value)
@@ -224,7 +225,6 @@ namespace dsemi
 			//vertex_view operator[](size_t i);
 
 		protected:
-
 
 		private:
 			uint32_t		_stride;

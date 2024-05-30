@@ -1,4 +1,3 @@
-#include "dspch.h"
 #include "dsemi/ui/frame.h"
 
 namespace dsemi {

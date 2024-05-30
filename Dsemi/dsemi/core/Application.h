@@ -12,7 +12,7 @@
 #include "Dsemi/graphics/graphics.h"
 
 #include "dsemi/util/assert.h"
-#include "dsemi/util/logger.hpp"
+#include "dsemi/util/logger.h"
 #include "dsemi/util/timer.h"
 
 #define WND dsemi::window::get_wnd()

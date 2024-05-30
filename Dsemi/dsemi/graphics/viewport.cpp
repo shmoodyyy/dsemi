@@ -1,4 +1,3 @@
-#include "dspch.h"
 #include "dsemi/graphics/viewport.h"
 
 namespace dsemi 

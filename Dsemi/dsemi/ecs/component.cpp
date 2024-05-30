@@ -1,4 +1,3 @@
-#include "dspch.h"
 #include "Dsemi/ecs/Component.h"
 
 namespace dsemi {

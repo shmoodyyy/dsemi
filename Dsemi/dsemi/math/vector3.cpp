@@ -1,7 +1,11 @@
-#include "dspch.h"
-
 #include "dsemi/math/vector3f.h"
 #include "dsemi/graphics/directx/dxinclude.h"
+#include <cmath>
+
+namespace
+{
+    constexpr float c_pi = 3.1415926535897932384626433832795028841971693993751058209749445923078164062;
+}
 
 namespace dsemi {
 	// Constructors
@@ -54,7 +58,7 @@ namespace dsemi {
 
 	float vector3f::angle_to(const vector3f& other) const noexcept
 	{
-		return acos( this->dot(other) / (this->magnitude() * other.magnitude()) ) / (M_PI * 2.0f) * 360.0f;
+		return std::acos( this->dot(other) / (this->magnitude() * other.magnitude()) ) / (c_pi * 2.0f) * 360.0f;
 	}
 
 	float vector3f::distance(const vector3f& other) const noexcept

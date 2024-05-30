@@ -1,4 +1,4 @@
-﻿#include <iostream>
+﻿#include <dsemi/Dsemi.h>
 #include "scenes/testscene2d.h"
 #include <dsemi/graphics/color.h>
 #include <dsemi/graphics/api_include.h>
@@ -8,7 +8,6 @@
 
 // temporary includes for writing the graphics abstractions
 #include <dsemi/graphics/render_target.h>
-
 
 class DevApp : public dsemi::application
 {

@@ -1,10 +1,6 @@
-// Dsemi.h -- Used by external Applications for Entrypoint
-#pragma once
+#ifndef DSEMI_ROOT_HEADER
+#define DSEMI_ROOT_HEADER
 
-// Library dependencies
-#pragma comment(lib, "d3d11.lib")
-#pragma comment(lib, "d3dcompiler.lib")
-#pragma comment(lib, "d2d1")
-#pragma comment(lib, "dwrite")
+#include "dsemi/core/Application.h"
 
-
+#endif

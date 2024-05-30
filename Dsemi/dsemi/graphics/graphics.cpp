@@ -1,7 +1,6 @@
-#include "dspch.h"
 #include "dsemi/graphics/graphics.h"
 
-#include "dsemi/util/logger.hpp"
+#include "dsemi/util/logger.h"
 
 namespace dsemi {
 	namespace graphics {

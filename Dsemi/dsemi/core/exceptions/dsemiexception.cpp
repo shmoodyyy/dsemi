@@ -1,8 +1,6 @@
-#include "dspch.h"
-
-#include "Dsemi/Core/DsemiWindows.h"
-
-#include "Dsemi/Core/Exceptions/DsemiException.h"
+#include "dsemi/core/dsemiwindows.h"
+#include "dsemiexception.h"
+#include <sstream>
 
 namespace dsemi {
 

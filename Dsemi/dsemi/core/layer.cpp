@@ -1,5 +1,3 @@
-#include "dspch.h"
-
 #include "Dsemi/Events/Event.h"
 
 #include "Dsemi/Core/Layer.h"

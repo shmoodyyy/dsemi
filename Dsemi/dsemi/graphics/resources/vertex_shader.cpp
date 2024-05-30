@@ -1,5 +1,4 @@
-#include "dspch.h"
-#include "Dsemi/graphics/resources/vertex_shader.h"
+#include "dsemi/graphics/resources/vertex_shader.h"
 
 namespace dsemi {
 	namespace graphics {

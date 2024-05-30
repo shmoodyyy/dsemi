@@ -1,6 +1,10 @@
-#include "dspch.h"
-
 #include "dsemi/math/quaternion.h"
+#include <cmath>
+
+namespace
+{
+    constexpr float c_pi = 3.1415926535897932384626433832795028841971693993751058209749445923078164062;
+}
 
 namespace dsemi {
 	// Default unit quaternion
@@ -12,10 +16,10 @@ namespace dsemi {
 	Quaternion::Quaternion(const vector3f& n, float angle)
 	{
 		// Convert from degrees to radians
-		angle = angle / 360 * (float)M_PI * 2;
+		angle = angle / 360 * c_pi * 2;
 
-		w = cos(angle / 2);
-		float s = sin(angle / 2);
+		w = std::cos(angle / 2);
+		float s = std::sin(angle / 2);
 		x = n.x * s;
 		z = n.y * s;
 		y = n.z * s;

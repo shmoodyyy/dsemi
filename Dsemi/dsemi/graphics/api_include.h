@@ -1,6 +1,6 @@
 #pragma once
 
-#include "dsemi/util/logger.hpp"
+#include "dsemi/util/logger.h"
 #define GFX_LOG_PREFIX_API L"[NOAPI] "
 #define GFX_LOG_DEBUG(x)	LOG_DEBUG(GFX_LOG_PREFIX_API x)
 #define GFX_LOG_TRACE(x)	LOG_TRACE(GFX_LOG_PREFIX_API x)

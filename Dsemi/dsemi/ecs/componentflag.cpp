@@ -1,4 +1,3 @@
-#include "dspch.h"
 #include "dsemi/ecs/componentflag.h"
 
 #define min(x, y) (x < y ? x : y)

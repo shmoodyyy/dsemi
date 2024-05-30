@@ -1,7 +1,6 @@
-#include "dspch.h"
 #include "dsemi/graphics/resources/vertex_buffer.h"
 #include "dsemi/graphics/device.h"
-#include "dsemi/util/logger.hpp"
+#include "dsemi/util/logger.h"
 
 namespace dsemi 
 {
