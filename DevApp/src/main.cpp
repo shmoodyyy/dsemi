@@ -207,7 +207,7 @@ private:
 		// =======================================================
 		// input parameters
 		const D3D11_INPUT_ELEMENT_DESC input_elements[] = {
-			{"Position2", 0u, DXGI_FORMAT_R32G32_SINT, 0u, 0u, D3D11_INPUT_PER_VERTEX_DATA, 0u}
+			{"Position", 0u, DXGI_FORMAT_R32G32_SINT, 0u, 0u, D3D11_INPUT_PER_VERTEX_DATA, 0u}
 		};
 		// create in gpu
 		GFX_THROW_FAILED(_dx_device->CreateInputLayout(

@@ -108,10 +108,10 @@ namespace dsemi {
 			}
 			shutdown();
 		}
-		catch (dsemi_exception& e)
+		catch (dsemi_exception* e)
 		{
-            std::cout << e.what() << '\n' << e.type() << '\n';
-			display_except(e.what(), e.type());
+            std::cout << e->what() << '\n' << e->type() << '\n';
+			display_except(e->what(), e->type());
 		}
 		catch (std::exception& e)
 		{
