@@ -17,12 +17,12 @@ namespace dsemi {
 
 		void MapButton(const std::string& button, int key);
 
-		static vector2i GetMousePos() noexcept { return s_mousePos; }
+		static vector2i GetMousePos() { return s_mousePos; }
 		// Replace with buffered shit
-		static vector2i GetMouseDelta() noexcept { return s_mouseDelta;	}
+		static vector2i GetMouseDelta() { return s_mouseDelta;	}
 
-		static bool IsMouseRawInput() noexcept { return s_bRawInput; }
-		static bool SetMouseRawInput(bool bEnable) noexcept { s_bRawInput = bEnable; }
+		static bool IsMouseRawInput() { return s_bRawInput; }
+		static bool SetMouseRawInput(bool bEnable) { s_bRawInput = bEnable; }
 
 	private:
 		static Input* m_Instance;

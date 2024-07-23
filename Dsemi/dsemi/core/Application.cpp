@@ -165,7 +165,7 @@ namespace dsemi {
 		}
 	}
 
-	void application::set_tick_rate(unsigned int tickRate) noexcept
+	void application::set_tick_rate(unsigned int tickRate)
 	{
 		_tick_rate_desired = tickRate;
 		if (tickRate != 0)

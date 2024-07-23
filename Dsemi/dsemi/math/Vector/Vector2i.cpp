@@ -20,31 +20,31 @@ namespace dsemi {
 
 
 	// Properties
-	int vector2i::magnitude() const noexcept
+	int vector2i::magnitude() const
 	{
 		return sqrt(x * x + y * y);
 	}
 
 
 	// Mathematical Functions
-	vector2i vector2i::normalized() const noexcept
+	vector2i vector2i::normalized() const
 	{
 		vector2i out(*this);
 		out = out / out.magnitude();
 		return out;
 	}
 
-	int vector2i::dot(const vector2i& other) const noexcept
+	int vector2i::dot(const vector2i& other) const
 	{
 		return (x * other.x + y * other.y);
 	}
 
-	int vector2i::angle_to(const vector2i& other) const noexcept
+	int vector2i::angle_to(const vector2i& other) const
 	{
 		return std::acos(this->dot(other) / (this->magnitude() * other.magnitude())) / (c_pi * 2.0f) * 360.0f;
 	}
 
-	int vector2i::distance(const vector2i& other) const noexcept
+	int vector2i::distance(const vector2i& other) const
 	{
 		// Essentially doing the same as usual pythagorean bullshit, but due to operator
 		// implementation and magnitude function it can be simply written down like this.
@@ -53,58 +53,58 @@ namespace dsemi {
 
 
 	// Operators
-	vector2i vector2i::operator+(const vector2i& rhs) noexcept
+	vector2i vector2i::operator+(const vector2i& rhs)
 	{
 		int x, y;
 		x = this->x + rhs.x;
 		y = this->y + rhs.y;
 		return vector2i(x, y);
 	}
-	vector2i vector2i::operator-(const vector2i& rhs) noexcept
+	vector2i vector2i::operator-(const vector2i& rhs)
 	{
 		int x, y;
 		x = this->x - rhs.x;
 		y = this->y - rhs.y;
 		return vector2i(x, y);
 	}
-	vector2i vector2i::operator*(const vector2i& rhs) noexcept
+	vector2i vector2i::operator*(const vector2i& rhs)
 	{
 		int x, y;
 		x = this->x * rhs.x;
 		y = this->y * rhs.y;
 		return vector2i(x, y);
 	}
-	vector2i vector2i::operator*(const int& rhs) noexcept
+	vector2i vector2i::operator*(const int& rhs)
 	{
 		int x, y;
 		x = this->x * rhs;
 		y = this->y * rhs;
 		return vector2i(x, y);
 	}
-	vector2i vector2i::operator/(const int& rhs) noexcept
+	vector2i vector2i::operator/(const int& rhs)
 	{
 		int x, y;
 		x = this->x / rhs;
 		y = this->y / rhs;
 		return vector2i(x, y);
 	}
-	vector2i& vector2i::operator+=(const vector2i& rhs) noexcept
+	vector2i& vector2i::operator+=(const vector2i& rhs)
 	{
 		x += rhs.x;
 		y += rhs.y;
 		return *this;
 	}
-	vector2i& vector2i::operator-=(const vector2i& rhs) noexcept
+	vector2i& vector2i::operator-=(const vector2i& rhs)
 	{
 		x -= rhs.x;
 		y -= rhs.y;
 		return *this;
 	}
-	bool vector2i::operator==(const vector2i& rhs) const noexcept
+	bool vector2i::operator==(const vector2i& rhs) const
 	{
 		return (x == rhs.x && y == rhs.y);
 	}
-	bool vector2i::operator!=(const vector2i& rhs) const noexcept
+	bool vector2i::operator!=(const vector2i& rhs) const
 	{
 		return !(*this == rhs);
 	}

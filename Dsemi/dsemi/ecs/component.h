@@ -11,7 +11,7 @@ namespace dsemi {
 		struct icomponent_base {
 			size_t EntityID = ECS_INVALID_ENTITY;
 
-			static const size_t CountComponentTypes() noexcept {
+			static const size_t CountComponentTypes() {
 				return icomponent_base::s_nextComponentID;
 			}
 
@@ -26,7 +26,7 @@ namespace dsemi {
 		template<typename T>
 		struct icomponent : public icomponent_base {
 			using icomponent_base::icomponent_base;
-			//virtual inline const size_t GetID() const noexcept override { return ID; }
+			//virtual inline const size_t GetID() const override { return ID; }
 			static const size_t ID;
 			static const size_t size;
 		};

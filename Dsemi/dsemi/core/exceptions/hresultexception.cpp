@@ -9,7 +9,7 @@ namespace dsemi {
 	{
 	}
 
-	const char* hresult_exception::what() const noexcept
+	const char* hresult_exception::what() const
 	{
 		std::ostringstream oss;
 		oss << type() << '\n'
@@ -20,12 +20,12 @@ namespace dsemi {
 		return _what_buf.c_str();
 	}
 
-	const char* hresult_exception::type() const noexcept
+	const char* hresult_exception::type() const
 	{
 		return _type.c_str();
 	}
 
-	std::string hresult_exception::translate_error_code(HRESULT hr) const noexcept
+	std::string hresult_exception::translate_error_code(HRESULT hr) const
 	{
 		char* msg_buf = nullptr;
 		DWORD msg_len = FormatMessageA(
@@ -47,12 +47,12 @@ namespace dsemi {
 		return msg_string;
 	}
 
-	HRESULT hresult_exception::error_code() const noexcept
+	HRESULT hresult_exception::error_code() const
 	{
 		return _hr;
 	}
 
-	std::string hresult_exception::error_string() const noexcept
+	std::string hresult_exception::error_string() const
 	{
 		return translate_error_code(_hr);
 	}

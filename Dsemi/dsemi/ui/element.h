@@ -21,7 +21,7 @@ namespace dsemi {
 		void render(const vector2f& parent_offset);
 
 		void add_child(ui_element* element);
-		const std::vector<ui_element*>& get_children() const noexcept { return _children; }
+		const std::vector<ui_element*>& get_children() const { return _children; }
 
 	public:
 		vector2f offset;

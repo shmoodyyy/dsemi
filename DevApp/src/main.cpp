@@ -1,6 +1,7 @@
 ﻿#include <dsemi/Dsemi.h>
 #include "scenes/testscene2d.h"
 #include <dsemi/graphics/color.h>
+#include <dsemi/graphics/render2d.h>
 #include <dsemi/graphics/api_include.h>
 #include <dsemi/graphics/color.h>
 
@@ -21,7 +22,6 @@ public:
 	}
 
 private:
-
 	virtual void _on_init() override
 	{
 		active_scene = &_test_scene;

@@ -13,7 +13,7 @@ namespace dsemi {
 
 		}
 
-		/*ID3D11RenderTargetView* render_target::get_view() noexcept
+		/*ID3D11RenderTargetView* render_target::get_view()
 		{
 			return _dx_render_target_view.Get();
 		}*/

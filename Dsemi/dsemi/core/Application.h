@@ -50,9 +50,9 @@ namespace dsemi {
 		bool do_tick();
 
 	public:
-		void set_tick_rate(unsigned int tickRate) noexcept;
-		inline unsigned int get_tick_rate() const noexcept { return _tick_rate_desired;	}
-		inline float get_tick_rate_actual() const noexcept { return _tick_rate_actual; }
+		void set_tick_rate(unsigned int tickRate);
+		inline unsigned int get_tick_rate() const { return _tick_rate_desired;	}
+		inline float get_tick_rate_actual() const { return _tick_rate_actual; }
 
 
 		// custom behaviour for update, event and render calls

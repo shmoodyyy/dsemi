@@ -16,7 +16,7 @@ namespace dsemi
 				: bindable(device), _dx_buffer(nullptr) 
 			{}
 
-			virtual void bind() const noexcept override;
+			virtual void bind() const override;
 
 		private:
 			ID3D11Buffer* _dx_buffer;

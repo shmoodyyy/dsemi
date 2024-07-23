@@ -38,11 +38,11 @@ namespace dsemi {
 	{
 		close();
 	}
-	void window::set_focus(bool value) noexcept
+	void window::set_focus(bool value)
 	{
 		_focused = value;
 	}
-	void window::set_event_callback(event_callback_fn&& callback) noexcept
+	void window::set_event_callback(event_callback_fn&& callback)
 	{
 		_data.event_callback = callback;
 	}

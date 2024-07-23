@@ -77,12 +77,12 @@ namespace dsemi
 				// equivalent to the application lifetime
 				element() = default;
 				element(const std::string& semantic, shader_data_type type);
-				const std::string& get_semantic()    const noexcept { return _semantic; }
-				shader_data_type         get_type()        const noexcept { return _type; }
+				const std::string& get_semantic()    const { return _semantic; }
+				shader_data_type         get_type()        const { return _type; }
 				// returns size_t in bytes
-				size_t                   get_size()        const noexcept { return _size; }
-				size_t                   get_offset()      const noexcept { return _offset; }
-				D3D11_INPUT_ELEMENT_DESC get_d3d_element() const noexcept;
+				size_t                   get_size()        const { return _size; }
+				size_t                   get_offset()      const { return _offset; }
+				D3D11_INPUT_ELEMENT_DESC get_d3d_element() const;
 
 			private:
 				std::string      _semantic;
@@ -97,15 +97,15 @@ namespace dsemi
 			vertex_layout& append(const std::string& semantic, shader_data_type type);
 
 			// vertex size in bytes
-			size_t                                get_stride() const noexcept { return _stride; }
-			size_t                                get_element_count() const noexcept { return _elements.size(); }
-			std::vector<D3D11_INPUT_ELEMENT_DESC> get_d3d_layout() const noexcept;
+			size_t                                get_stride() const { return _stride; }
+			size_t                                get_element_count() const { return _elements.size(); }
+			std::vector<D3D11_INPUT_ELEMENT_DESC> get_d3d_layout() const;
 
 			const element& get_by_index(size_t i);
 			const element& get_by_semantic(const std::string& semantic);
 
-			std::vector<element>::iterator begin() noexcept { return _elements.begin(); }
-			std::vector<element>::iterator end()   noexcept { return _elements.end(); }
+			std::vector<element>::iterator begin() { return _elements.begin(); }
+			std::vector<element>::iterator end()   { return _elements.end(); }
 
 		private:
 			static element       _invalid_element;
@@ -172,11 +172,11 @@ namespace dsemi
 		public:
 			vertex_array(vertex_layout layout, size_t size = 0u);
 
-			inline char*                get_data()                noexcept { return _bytes.data(); }
-			inline size_t               get_vertex_count()  const noexcept { return _bytes.size() / _layout.get_stride(); }
-			inline size_t               get_vertex_stride() const noexcept { return _layout.get_stride(); };
-			inline size_t               get_byte_width()    const noexcept { return _bytes.size(); };
-			inline const vertex_layout& get_layout()        const noexcept { return _layout; }
+			inline char*                get_data()                { return _bytes.data(); }
+			inline size_t               get_vertex_count()  const { return _bytes.size() / _layout.get_stride(); }
+			inline size_t               get_vertex_stride() const { return _layout.get_stride(); };
+			inline size_t               get_byte_width()    const { return _bytes.size(); };
+			inline const vertex_layout& get_layout()        const { return _layout; }
 
 			template<typename ...param_types>
 			vertex_array& emplace_back(param_types&&... params)
@@ -221,7 +221,7 @@ namespace dsemi
 			inline size_t get_count() { return _count; }
 			//inline size_t get_byte_width()
 
-			inline virtual void bind() const noexcept override;
+			inline virtual void bind() const override;
 			//vertex_view operator[](size_t i);
 
 		protected:

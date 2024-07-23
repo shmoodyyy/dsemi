@@ -4,7 +4,7 @@
 namespace dsemi {
 
 	namespace Random {
-		float Float(float min, float max) noexcept
+		float Float(float min, float max)
 		{
 			std::random_device rng;
 			std::mt19937 gen(rng());
@@ -13,12 +13,12 @@ namespace dsemi {
 			return dis(gen);
 		}
 
-		float Float() noexcept
+		float Float()
 		{
 			return Float(0.0f, 1.0f);
 		}
 
-		float NormalFloat(float min, float max) noexcept
+		float NormalFloat(float min, float max)
 		{
 			std::default_random_engine gen;
 			std::normal_distribution<float> dis(min, max);
@@ -26,7 +26,7 @@ namespace dsemi {
 			return dis(gen);
 		}
 
-		float NormalFloat() noexcept
+		float NormalFloat()
 		{
 			return NormalFloat(0.0f, 1.0f);
 		}

@@ -9,8 +9,8 @@ namespace dsemi {
 	public:
 		// Per-Tag Timers
 		Timer();
-		float Peek() const noexcept;
-		float Mark() noexcept;
+		float Peek() const;
+		float Mark();
 
 	private:
 		std::chrono::steady_clock::time_point last;

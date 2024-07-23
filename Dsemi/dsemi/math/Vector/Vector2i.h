@@ -9,25 +9,25 @@ namespace dsemi {
 		vector2i(int x, int y);
 
 		// Properties of vector
-		int magnitude() const noexcept;
+		int magnitude() const;
 
 		// Mathematical functions
-		vector2i normalized() const noexcept;
-		int dot(const vector2i& other) const noexcept;
-		int angle_to(const vector2i& other) const noexcept;
-		int distance(const vector2i& other) const noexcept;
+		vector2i normalized() const;
+		int dot(const vector2i& other) const;
+		int angle_to(const vector2i& other) const;
+		int distance(const vector2i& other) const;
 
 		// Operators
-		vector2i operator+(const vector2i& rhs) noexcept;
-		vector2i operator-(const vector2i& rhs) noexcept;
-		vector2i operator*(const vector2i& rhs) noexcept;
-		vector2i operator*(const int& rhs) noexcept;
-		vector2i operator/(const int& rhs) noexcept;
-		vector2i& operator+=(const vector2i& rhs) noexcept;
-		vector2i& operator-=(const vector2i& rhs) noexcept;
+		vector2i operator+(const vector2i& rhs);
+		vector2i operator-(const vector2i& rhs);
+		vector2i operator*(const vector2i& rhs);
+		vector2i operator*(const int& rhs);
+		vector2i operator/(const int& rhs);
+		vector2i& operator+=(const vector2i& rhs);
+		vector2i& operator-=(const vector2i& rhs);
 
-		bool operator==(const vector2i& rhs) const noexcept;
-		bool operator!=(const vector2i& rhs) const noexcept;
+		bool operator==(const vector2i& rhs) const;
+		bool operator!=(const vector2i& rhs) const;
 	public:
 		int x, y;
 	};

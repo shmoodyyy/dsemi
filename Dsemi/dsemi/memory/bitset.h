@@ -17,10 +17,10 @@ namespace dsemi {
 		Bitset(size_t numBits, bool val = false);
 		~Bitset();
 
-		size_t Count() const noexcept;
+		size_t Count() const;
 		void Resize(size_t numBits, bool val = false);
 
-		bool Get(size_t n) const noexcept;
+		bool Get(size_t n) const;
 		void Set(size_t n, bool val = true);
 		void Unset(size_t n);
 

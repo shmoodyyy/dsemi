@@ -25,7 +25,7 @@ namespace dsemi {
 		y = n.z * s;
 	}
 
-	const Quaternion Quaternion::Inverse() const noexcept
+	const Quaternion Quaternion::Inverse() const
 	{
 		Quaternion qOut;
 		qOut.w = w;

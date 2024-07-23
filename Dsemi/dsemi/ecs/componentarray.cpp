@@ -67,7 +67,7 @@ namespace dsemi {
 				free(_allocated);
 		}
 
-		void component_array::insert(size_t entity_id, void* component) noexcept
+		void component_array::insert(size_t entity_id, void* component)
 		{
 			grow(entity_id - 1);
 			char* per_byte_pointer = ((char*)_allocated) + entity_id * _element_size;
@@ -81,14 +81,14 @@ namespace dsemi {
 			}
 		}
 
-		void component_array::insert_new(size_t entity_id, void* component) noexcept
+		void component_array::insert_new(size_t entity_id, void* component)
 		{
 			grow(entity_id - 1);
 			insert(entity_id, component);
 			free(component);
 		}
 
-		void component_array::remove(size_t entity_id) noexcept
+		void component_array::remove(size_t entity_id)
 		{
 			void* element_pointer = at(entity_id);
 			if (!element_pointer)
@@ -100,7 +100,7 @@ namespace dsemi {
 			}
 		}
 
-		void component_array::grow(size_t num_elements) noexcept
+		void component_array::grow(size_t num_elements)
 		{
 			if (num_elements <= _capacity || num_elements == ECS_INVALID_ENTITY) // don't want to grow the array to 2^64 elements, really don't want that
 				return;
@@ -123,7 +123,7 @@ namespace dsemi {
 			_allocated = allocated_new;
 		}
 
-		void* component_array::at(size_t entity_id) noexcept
+		void* component_array::at(size_t entity_id)
 		{
 			if (entity_id > _capacity)
 				return nullptr;
@@ -142,7 +142,7 @@ namespace dsemi {
 			return nullptr;
 		}
 
-		void* component_array::operator[] (size_t i) noexcept
+		void* component_array::operator[] (size_t i)
 		{
 			return at(i);
 		}

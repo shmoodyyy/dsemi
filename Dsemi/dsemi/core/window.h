@@ -23,15 +23,15 @@ namespace dsemi
 		void create(unsigned int width, unsigned int height, const std::wstring& title);
 		void close();
 
-		HWND get_hwnd() const noexcept { return _hwnd; }
+		HWND get_hwnd() const { return _hwnd; }
 
-		inline unsigned int width()  const noexcept { return _data.width; }
-		inline unsigned int height() const noexcept { return _data.height; }
-		bool         has_focus() const noexcept;
-		void         set_focus(bool value) noexcept;
-		void         set_event_callback(event_callback_fn&& callback) noexcept;
+		inline unsigned int width()  const { return _data.width; }
+		inline unsigned int height() const { return _data.height; }
+		bool         has_focus() const;
+		void         set_focus(bool value);
+		void         set_event_callback(event_callback_fn&& callback);
 
-		bool is_fullscreen() const noexcept;
+		bool is_fullscreen() const;
 		void set_fullscreen(unsigned int monitor = 0u, bool val = false);
 
 	private:
@@ -65,9 +65,9 @@ namespace dsemi
 		class win32_window_class
 		{
 		public:
-			//inline static WNDCLASSEX get_wnd_class() noexcept { return _instance._hinstance; };
-			inline static const wchar_t* get_name()      noexcept { return _win32_window_class_name; }
-			inline static HINSTANCE      get_hinstance() noexcept { return _instance._hinstance; };
+			//inline static WNDCLASSEX get_wnd_class() { return _instance._hinstance; };
+			inline static const wchar_t* get_name()      { return _win32_window_class_name; }
+			inline static HINSTANCE      get_hinstance() { return _instance._hinstance; };
 
 		private:
 			win32_window_class();

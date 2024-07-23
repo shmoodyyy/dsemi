@@ -56,9 +56,9 @@ namespace dsemi {
 
 
 		public:
-			IDXGIFactory*        get_dx_factory() const noexcept { return _dxgi_factory; };
-			ID3D11Device*        get_dx_device() const noexcept  { return _dx_device.Get(); }
-			ID3D11DeviceContext* get_context() const noexcept { return _dx_context.Get(); }
+			IDXGIFactory*        get_dx_factory() const { return _dxgi_factory; };
+			ID3D11Device*        get_dx_device() const  { return _dx_device.Get(); }
+			ID3D11DeviceContext* get_context() const { return _dx_context.Get(); }
 
 		private:
 			IDXGIFactory* _get_dxgi_factory();

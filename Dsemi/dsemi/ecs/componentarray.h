@@ -20,18 +20,18 @@ namespace dsemi {
 
 			~component_array();
 
-			inline bool is_valid() const noexcept {
+			inline bool is_valid() const {
 				return _assigned_id != ECS_INVALID_COMPONENT;
 			}
 
-			void insert(size_t entity_id, void* component) noexcept;
-			void insert_new(size_t entity_id, void* component) noexcept;
-			void remove(size_t entity_id) noexcept;
+			void insert(size_t entity_id, void* component);
+			void insert_new(size_t entity_id, void* component);
+			void remove(size_t entity_id);
 
-			void grow(size_t num_elements) noexcept;
+			void grow(size_t num_elements);
 
-			void* at(size_t entity_id) noexcept;
-			void* operator[] (size_t i) noexcept;
+			void* at(size_t entity_id);
+			void* operator[] (size_t i);
 
 		private:
 			void* _allocated;

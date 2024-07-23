@@ -51,11 +51,11 @@ namespace dsemi {
 		font_opentype();
 		
 		bool read_file(const std::string& file_path);
-		inline file_read_error get_error_type() const noexcept {
+		inline file_read_error get_error_type() const {
 			return _file_read_error;
 		}
 
-		/*const table_directory& get_table_directory() const noexcept;
+		/*const table_directory& get_table_directory() const;
 		const table_record& get_table_record(const tag& table_tag);*/
 
 	private:

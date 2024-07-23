@@ -17,18 +17,18 @@ namespace dsemi {
 			void resize(size_t numComponents);
 
 			// Per bit access
-			bool get(size_t id) const noexcept;
+			bool get(size_t id) const;
 			void set(size_t id, bool val);
 			void set_element(size_t index, uint64_t val);
 
 			// Comparisons relevant to queries
-			bool matching_all(const component_flag& other)  const noexcept;
-			bool matching_any(const component_flag& other)  const noexcept;
-			bool matching_none(const component_flag& other) const noexcept;
+			bool matching_all(const component_flag& other)  const;
+			bool matching_any(const component_flag& other)  const;
+			bool matching_none(const component_flag& other) const;
 
 			// operator comparison
-			bool operator==(const component_flag& other) const noexcept;
-			bool operator!=(const component_flag& other) const noexcept;
+			bool operator==(const component_flag& other) const;
+			bool operator!=(const component_flag& other) const;
 
 		private:
 			uint64_t* _flags;

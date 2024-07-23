@@ -25,8 +25,8 @@ namespace dsemi {
 		uint8_t blue;
 		uint8_t alpha;
 
-		inline unsigned int get_rgba() const noexcept { return *(int*)(&red); }
-		inline void         set_rgba(unsigned int val) noexcept {
+		inline unsigned int get_rgba() const { return *(int*)(&red); }
+		inline void         set_rgba(unsigned int val) {
 			red		= (val & 0xff000000) >> 24;
 			green	= (val & 0x00ff0000) >> 16;
 			blue	= (val & 0x0000ff00) >> 8;
@@ -56,7 +56,7 @@ namespace dsemi {
 		float alpha;
 
 		// exclusively for DirectX calls that require an array of 4 floats
-		inline float* as_array() noexcept { return &red; }
+		inline float* as_array() { return &red; }
 	};
 }
 

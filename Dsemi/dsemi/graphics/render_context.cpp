@@ -11,18 +11,18 @@ namespace dsemi {
 			ID3D11Device* dx_device = _device->get_dx_device();
 		}
 
-		device* render_context::get_device() const noexcept
+		device* render_context::get_device() const
 		{
 			return _device;
 		}
 
 
-		void render_context::set_render_target(render_target* render_target) noexcept
+		void render_context::set_render_target(render_target* render_target)
 		{
 			_render_target = render_target;
 		}
 
-		//render_target* render_context::get_render_target() const noexcept
+		//render_target* render_context::get_render_target() const
 		//{
 		//	return _render_target;
 		//}
@@ -64,7 +64,7 @@ namespace dsemi {
 				}
 			}*/
 		} // void device::present()
-		ID3D11DeviceContext* render_context::get_dx_context() const noexcept
+		ID3D11DeviceContext* render_context::get_dx_context() const
 		{
 			return _device->get_context();
 		}

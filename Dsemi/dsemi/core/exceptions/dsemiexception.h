@@ -6,19 +6,19 @@
 #define CUSTOM_EXCEPT(comment) dsemi::custom_exception(__LINE__, __FILE__, comment)
 
 namespace dsemi {
-	void display_except(const std::string& text, const std::string& caption) noexcept;
+	void display_except(const std::string& text, const std::string& caption);
 
 	class dsemi_exception : public std::exception
 	{
 	public:
-		dsemi_exception(int line, const char* file) noexcept;
+		dsemi_exception(int line, const char* file);
 
-		virtual const char* what() const noexcept override;
-		virtual const char* type() const noexcept;
+		virtual const char* what() const override;
+		virtual const char* type() const;
 
-		int line() const noexcept;
-		const std::string& file() const noexcept;
-		std::string origin_string() const noexcept;
+		int line() const;
+		const std::string& file() const;
+		std::string origin_string() const;
 
 	private:
 		int _line;
@@ -33,10 +33,10 @@ namespace dsemi {
 	public:
 		custom_exception(int line, const char* file, const char* comment);
 
-		virtual const char* what() const noexcept override;
-		virtual const char* type() const noexcept override;
+		virtual const char* what() const override;
+		virtual const char* type() const override;
 
-		const std::string& comment() const noexcept;
+		const std::string& comment() const;
 
 	private:
 		std::string _comment;

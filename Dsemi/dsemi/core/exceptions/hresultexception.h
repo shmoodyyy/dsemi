@@ -21,12 +21,12 @@ namespace dsemi {
 	public:
 		hresult_exception(int line, const char* file, HRESULT hr, const char* type = "HRESULT Failure Exception.");
 
-		virtual const char* what() const noexcept override;
-		virtual const char* type() const noexcept override;
+		virtual const char* what() const override;
+		virtual const char* type() const override;
 
-		HRESULT error_code() const noexcept;
-		std::string error_string() const noexcept;
-		std::string translate_error_code(HRESULT hr) const noexcept;
+		HRESULT error_code() const;
+		std::string error_string() const;
+		std::string translate_error_code(HRESULT hr) const;
 
 	private:
 		std::string _type;

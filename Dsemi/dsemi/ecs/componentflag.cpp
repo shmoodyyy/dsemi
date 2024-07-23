@@ -63,7 +63,7 @@ namespace dsemi {
 			delete[] _flags;
 		}
 
-		bool component_flag::get(size_t id) const noexcept
+		bool component_flag::get(size_t id) const
 		{
 			return id < (_size* _element_bit_size) ? (_flags[id / _element_bit_size] & (1 << id % _element_bit_size)) : false;
 		}
@@ -107,7 +107,7 @@ namespace dsemi {
 			_size = _sizeNew;
 		}
 
-		bool component_flag::matching_all(const component_flag& filter) const noexcept {
+		bool component_flag::matching_all(const component_flag& filter) const {
 			for (size_t i = 0; i < min(_size, filter._size); i++)
 			{
 				if ((_flags[i] & filter._flags[i]) != filter._flags[i]) // not all required bits found
@@ -124,7 +124,7 @@ namespace dsemi {
 			return true;
 		}
 
-		bool component_flag::matching_any(const component_flag& filter) const noexcept {
+		bool component_flag::matching_any(const component_flag& filter) const {
 			for (size_t i = 0; i < min(_size, filter._size); i++)
 			{
 				if ((_flags[i] & filter._flags[i]) != 0) // atleast one bit matched
@@ -133,11 +133,11 @@ namespace dsemi {
 			return false;
 		}
 
-		bool component_flag::matching_none(const component_flag& filter) const noexcept {
+		bool component_flag::matching_none(const component_flag& filter) const {
 			return !matching_any(filter);
 		}
 
-		bool component_flag::operator==(const component_flag& other) const noexcept
+		bool component_flag::operator==(const component_flag& other) const
 		{
 			for (size_t i = 0; i < min(_size, other._size); i++)
 			{
@@ -163,7 +163,7 @@ namespace dsemi {
 			return true;
 		}
 
-		bool component_flag::operator!=(const component_flag& other) const noexcept
+		bool component_flag::operator!=(const component_flag& other) const
 		{
 			return !(*this == other);
 		}

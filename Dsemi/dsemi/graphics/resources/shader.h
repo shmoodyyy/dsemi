@@ -13,7 +13,7 @@ namespace dsemi
 			ishader(device* device) : bindable(device) {}
 			virtual ~ishader() = default;
 
-			//virtual void bind() const noexcept = 0;
+			//virtual void bind() const = 0;
 
 
 		protected:
@@ -27,7 +27,7 @@ namespace dsemi
 		public:
 			vertex_shader(device* device) : ishader(device) {}
 
-			virtual void bind() const noexcept override;
+			virtual void bind() const override;
 
 
 		private:

@@ -21,7 +21,7 @@ namespace dsemi {
 		delete[] pBits;
 	}
 
-	size_t Bitset::Count() const noexcept 
+	size_t Bitset::Count() const 
 	{
 		return bitCount;
 	}
@@ -51,7 +51,7 @@ namespace dsemi {
 		bitCount = numBits;
 	}
 
-	bool Bitset::Get(size_t n) const noexcept {
+	bool Bitset::Get(size_t n) const {
 		return n < bitCount ? pBits[n] : false;
 	}
 

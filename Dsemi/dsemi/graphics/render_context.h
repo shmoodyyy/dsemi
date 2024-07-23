@@ -19,10 +19,10 @@ namespace dsemi {
 		public:
 			render_context(device* device);
 
-			void set_render_target(render_target* render_target) noexcept;
-			render_target* get_render_target() const noexcept;
+			void set_render_target(render_target* render_target);
+			render_target* get_render_target() const;
 
-			device* get_device() const noexcept;
+			device* get_device() const;
 
 			void set_clear_color(float r, float g, float b, float a);
 			void set_clear_color(color32 rgba);
@@ -36,7 +36,7 @@ namespace dsemi {
 			void end();
 
 		public:
-			ID3D11DeviceContext* get_dx_context() const noexcept;
+			ID3D11DeviceContext* get_dx_context() const;
 
 		protected:
 			device* _device;

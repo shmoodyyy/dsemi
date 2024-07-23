@@ -4,18 +4,18 @@
 
 namespace dsemi {
 
-	void display_except(const std::string& text, const std::string& caption) noexcept
+	void display_except(const std::string& text, const std::string& caption)
 	{
 		MessageBoxA(nullptr, text.c_str(), caption.c_str(), MB_OK | MB_ICONEXCLAMATION);
 	}
 
-	dsemi_exception::dsemi_exception(int line, const char* file) noexcept
+	dsemi_exception::dsemi_exception(int line, const char* file)
 		:_line(line), _file(file)
 	{
 
 	}
 
-	const char* dsemi_exception::what() const noexcept
+	const char* dsemi_exception::what() const
 	{
 		std::ostringstream oss;
 		oss << type() << std::endl
@@ -24,22 +24,22 @@ namespace dsemi {
 		return _what_buf.c_str();
 	}
 
-	const char* dsemi_exception::type() const noexcept
+	const char* dsemi_exception::type() const
 	{
 		return "Default Dsemi Exception";
 	}
 
-	int dsemi_exception::line() const noexcept
+	int dsemi_exception::line() const
 	{
 		return _line;
 	}
 
-	const std::string& dsemi_exception::file() const noexcept
+	const std::string& dsemi_exception::file() const
 	{
 		return _file;
 	}
 
-	std::string dsemi_exception::origin_string() const noexcept
+	std::string dsemi_exception::origin_string() const
 	{
 		std::ostringstream oss;
 		oss << "[File] " << _file << std::endl
@@ -52,7 +52,7 @@ namespace dsemi {
 	{
 	}
 
-	const char* custom_exception::what() const noexcept
+	const char* custom_exception::what() const
 	{
 		std::ostringstream oss;
 		oss << type() << std::endl
@@ -62,12 +62,12 @@ namespace dsemi {
 		return _what_buf.c_str();
 	}
 
-	const char* custom_exception::type() const noexcept
+	const char* custom_exception::type() const
 	{
 		return "Default Custom Exception";
 	}
 
-	const std::string& custom_exception::comment() const noexcept
+	const std::string& custom_exception::comment() const
 	{
 		return _comment;
 	}

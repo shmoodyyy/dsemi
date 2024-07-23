@@ -8,7 +8,7 @@ namespace dsemi {
 	public:
 		Quaternion();
 		Quaternion(const vector3f& n, float angle);
-		const Quaternion Inverse() const noexcept;
+		const Quaternion Inverse() const;
 	public:
 		float w, x, y, z;
 	};

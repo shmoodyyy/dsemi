@@ -20,27 +20,27 @@ namespace dsemi {
 
 
 	// Properties
-	float vector3f::magnitude() const noexcept
+	float vector3f::magnitude() const
 	{
 		return sqrt(x*x + y*y + z*z);
 	}
 
 
 	// Mathematical Functions
-	vector3f vector3f::normalized() const noexcept
+	vector3f vector3f::normalized() const
 	{
 		vector3f out(*this);
 		out = out / out.magnitude();
 		return out;
 	}
 
-	vector3f& vector3f::normalize() noexcept
+	vector3f& vector3f::normalize()
 	{
 		*this = this->normalized();
 		return *this;
 	}
 
-	vector3f vector3f::cross(const vector3f & other) const noexcept
+	vector3f vector3f::cross(const vector3f & other) const
 	{
 		vector3f cross;
 
@@ -51,17 +51,17 @@ namespace dsemi {
 		return cross;
 	}
 
-	float vector3f::dot(const vector3f& other) const noexcept
+	float vector3f::dot(const vector3f& other) const
 	{
 		return (x * other.x + y * other.y + z * other.z);
 	}
 
-	float vector3f::angle_to(const vector3f& other) const noexcept
+	float vector3f::angle_to(const vector3f& other) const
 	{
 		return std::acos( this->dot(other) / (this->magnitude() * other.magnitude()) ) / (c_pi * 2.0f) * 360.0f;
 	}
 
-	float vector3f::distance(const vector3f& other) const noexcept
+	float vector3f::distance(const vector3f& other) const
 	{
 		// Essentially doing the same as usual pythagorean bullshit, but due to operator
 		// implementation and magnitude function it can be simply written down like this.
@@ -73,7 +73,7 @@ namespace dsemi {
 
 	// Vector-Vector arithmetics
 
-	vector3f operator+(const vector3f& lhs, const vector3f& rhs) noexcept
+	vector3f operator+(const vector3f& lhs, const vector3f& rhs)
 	{
 		float x, y, z;
 		x = lhs.x + rhs.x;
@@ -81,7 +81,7 @@ namespace dsemi {
 		z = lhs.z + rhs.z;
 		return vector3f(x, y, z);
 	}
-	vector3f operator-(const vector3f& lhs, const vector3f& rhs) noexcept
+	vector3f operator-(const vector3f& lhs, const vector3f& rhs)
 	{
 		float x, y, z;
 		x = lhs.x - rhs.x;
@@ -89,7 +89,7 @@ namespace dsemi {
 		z = lhs.z - rhs.z;
 		return vector3f(x, y, z);
 	}
-	vector3f operator*(const vector3f& lhs, const vector3f& rhs) noexcept
+	vector3f operator*(const vector3f& lhs, const vector3f& rhs)
 	{
 		float x, y, z;
 		x = lhs.x * rhs.x;
@@ -97,7 +97,7 @@ namespace dsemi {
 		z = lhs.z * rhs.z;
 		return vector3f(x,y,z);
 	}
-	vector3f operator/(const vector3f& lhs, const vector3f& rhs) noexcept
+	vector3f operator/(const vector3f& lhs, const vector3f& rhs)
 	{
 		float x, y, z;
 		x = lhs.x / rhs.x;
@@ -108,7 +108,7 @@ namespace dsemi {
 
 	// Vector-Float arithmetics
 
-	vector3f operator*(const vector3f& lhs, const float& rhs) noexcept
+	vector3f operator*(const vector3f& lhs, const float& rhs)
 	{
 		float x, y, z;
 		x = lhs.x * rhs;
@@ -116,7 +116,7 @@ namespace dsemi {
 		z = lhs.z * rhs;
 		return vector3f(x, y, z);
 	}
-	vector3f operator/(const vector3f& lhs, const float& rhs) noexcept
+	vector3f operator/(const vector3f& lhs, const float& rhs)
 	{
 		float x, y, z;
 		x = lhs.x / rhs;
@@ -124,25 +124,25 @@ namespace dsemi {
 		z = lhs.z / rhs;
 		return vector3f(x, y, z);
 	}
-	vector3f& vector3f::operator+=(const vector3f& rhs) noexcept
+	vector3f& vector3f::operator+=(const vector3f& rhs)
 	{
 		x += rhs.x;
 		y += rhs.y;
 		z += rhs.z;
 		return *this;
 	}
-	vector3f& vector3f::operator-=(const vector3f& rhs) noexcept
+	vector3f& vector3f::operator-=(const vector3f& rhs)
 	{
 		x -= rhs.x;
 		y -= rhs.y;
 		z -= rhs.z;
 		return *this;
 	}
-	bool vector3f::operator==(const vector3f& rhs) const noexcept
+	bool vector3f::operator==(const vector3f& rhs) const
 	{
 		return (x == rhs.x && y == rhs.y && z == rhs.z);
 	}
-	bool vector3f::operator!=(const vector3f& rhs) const noexcept
+	bool vector3f::operator!=(const vector3f& rhs) const
 	{
 		return !(*this == rhs);
 	}

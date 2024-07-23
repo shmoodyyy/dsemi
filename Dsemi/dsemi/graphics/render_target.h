@@ -19,7 +19,7 @@ namespace dsemi
 
 
 
-			//inline ID3D11RenderTargetView const* get_view() noexcept { return _dx_render_target_view.Get(); }
+			//inline ID3D11RenderTargetView const* get_view() { return _dx_render_target_view.Get(); }
 
 		public:
 			colorf clear_color;

@@ -6,20 +6,18 @@ namespace dsemi
 {
 	namespace graphics
 	{
-		// ------------------------------------------------------
-		// vertex_layout::element implementation
-		//
-		vertex_layout::element::element(const std::string& semantic, shader_data_type type)
-			:_semantic(semantic), _type(type), _size(0u)
+		vertex_layout::element::element(std::string semantic, shader_data_type type)
+			: _semantic(std::move(semantic))
+            , _type(type)
+            , _size(0u)
 		{
 			_size = shader_data_type_size(type);
 		}
 
-		D3D11_INPUT_ELEMENT_DESC vertex_layout::element::get_d3d_element() const noexcept
+		D3D11_INPUT_ELEMENT_DESC vertex_layout::element::get_d3d_element() const
 		{
 			// TODO: add support for same semantics with
 			// different indices
-			//
 			D3D11_INPUT_ELEMENT_DESC out = {0};
 			out.SemanticName             = _semantic.c_str();
 			out.SemanticIndex            = 0u;
@@ -65,7 +63,7 @@ namespace dsemi
 			}
 		}
 
-		std::vector<D3D11_INPUT_ELEMENT_DESC> vertex_layout::get_d3d_layout() const noexcept
+		std::vector<D3D11_INPUT_ELEMENT_DESC> vertex_layout::get_d3d_layout() const
 		{
 			std::vector<D3D11_INPUT_ELEMENT_DESC> out;
 			for (auto element : _elements)
@@ -178,7 +176,7 @@ namespace dsemi
 			GFX_LOG_DEBUG(L"released graphics::vertex_buffer");
 		}
 
-		void vertex_buffer::bind() const noexcept
+		void vertex_buffer::bind() const
 		{
 			_get_device()->get_context()->IASetVertexBuffers(0u, 1u, &this->_dx_buffer, &this->_stride, &_offset);
 			GFX_LOG_DEBUG(L"bound graphics::vertex_buffer to pipeline");
