@@ -76,7 +76,7 @@ namespace dsemi
 				// values might end up floating around in memory with a lifetime
 				// equivalent to the application lifetime
 				element() = default;
-				element(const std::string& semantic, shader_data_type type);
+				element(std::string semantic, shader_data_type type);
 				const std::string& get_semantic()    const { return _semantic; }
 				shader_data_type         get_type()        const { return _type; }
 				// returns size_t in bytes

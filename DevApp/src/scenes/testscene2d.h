@@ -7,10 +7,10 @@
 #include "../layers/testlayercore.h"
 #include "../layers/testlayer2d.h"
 
-class test_scene2d : public dsemi::scene
+class TestScene2D : public dsemi::scene
 {
 public:
-	test_scene2d();
+	TestScene2D();
 
 private:
 };

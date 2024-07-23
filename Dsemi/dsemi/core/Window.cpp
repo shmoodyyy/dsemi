@@ -156,7 +156,7 @@ namespace dsemi {
 		case WM_KEYDOWN:
 		{
 			key_press_event e_repeat((unsigned int)wParam);
-			key_down_event e((unsigned int)wParam);
+			KeyDownEvent e((unsigned int)wParam);
 			if ((lParam & (1 << 30)) == 0)
 				_data.event_callback(e); // first message for key down
 			_data.event_callback(e_repeat);
@@ -253,7 +253,7 @@ namespace dsemi {
 			// renderContext.UpdateBuffers(vector2f((float)m_Data.Width, (float)m_Data.Height));
 
 			// send event
-			window_resize_event e(_data.width, _data.height);
+			WindowResizeEvent e(_data.width, _data.height);
 			_data.event_callback(e);
 		}
 		break;
@@ -272,20 +272,20 @@ namespace dsemi {
 			// renderContext.UpdateBuffers(vector2f((float)m_Data.Width, (float)m_Data.Height));
 
 			// send event
-			window_resize_event e(_data.width, _data.height);
+			WindowResizeEvent e(_data.width, _data.height);
 			_data.event_callback(e);
 		}
 		break;
 		case WM_CLOSE:
 		{
-			window_close_event e(this);
+			WindowCloseEvent e(this);
 			_data.event_callback(e);
 			close();
 		}
 		break;
 		case WM_QUIT:
 		{
-			window_close_event e(this);
+			WindowCloseEvent e(this);
 			_data.event_callback(e);
 			PostQuitMessage(0);
 		}

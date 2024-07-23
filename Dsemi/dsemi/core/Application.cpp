@@ -16,10 +16,10 @@ namespace dsemi {
 	application* application::_instance = nullptr;
 
 	application::application()
-		:_delta_time(0)
-		,_tick_rate_actual(0)
-		,_tick_rate_desired(0)
-		,_time_per_tick(0)
+		: m_deltaTime(0)
+		, m_tickRateActual(0)
+		, m_tickRateDesired(0)
+		, m_msPerTick(0)
 	{
 		ASSERT(!_instance, "APP: Application Instance already initialized.");
 		if (_instance)
@@ -31,6 +31,7 @@ namespace dsemi {
 
 	application::~application()
 	{
+		onDestroy();
 	}
 
 	void application::init()
@@ -67,7 +68,7 @@ namespace dsemi {
 		// initialize graphics framework
 		graphics::device::initialize();
 
-		set_tick_rate(60u);
+		setTickRate(60u);
 
 		//m_pMainCamera = std::make_shared<Camera3D>();
 
@@ -76,7 +77,7 @@ namespace dsemi {
 		//m_pMainWnd->renderContext.SetCamera(m_pMainCamera.get());
 		
 		// run additional intialization routine
-		_on_init();
+		onInit();
 		LOG_DEBUG(L"dsemi::appliation done initializing.");
 	}
 
@@ -86,7 +87,7 @@ namespace dsemi {
 		try 
 		{
 			MSG msg = {};
-			while (_running)
+			while (m_isRunning)
 			{
 				if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) != 0)
 				{
@@ -95,13 +96,13 @@ namespace dsemi {
 					DispatchMessage(&msg);
 					// TODO: replace with application-level message handling
 					//_main_wnd->dispatch_events();
-					do_events();
+					doEvents();
 				}
 
 				// Update
-				if (do_tick())
+				if (doTick())
 				{
-					do_render();
+					doRender();
 					/*m_pMainWnd->renderContext.NewFrame();
 					m_pMainWnd->renderContext.Present();*/
 				}
@@ -127,35 +128,27 @@ namespace dsemi {
 	void application::shutdown()
 	{
 		logger::stop_logger();
-
-		cleanup();
 	}
 
-	void application::cleanup()
+	void application::doUpdate(const float dt)
 	{
-		// run additional cleanup routine
-		_on_cleanup();
-	}
-
-	void application::do_update(const float dt)
-	{
-		on_update(dt);
-		active_scene->handle_update(dt);
+		onUpdate(dt);
+		m_activeScene->handle_update(dt);
 
 		Input::ResetMouseDelta();
 	}
 
-	bool application::do_tick()
+	bool application::doTick()
 	{
-		_delta_time = _update_timer.Peek();
+		m_deltaTime = m_updateTimer.Peek();
 
-		if (_delta_time >= _time_per_tick)
+		if (m_deltaTime >= m_msPerTick)
 		{	
-			unsigned short numTicks = (unsigned short)std::floor(_delta_time / _time_per_tick); // Get the number of ticks that should have been processed since last frame
+			unsigned short numTicks = (unsigned short)std::floor(m_deltaTime / m_msPerTick); // Get the number of ticks that should have been processed since last frame
 			//m_dt -= m_timePerTick * numTicks;
-			_update_timer.Mark();
+			m_updateTimer.Mark();
 
-			do_update(_delta_time);
+			doUpdate(m_deltaTime);
 			//active_scene->handle_render(_delta_time);
 			return true;
 		}
@@ -165,18 +158,18 @@ namespace dsemi {
 		}
 	}
 
-	void application::set_tick_rate(unsigned int tickRate)
+	void application::setTickRate(unsigned int tickRate)
 	{
-		_tick_rate_desired = tickRate;
+		m_tickRateDesired = tickRate;
 		if (tickRate != 0)
-			_time_per_tick = 1.0f / (float)tickRate;
+			m_msPerTick = 1.0f / (float)tickRate;
 	}
 
-	void application::do_events()
+	void application::doEvents()
 	{
 	}
 
-	void application::do_render()
+	void application::doRender()
 	{
 	}
 
@@ -184,31 +177,31 @@ namespace dsemi {
 	void application::handle_event(ievent& e)
 	{
 		event_dispatcher dispatcher(e);
-		dispatcher.dispatch<window_close_event>(BIND_EVENT(application::_on_window_close));
-		dispatcher.dispatch<window_resize_event>(BIND_EVENT(application::_on_window_resize));
-		dispatcher.dispatch<key_down_event>(BIND_EVENT(application::_on_key_down));
+		dispatcher.dispatch<WindowCloseEvent>(BIND_EVENT(application::onWindowClose));
+		dispatcher.dispatch<WindowResizeEvent>(BIND_EVENT(application::onWindowResize));
+		dispatcher.dispatch<KeyDownEvent>(BIND_EVENT(application::onKeyDown));
 
 		if (!e.handled) {
-			on_event(e);
+			onEvent(e);
 		}
 
-		active_scene->handle_event(e);
+		m_activeScene->handle_event(e);
 	}
 
 	// Event Functions
-	bool application::_on_window_close(window_close_event& e)
+	bool application::onWindowClose(WindowCloseEvent& e)
 	{
 		//_running = false;
 		return false;
 	}
 
-	bool application::_on_window_resize(window_resize_event& e)
+	bool application::onWindowResize(WindowResizeEvent& e)
 	{
 		//pGraphics->OnWindowResize();
 		return false;
 	}
 
-	bool application::_on_key_down(key_down_event& e)
+	bool application::onKeyDown(KeyDownEvent& e)
 	{
 		Input::Instance()->OnKeyDown(e.GetKey());
 		return false;

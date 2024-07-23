@@ -1,6 +1,6 @@
 #include "testscene2d.h"
 
-test_scene2d::test_scene2d()
+TestScene2D::TestScene2D()
 {
 	_layer_stack.push_layer(new test_layer_core());
 	_layer_stack.push_layer(new test_layer_2dgfx(&_entities));

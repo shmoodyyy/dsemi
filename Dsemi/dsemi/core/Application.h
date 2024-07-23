@@ -32,40 +32,39 @@ namespace dsemi {
 		void init();
 		void run();
 		void shutdown();
-		void cleanup();
 
 	protected:
-		virtual void _on_init() {};
-		virtual void _on_cleanup() {};
+		virtual void onInit() {};
+		virtual void onDestroy() {};
 
 		// Application runtime loop functions
 	private:
-		void do_update(const float dt);
-		void do_events();
-		void do_render();
+		void doUpdate(const float dt);
+		void doEvents();
+		void doRender();
 
 
 		// tick-based updates
 	private:
-		bool do_tick();
+		bool doTick();
 
 	public:
-		void set_tick_rate(unsigned int tickRate);
-		inline unsigned int get_tick_rate() const { return _tick_rate_desired;	}
-		inline float get_tick_rate_actual() const { return _tick_rate_actual; }
+		void setTickRate(unsigned int tickRate);
+		inline unsigned int getTickRate() const { return m_tickRateDesired;	}
+		inline float getTickRateActual() const { return m_tickRateActual; }
 
 
 		// custom behaviour for update, event and render calls
 	protected:
-		virtual void on_update(const float dt) {}
-		virtual void on_event(ievent& e) {}
-		virtual void on_render() {}
+		virtual void onUpdate(const float dt) {}
+		virtual void onEvent(ievent& e) {}
+		virtual void onRender() {}
 	private:
-		unsigned int _tick_rate_desired;
-		float        _tick_rate_actual;
-		float        _time_per_tick;
-		float        _delta_time;
-		Timer        _update_timer;
+		unsigned int m_tickRateDesired;
+		float        m_tickRateActual;
+		float        m_msPerTick;
+		float        m_deltaTime;
+		Timer        m_updateTimer;
 
 
 	public: 
@@ -73,19 +72,19 @@ namespace dsemi {
 
 		// scene management
 	public:
-		scene* active_scene;
+		scene* m_activeScene;
 
 		// event functions
 	private:
-		bool _on_window_close(window_close_event& e);
-		bool _on_window_resize(window_resize_event& e);
-		bool _on_key_down(key_down_event& e);
+		bool onWindowClose(WindowCloseEvent& e);
+		bool onWindowResize(WindowResizeEvent& e);
+		bool onKeyDown(KeyDownEvent& e);
 
 	protected: 
-		bool _running = true;
-		int _tick_rate = 60;
+		bool m_isRunning = true;
+		int m_tickRate = 60;
 		
-		std::unique_ptr<window> _main_wnd;
+		std::unique_ptr<window> m_mainWindow;
 
 	private:
 		static application* _instance;

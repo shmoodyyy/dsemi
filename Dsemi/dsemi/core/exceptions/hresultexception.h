@@ -3,6 +3,7 @@
 
 #ifdef _WIN32
 #include "dsemi/core/exceptions/dsemiexception.h"
+#include <winerror.h>
 
 #define HRESULT_EXCEPTION(hr) dsemi::hresult_exception(__LINE__, __FILE__, hr)
 #define HRESULT_EXCEPTION_TYPE(hr, type) dsemi::hresult_exception(__LINE__, __FILE__, hr, type)

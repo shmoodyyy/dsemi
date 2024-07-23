@@ -19,10 +19,10 @@ namespace dsemi {
 		unsigned int _keycode;
 	};
 
-	class key_down_event : public key_event
+	class KeyDownEvent : public key_event
 	{
 	public:
-		key_down_event(unsigned int keycode)
+		KeyDownEvent(unsigned int keycode)
 			: key_event(keycode)
 		{
 		}

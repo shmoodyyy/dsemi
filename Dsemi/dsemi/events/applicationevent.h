@@ -6,10 +6,10 @@
 #include "dsemi/core/window.h"
 
 namespace dsemi {
-	class window_resize_event : public ievent
+	class WindowResizeEvent : public ievent
 	{
 	public:
-		window_resize_event(unsigned int width, unsigned int height)
+		WindowResizeEvent(unsigned int width, unsigned int height)
 			: _width(width), _height(height)
 		{
 		}
@@ -54,10 +54,10 @@ namespace dsemi {
 		float _x, _y;
 	};
 
-	class window_close_event : public ievent
+	class WindowCloseEvent : public ievent
 	{
 	public:
-		window_close_event(window* wnd)
+		WindowCloseEvent(window* wnd)
 			: _wnd(wnd)
 		{
 		}
