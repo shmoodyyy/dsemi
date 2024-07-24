@@ -6,7 +6,7 @@ namespace dsemi {
 
 	class Input
 	{
-		friend class window;
+		friend class Window;
 		friend class application;
 	public:
 		static Input* Instance();

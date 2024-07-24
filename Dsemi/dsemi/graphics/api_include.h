@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DSEMI_GRAPHICS_APIINCLUDE
+#define DSEMI_GRAPHICS_APIINCLUDE
 
 #include "dsemi/util/logger.h"
 #define GFX_LOG_PREFIX_API L"[NOAPI] "
@@ -17,4 +18,5 @@
 
 #else
 
+#endif
 #endif

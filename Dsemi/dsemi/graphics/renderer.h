@@ -4,6 +4,7 @@
 #include "dsemi/graphics/api_include.h"
 #include "dsemi/graphics/color.h"
 #include "dsemi/math/vector2.h"
+#include "device.h"
 
 namespace dsemi 
 {
@@ -44,7 +45,7 @@ namespace dsemi
 
 		private:
 			window* _target_window;
-			device* _device;
+			Device* _device;
 		};
 	}
 }

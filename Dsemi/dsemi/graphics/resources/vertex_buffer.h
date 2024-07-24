@@ -10,7 +10,7 @@ namespace dsemi
 {
 	namespace graphics
 	{
-		class device;
+		class Device;
 
 		// TODO: 
 		// consider possible issues that could come up due to byte padding
@@ -214,7 +214,7 @@ namespace dsemi
 		class vertex_buffer : public bindable
 		{
 		public:
-			vertex_buffer(device* device, vertex_array& vertices, uint32_t offset = 0u);
+			vertex_buffer(Device* device, vertex_array& vertices, uint32_t offset = 0u);
 			~vertex_buffer();
 
 			inline size_t get_stride() { return _stride; }

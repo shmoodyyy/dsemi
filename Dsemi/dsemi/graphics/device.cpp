@@ -8,8 +8,15 @@ namespace dsemi
 {
 	namespace graphics 
 	{
+        Device::Device()
+        {
+			GFX_LOG_DEBUG(L"creating graphics::device");
+			_initialize_impl();
+			_clear_color_float = new float[4];
+			//_instance->set_clear_color(0x000000ff);
+        }
 
-		device::~device()
+		Device::~Device()
 		{
 			delete[] _clear_color_float;
 		}
@@ -19,19 +26,6 @@ namespace dsemi
 		//{
 		//
 		//}
-
-		device* device::_instance = nullptr;
-
-		void device::initialize()
-		{
-			ASSERT(_instance == nullptr, "Attempted to initialize the graphics API device multiple times.");
-			if (!_instance)
-				_instance = new device();
-			GFX_LOG_DEBUG(L"creating graphics::device");
-			_instance->_initialize_impl();
-			_instance->_clear_color_float = new float[4];
-			//_instance->set_clear_color(0x000000ff);
-		}
 
 		//void device::set_clear_color(float r, float g, float b, float a = 1.0f)
 		//{
@@ -56,7 +50,7 @@ namespace dsemi
 		//	_clear_color_float[3] = (float)rgba.alpha / 255.0f;
 		//}
 
-		void device::_initialize_impl()
+		void Device::_initialize_impl()
 		{
 			// Initialize D3D
 			GFX_LOG_DEBUG(L"initializing graphics::device in dx11 mode...");
@@ -106,7 +100,7 @@ namespace dsemi
 			GFX_LOG_DEBUG(L"graphics::device finished initializing.");
 		}
 
-		IDXGIFactory* device::_get_dxgi_factory() {
+		IDXGIFactory* Device::_get_dxgi_factory() {
 			HRESULT hr;
 			// DirectX on some srs bs
 			// the way i understand it is:
@@ -129,7 +123,7 @@ namespace dsemi
 		// resource creation
 		======================*/
 		// D3D
-		void device::create_vertex_buffer(vertex_buffer* vertex_buffer)
+		void Device::create_vertex_buffer(vertex_buffer* vertex_buffer)
 		{
 			HRESULT hr;
 
@@ -147,7 +141,7 @@ namespace dsemi
 			//GFX_THROW_FAILED(_dx_device->CreateBuffer(&bd, &sd, &vertex_buffer->_dx_buffer));
 		}
 
-		void device::create_index_buffer(index_buffer* index_buffer)
+		void Device::create_index_buffer(index_buffer* index_buffer)
 		{
 			HRESULT hr;
 
@@ -163,7 +157,7 @@ namespace dsemi
 			//GFX_THROW_FAILED(_dx_device->CreateBuffer(&bd, &sd, &index_buffer->_dx_buffer));
 		}
 
-		void device::create_vertex_shader(vertex_shader* vertex_shader, vertex_shader_desc desc)
+		void Device::create_vertex_shader(vertex_shader* vertex_shader, vertex_shader_desc desc)
 		{
 			HRESULT hr;
 
@@ -188,7 +182,7 @@ namespace dsemi
 			));*/
 		}
 
-		void device::create_fragment_shader(fragment_shader* fragment_shader, fragment_shader_desc desc)
+		void Device::create_fragment_shader(fragment_shader* fragment_shader, fragment_shader_desc desc)
 		{
 			HRESULT hr;
 
@@ -228,7 +222,7 @@ namespace dsemi
 		//	));
 		//}
 
-		void device::create_render_target(render_target* render_target, ID3D11Resource* source)
+		void Device::create_render_target(render_target* render_target, ID3D11Resource* source)
 		{
 			HRESULT hr;
 
@@ -250,24 +244,24 @@ namespace dsemi
 			render_target->_dx_view_port.MaxDepth = 1.0f;
 		}
 
-		void device::bind_vertex_buffer(const vertex_buffer* vertex_buffer)
+		void Device::bind_vertex_buffer(const vertex_buffer* vertex_buffer)
 		{
 			UINT offset = 0u;
 			//_dx_context->IASetVertexBuffers(0u, 1u, vertex_buffer->get_dx_buffer().GetAddressOf(), &vertex_buffer->get_stride(), &offset);
 		}
 
-		void device::bind_vertex_shader(vertex_shader* vertex_shader)
+		void Device::bind_vertex_shader(vertex_shader* vertex_shader)
 		{
 			_dx_context->VSSetShader(vertex_shader->_dx_vertex_shader.Get(), nullptr, 0u);
 			//_dx_context->IASetInputLayout(vertex_shader->_input_layout._dx_input_layout.Get());
 		}
 
-		void device::bind_fragment_shader(fragment_shader* fragment_shader)
+		void Device::bind_fragment_shader(fragment_shader* fragment_shader)
 		{
 			_dx_context->PSSetShader(fragment_shader->_dx_pixel_shader.Get(), nullptr, 0u);
 		}
 
-		void device::bind_render_target(render_target* render_target)
+		void Device::bind_render_target(render_target* render_target)
 		{
 			_dx_context->OMSetRenderTargets(1u, render_target->_dx_render_target_view.GetAddressOf(), nullptr);
 			_dx_context->RSSetViewports(1u, &render_target->_dx_view_port);

@@ -57,7 +57,7 @@ namespace dsemi {
 	class WindowCloseEvent : public ievent
 	{
 	public:
-		WindowCloseEvent(window* wnd)
+		WindowCloseEvent(Window* wnd)
 			: _wnd(wnd)
 		{
 		}
@@ -69,18 +69,18 @@ namespace dsemi {
 			return "WINDOWCLOSEEVENT[]";
 		}
 
-		inline window* GetPointer() { return _wnd; }
+		inline Window* GetPointer() { return _wnd; }
 
 		EVENT_CLASS_TYPE(EVENT_WINDOW_CLOSE)
 		EVENT_CLASS_GROUP(EVENT_GROUP_APPLICATION)
 	private:
-		window* _wnd;
+		Window* _wnd;
 	};
 
 	class window_focus_event : public ievent
 	{
 	public:
-		window_focus_event(window* wnd)
+		window_focus_event(Window* wnd)
 			: _wnd(wnd)
 		{
 		}
@@ -95,13 +95,13 @@ namespace dsemi {
 		EVENT_CLASS_TYPE(EVENT_WINDOW_FOCUS)
 		EVENT_CLASS_GROUP(EVENT_GROUP_APPLICATION)
 	private:
-		window* _wnd;
+		Window* _wnd;
 	};
 
 	class window_focus_lost_event : public ievent
 	{
 	public:
-		window_focus_lost_event(window* wnd)
+		window_focus_lost_event(Window* wnd)
 			: _wnd(wnd)
 		{
 		}
@@ -116,7 +116,7 @@ namespace dsemi {
 		EVENT_CLASS_TYPE(EVENT_WINDOW_FOCUS_LOST)
 		EVENT_CLASS_GROUP(EVENT_GROUP_APPLICATION)
 	private:
-		window* _wnd;
+		Window* _wnd;
 	};
 
 	class app_tick_event : public ievent

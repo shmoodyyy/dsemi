@@ -84,7 +84,7 @@ namespace dsemi {
 		bool m_isRunning = true;
 		int m_tickRate = 60;
 		
-		std::unique_ptr<window> m_mainWindow;
+		std::unique_ptr<Window> m_mainWindow;
 
 	private:
 		static application* _instance;

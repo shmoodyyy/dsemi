@@ -10,7 +10,7 @@ namespace dsemi
 		class ishader : public bindable
 		{
 		public:
-			ishader(device* device) : bindable(device) {}
+			ishader(Device* device) : bindable(device) {}
 			virtual ~ishader() = default;
 
 			//virtual void bind() const = 0;
@@ -25,7 +25,7 @@ namespace dsemi
 		class vertex_shader : public ishader
 		{
 		public:
-			vertex_shader(device* device) : ishader(device) {}
+			vertex_shader(Device* device) : ishader(device) {}
 
 			virtual void bind() const override;
 

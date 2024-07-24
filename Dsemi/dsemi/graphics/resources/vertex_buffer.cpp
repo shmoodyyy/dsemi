@@ -146,7 +146,7 @@ namespace dsemi
 		// ------------------------------------------------------
 		// vertex_buffer implementation
 		//
-		vertex_buffer::vertex_buffer(device* device, vertex_array& vertices, uint32_t offset /*= 0u*/) : bindable(device), _layout(vertices.get_layout()), _dx_buffer(nullptr), _stride(vertices.get_vertex_stride()), _offset(0u), _count(vertices.get_vertex_count())
+		vertex_buffer::vertex_buffer(Device* device, vertex_array& vertices, uint32_t offset /*= 0u*/) : bindable(device), _layout(vertices.get_layout()), _dx_buffer(nullptr), _stride(vertices.get_vertex_stride()), _offset(0u), _count(vertices.get_vertex_count())
 		{
 			// =======================================================
 			//		CREATE VERTEX BUFFER

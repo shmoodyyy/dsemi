@@ -17,7 +17,6 @@
 
 using Microsoft::WRL::ComPtr;
 
-
 namespace dsemi
 {
 	namespace graphics

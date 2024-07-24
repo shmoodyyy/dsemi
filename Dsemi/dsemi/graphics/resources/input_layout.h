@@ -10,7 +10,7 @@ namespace dsemi
 
 		class input_layout 
 		{
-			friend class device;
+			friend class Device;
 		public:
 			input_layout()
 				: _dx_input_layout(nullptr)

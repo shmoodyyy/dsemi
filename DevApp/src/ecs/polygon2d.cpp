@@ -1,6 +1,6 @@
 #include "polygon2d.h"
 
-void render_polygon2d(polygon2d* poly_component, dsemi::graphics::device* gfx)
+void render_polygon2d(polygon2d* poly_component, dsemi::graphics::Device* gfx)
 {
 	//dsemi::graphics::vertex_buffer buf;
 

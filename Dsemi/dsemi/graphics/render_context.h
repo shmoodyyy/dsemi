@@ -6,7 +6,7 @@
 
 namespace dsemi {
 	namespace graphics {
-		class device;
+		class Device;
 		class render_target;
 
 		// an abstraction of the directx device context
@@ -17,12 +17,12 @@ namespace dsemi {
 		//
 		class render_context {
 		public:
-			render_context(device* device);
+			render_context(Device* device);
 
 			void set_render_target(render_target* render_target);
 			render_target* get_render_target() const;
 
-			device* get_device() const;
+			Device* get_device() const;
 
 			void set_clear_color(float r, float g, float b, float a);
 			void set_clear_color(color32 rgba);
@@ -39,7 +39,7 @@ namespace dsemi {
 			ID3D11DeviceContext* get_dx_context() const;
 
 		protected:
-			device* _device;
+			Device* _device;
 			render_target* _render_target;
 		};
 

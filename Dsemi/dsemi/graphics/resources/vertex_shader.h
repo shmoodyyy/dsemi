@@ -14,7 +14,7 @@ namespace dsemi {
 		};
 
 		class vertex_shader {
-			friend class device;
+			friend class Device;
 		public:
 			vertex_shader()
 				: _dx_vertex_shader(nullptr), _dx_vertex_shader_blob(nullptr)

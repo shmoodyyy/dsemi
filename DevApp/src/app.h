@@ -30,9 +30,9 @@ private:
     void drawTriangle();
 
     TestScene2D m_testScene;
-    dsemi::window m_window;
+    std::shared_ptr<dsemi::Window> m_window;
 
-	dsemi::graphics::device*		_device;
+	dsemi::graphics::Device*		_device;
 	ComPtr<ID3D11Device>			_dx_device;
 	ComPtr<ID3D11DeviceContext>		_dx_context;
 	ComPtr<IDXGISwapChain>			_dx_swap_chain;

@@ -66,7 +66,7 @@ namespace dsemi {
 		//Direct3D::InitD3D();
 
 		// initialize graphics framework
-		graphics::device::initialize();
+		// graphics::device::initialize();
 
 		setTickRate(60u);
 

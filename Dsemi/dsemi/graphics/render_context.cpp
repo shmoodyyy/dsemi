@@ -5,13 +5,13 @@
 
 namespace dsemi {
 	namespace graphics {
-		render_context::render_context(device* device)
+		render_context::render_context(Device* device)
 			: _device(device)
 		{
 			ID3D11Device* dx_device = _device->get_dx_device();
 		}
 
-		device* render_context::get_device() const
+		Device* render_context::get_device() const
 		{
 			return _device;
 		}

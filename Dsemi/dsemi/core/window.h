@@ -1,73 +1,61 @@
 #ifndef DSEMI_CORE_WINDOW_H
 #define DSEMI_CORE_WINDOW_H
-
-#include <unordered_map>
-
-#include "dsemi/graphics/api_include.h"
-#include "dsemi/math/vector2.h"
+#include "dsemi/platform/platforminclude.h"
 #include "dsemi/Events/Event.h"
-#include "dsemi/core/DsemiWindows.h"
+#include "dsemi/graphics/swapchain.h"
 
 namespace dsemi 
 {
-	class window
+	class Window
 	{
 	public:
-		using event_callback_fn = std::function<void(ievent&)>;
+		using eventCallback = std::function<void(ievent&)>;
 
-	public:
-		window();
-		window(unsigned int width, unsigned int height, const std::wstring& title);
-		~window();
+		Window(unsigned int width, unsigned int height, std::string_view title);
+		~Window();
 
-		void create(unsigned int width, unsigned int height, const std::wstring& title);
-		void close();
-
-		HWND get_hwnd() const { return _hwnd; }
-
-		inline unsigned int width()  const { return _data.width; }
-		inline unsigned int height() const { return _data.height; }
-		bool         has_focus() const;
-		void         set_focus(bool value);
-		void         set_event_callback(event_callback_fn&& callback);
+		auto width() -> unsigned const;
+		auto height() -> unsigned const;
+		auto has_focus() -> bool const;
+		void set_focus(bool value);
+		void set_event_callback(eventCallback&& callback);
 
 		bool is_fullscreen() const;
 		void set_fullscreen(unsigned int monitor = 0u, bool val = false);
 
-	private:
-		void _create_swap_chain();
-
-		void _on_fullscreen();
-		void _on_windowed();
-		void _on_resize(unsigned int width, unsigned height);
-		void _on_focus();
-		void _on_focus_lost();
+        auto getSwapChain() -> std::shared_ptr<graphics::SwapChain>;
 
 	private:
-		bool _focused;
-		HWND _hwnd;
-		ComPtr<IDXGISwapChain>         _dx_swap_chain;
+		void onFullscreen();
+		void onWindowed();
+		void onResize(unsigned int width, unsigned height);
+		void onFocus();
+		void onFocusLost();
 
-		struct window_data
-		{
-			std::wstring title;
-			unsigned int width;
-			unsigned int height;
-			event_callback_fn event_callback;
-		} _data; // struct window_data
+		bool m_isFocused;
+        unsigned m_width;
+        unsigned m_height;
+        std::string m_title;
+        std::shared_ptr<graphics::SwapChain> m_swapChain;
+		eventCallback m_eventCallback;
 
-	private:
+#if defined (_WIN32)
+    public:
+        auto getHwnd() -> HWND;
+
+    private:
 		static LRESULT CALLBACK _setup_wnd_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 		static LRESULT CALLBACK _redirect_wnd_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 		LRESULT _wnd_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-	private:
+        HWND m_hwnd;
+
 		class win32_window_class
 		{
 		public:
 			//inline static WNDCLASSEX get_wnd_class() { return _instance._hinstance; };
-			inline static const wchar_t* get_name()      { return _win32_window_class_name; }
-			inline static HINSTANCE      get_hinstance() { return _instance._hinstance; };
+			static auto get_name() -> const char* { return win32ClassName; }
+			static auto get_hinstance() -> HINSTANCE { return _instance._hinstance; };
 
 		private:
 			win32_window_class();
@@ -75,13 +63,12 @@ namespace dsemi
 			win32_window_class(const win32_window_class&) = delete;
 			win32_window_class& operator=(const win32_window_class&) = delete;
 
-			static constexpr const wchar_t* _win32_window_class_name = L"Dsemi Win32 Window Class Singleton";
-			static win32_window_class       _instance;
-			HINSTANCE                       _hinstance;
-		}; // class win32_window_class
-
-	}; // class window
-
-} // namespace dsemi
+			static constexpr const char* win32ClassName = "win32Class";
+			static win32_window_class _instance;
+			HINSTANCE _hinstance;
+		};
+#endif
+	};
+}
 
 #endif

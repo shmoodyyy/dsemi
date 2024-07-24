@@ -11,10 +11,11 @@ DevApp::~DevApp()
 void DevApp::onInit()
 {
     m_activeScene = &m_testScene;
-    m_window.set_event_callback(BIND_EVENT(DevApp::onEvent));
-    m_window.create(1280, 720, L"GFX Rendering Test Window");
+    m_window = std::make_shared<dsemi::Window>(1280, 720, "gfx window");
+    m_window->set_event_callback(BIND_EVENT(DevApp::onEvent));
+    _dx_swap_chain = m_window->getSwapChain()->m_swapChain;
 
-    _device = dsemi::graphics::device::get();
+    _device = &dsemi::graphics::Device::get();
     _dx_device = _device->get_dx_device();
     _dx_context = _device->get_context();
     initDX();
@@ -64,13 +65,13 @@ auto DevApp::onWindowResize(dsemi::WindowResizeEvent& e) -> bool
                     0u,
                     &_rt_view
                     ));
-        _viewport.Width  = m_window.width();
-        _viewport.Height = m_window.height();
+        _viewport.Width  = m_window->width();
+        _viewport.Height = m_window->height();
         _dx_context->RSSetViewports(1u, &_viewport);
 
         // update constant buffer for view dimensions
-        float view_w = m_window.width();
-        float view_h = m_window.height();
+        float view_w = m_window->width();
+        float view_h = m_window->height();
         std::vector<float> view_scale_2d = {
             view_w,
             view_h
@@ -87,39 +88,9 @@ void DevApp::initDX()
 {
     _clear_color = 0.0f;
     HRESULT hr;
-
-    // =======================================================
-    //		CREATE SWAP CHAIN
-    // =======================================================
-    DXGI_SWAP_CHAIN_DESC sd = {};
-    sd.BufferDesc.Width = m_window.width();
-    sd.BufferDesc.Height = m_window.height();
-    sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-    sd.BufferDesc.RefreshRate.Numerator = 0;
-    sd.BufferDesc.RefreshRate.Denominator = 0;
-    sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-    sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-    sd.SampleDesc.Count = 1u;
-    sd.SampleDesc.Quality = 0u;
-    sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-    sd.BufferCount = 2u;
-    sd.OutputWindow = m_window.get_hwnd();
-    sd.Windowed = TRUE;
-    sd.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
-
-    auto dxgi_factory = _device->get_dx_factory();
-    GFX_THROW_FAILED(dxgi_factory->CreateSwapChain(
-                _dx_device.Get(),
-                &sd,
-                &_dx_swap_chain
-                ));
-
-    GFX_LOG_DEBUG(L"created new swapchain for test window");
-
     // =======================================================
     //		CREATE RENDER TARGET VIEW
     // =======================================================
-
     ComPtr<ID3D11Texture2D> framebuf = nullptr;
     GFX_THROW_FAILED(_dx_swap_chain->GetBuffer(
                 0u,
@@ -137,8 +108,8 @@ void DevApp::initDX()
     // =======================================================
     //		CREATE VIEW PORT
     // =======================================================
-    unsigned int vp_width  = m_window.width();
-    unsigned int vp_height = m_window.height();		
+    unsigned int vp_width  = m_window->width();
+    unsigned int vp_height = m_window->height();		
     _viewport.TopLeftX = 0u;
     _viewport.TopLeftY = 0u;
     _viewport.Width    = vp_width;
@@ -208,8 +179,8 @@ void DevApp::initDX()
     // [ 0 1 ] -> [ 0    1/h ]
 
     float zoom_scale = 1.0f;
-    float view_w = m_window.width();
-    float view_h = m_window.height();
+    float view_w = m_window->width();
+    float view_h = m_window->height();
     std::vector<float> view_scale_2d = {
         view_w,
         view_h
@@ -235,8 +206,8 @@ void DevApp::initDX()
     layout.append("Position", dsemi::graphics::shader_data_type::SINT2);
 
     dsemi::graphics::vertex_array vertices(layout);
-    int w = m_window.width() / 2;
-    int h = m_window.height() / 2;
+    int w = m_window->width() / 2;
+    int h = m_window->height() / 2;
     vertices.emplace_back(0, h).emplace_back(w, -h).emplace_back(-w, -h);
     _vbuf = std::make_unique<dsemi::graphics::vertex_buffer>(_device, vertices);
 

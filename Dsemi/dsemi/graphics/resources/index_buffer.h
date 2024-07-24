@@ -10,9 +10,9 @@ namespace dsemi
 	{
 		class index_buffer : public bindable
 		{
-			friend class device;
+			friend class Device;
 		public:
-			index_buffer(device* device) 
+			index_buffer(Device* device) 
 				: bindable(device), _dx_buffer(nullptr) 
 			{}
 

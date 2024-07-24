@@ -11,7 +11,7 @@ namespace dsemi {
 		};
 
 		class fragment_shader {
-			friend class device;
+			friend class Device;
 		public:
 			fragment_shader()
 				: _dx_pixel_shader(nullptr), _dx_pixel_shader_blob(nullptr)

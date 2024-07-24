@@ -11,7 +11,7 @@ namespace dsemi
 
 		class render_target 
 		{
-			friend class device;
+			friend class Device;
 
 		public:
 			render_target();

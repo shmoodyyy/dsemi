@@ -5,17 +5,17 @@ namespace dsemi
 {
 	namespace graphics 
 	{
-		class device;
+		class Device;
 
 		class iresource {
 		public:
 			iresource() {};
 			virtual ~iresource() { release(); };
-			virtual void create(device* device) = 0;
+			virtual void create(Device* device) = 0;
 			virtual void release() {};
 		protected:
-			inline device* get_device() { return _device; }
-			device* _device;
+			inline Device* get_device() { return _device; }
+			Device* _device;
 		};
 	}
 }

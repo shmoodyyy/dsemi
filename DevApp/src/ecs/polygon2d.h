@@ -23,4 +23,4 @@ struct polygon2d : dsemi::ecs::icomponent<polygon2d>
 	std::vector<vertex_2d> vertices;
 };
 
-void render_polygon2d(polygon2d* poly_component, dsemi::graphics::device* gfx);
+void render_polygon2d(polygon2d* poly_component, dsemi::graphics::Device* gfx);
