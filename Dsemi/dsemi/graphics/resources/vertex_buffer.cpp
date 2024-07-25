@@ -162,7 +162,7 @@ namespace dsemi
 			bsrd.pSysMem = vertices.get_data();
 
 			HRESULT hr;
-			GFX_THROW_FAILED(_get_device()->get_dx_device()->CreateBuffer(
+			GFX_THROW_FAILED(getDevice().get_dx_device()->CreateBuffer(
 				&bd,
 				&bsrd,
 				&_dx_buffer
@@ -178,7 +178,7 @@ namespace dsemi
 
 		void vertex_buffer::bind() const
 		{
-			_get_device()->get_context()->IASetVertexBuffers(0u, 1u, &this->_dx_buffer, &this->_stride, &_offset);
+			getDevice().get_context()->IASetVertexBuffers(0u, 1u, &this->_dx_buffer, &this->_stride, &_offset);
 			GFX_LOG_DEBUG(L"bound graphics::vertex_buffer to pipeline");
 		}
 

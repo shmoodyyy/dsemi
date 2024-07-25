@@ -17,9 +17,11 @@ namespace dsemi::graphics {
             return _instance;
         }
 
+#if defined (_WIN32)
         auto get_dx_factory() -> IDXGIFactory* const { return _dxgi_factory; }
         auto get_dx_device() -> ID3D11Device* const { return _dx_device.Get(); }
         auto get_context() -> ID3D11DeviceContext* const { return _dx_context.Get(); }
+#endif
 
         auto createSwapChain() -> std::shared_ptr<SwapChain>;
         void create_vertex_buffer(vertex_buffer* vertex_buffer);
@@ -41,13 +43,15 @@ namespace dsemi::graphics {
         Device& operator=(const Device& other) = delete;
 
         void _initialize_impl();
-        IDXGIFactory* _get_dxgi_factory();
 
         color32 _clear_color;
         float* _clear_color_float;
+
+#if defined (_WIN32)
+        IDXGIFactory* _get_dxgi_factory();
+
         ComPtr<ID3D11Device>        _dx_device;
         ComPtr<ID3D11DeviceContext> _dx_context;
-
         IDXGIFactory* _dxgi_factory;
 
         ComPtr<ID3D11RasterizerState> _dx_rasterizer_state;
@@ -57,6 +61,7 @@ namespace dsemi::graphics {
         ComPtr<ID3D11RenderTargetView> _dx_render_target_view;
 
         D3D11_VIEWPORT _dx_viewport;
+#endif
     };
 }
 

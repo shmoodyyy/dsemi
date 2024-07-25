@@ -9,13 +9,13 @@ namespace dsemi
 		class bindable
 		{
 		public:
-			bindable(Device* parent_device) : _device(parent_device) {} virtual ~bindable() = default;
+			bindable(Device* parent_device) : m_device(*parent_device) {} virtual ~bindable() = default;
 
 			inline virtual void bind() const = 0;
 		protected:
-			inline Device* _get_device() const { return _device; }
+			inline Device& getDevice() const { return m_device; }
 		private:
-			Device* _device;
+			Device& m_device;
 		};
 	}
 }

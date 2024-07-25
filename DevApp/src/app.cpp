@@ -12,7 +12,7 @@ void DevApp::onInit()
 {
     m_activeScene = &m_testScene;
     m_window = std::make_shared<dsemi::Window>(1280, 720, "gfx window");
-    m_window->set_event_callback(BIND_EVENT(DevApp::onEvent));
+    m_window->setEventCallback(BIND_EVENT(DevApp::onEvent));
     _dx_swap_chain = m_window->getSwapChain()->m_swapChain;
 
     _device = &dsemi::graphics::Device::get();
@@ -30,21 +30,18 @@ void DevApp::onEvent(dsemi::ievent& e)
 
 void DevApp::onUpdate(const float dt)
 {
-    //std::cout << "Frametime: " << dt * 1000 << "ms" << std::endl;
     drawTriangle();
 }
 
 auto DevApp::onWindowClose(dsemi::WindowCloseEvent &e) -> bool
 {
-    // todo: add labels/tags to windows to be accessed
     m_isRunning = false;
     return true;
 }
 
 auto DevApp::onWindowResize(dsemi::WindowResizeEvent& e) -> bool
 {
-    if (_dx_context)
-    {
+    if (_dx_context) {
         HRESULT hr;
         DXGI_SWAP_CHAIN_DESC desc;
 
@@ -55,29 +52,36 @@ auto DevApp::onWindowResize(dsemi::WindowResizeEvent& e) -> bool
 
         ComPtr<ID3D11Texture2D> framebuf = nullptr;
         GFX_THROW_FAILED(_dx_swap_chain->GetBuffer(
-                    0u,
-                    __uuidof(ID3D11Texture2D),
-                    &framebuf
-                    ));
+            0u,
+            __uuidof(ID3D11Texture2D),
+            &framebuf
+        ));
 
         GFX_THROW_FAILED(_dx_device->CreateRenderTargetView(
-                    framebuf.Get(),
-                    0u,
-                    &_rt_view
-                    ));
-        _viewport.Width  = m_window->width();
-        _viewport.Height = m_window->height();
+            framebuf.Get(),
+            0u,
+            &_rt_view
+        ));
+        _viewport.Width  = m_window->getWidth();
+        _viewport.Height = m_window->getHeight();
         _dx_context->RSSetViewports(1u, &_viewport);
 
         // update constant buffer for view dimensions
-        float view_w = m_window->width();
-        float view_h = m_window->height();
+        float view_w = m_window->getWidth();
+        float view_h = m_window->getHeight();
         std::vector<float> view_scale_2d = {
             view_w,
             view_h
         };
         // send new view dimensions to GPU memory
-        _dx_context->UpdateSubresource(_view_const_buffer.Get(), 0u, NULL, view_scale_2d.data(), sizeof(float) * view_scale_2d.size(), 0u);
+        _dx_context->UpdateSubresource(
+            _view_const_buffer.Get(),
+            0u,
+            NULL,
+            view_scale_2d.data(),
+            sizeof(float) * view_scale_2d.size(),
+            0u
+        );
         //_dx_context->VSSetConstantBuffers(0u, 1u, _view_const_buffer.GetAddressOf());
     }
     return true;
@@ -108,8 +112,8 @@ void DevApp::initDX()
     // =======================================================
     //		CREATE VIEW PORT
     // =======================================================
-    unsigned int vp_width  = m_window->width();
-    unsigned int vp_height = m_window->height();		
+    unsigned int vp_width  = m_window->getWidth();
+    unsigned int vp_height = m_window->getHeight();		
     _viewport.TopLeftX = 0u;
     _viewport.TopLeftY = 0u;
     _viewport.Width    = vp_width;
@@ -179,8 +183,8 @@ void DevApp::initDX()
     // [ 0 1 ] -> [ 0    1/h ]
 
     float zoom_scale = 1.0f;
-    float view_w = m_window->width();
-    float view_h = m_window->height();
+    float view_w = m_window->getWidth();
+    float view_h = m_window->getHeight();
     std::vector<float> view_scale_2d = {
         view_w,
         view_h
@@ -206,8 +210,8 @@ void DevApp::initDX()
     layout.append("Position", dsemi::graphics::shader_data_type::SINT2);
 
     dsemi::graphics::vertex_array vertices(layout);
-    int w = m_window->width() / 2;
-    int h = m_window->height() / 2;
+    int w = m_window->getWidth() / 2;
+    int h = m_window->getHeight() / 2;
     vertices.emplace_back(0, h).emplace_back(w, -h).emplace_back(-w, -h);
     _vbuf = std::make_unique<dsemi::graphics::vertex_buffer>(_device, vertices);
 

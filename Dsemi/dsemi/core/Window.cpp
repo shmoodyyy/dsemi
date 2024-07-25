@@ -9,12 +9,12 @@ namespace
 
 namespace dsemi 
 {
-    auto Window::width() -> unsigned int const
+    auto Window::getWidth() -> unsigned const
     {
         return m_width;
     }
 
-    auto Window::height() -> unsigned int const
+    auto Window::getHeight() -> unsigned const
     {
         return m_height;
     }
@@ -24,12 +24,12 @@ namespace dsemi
         return m_swapChain;
     }
 
-	void Window::set_focus(bool value)
+	void Window::setFocus(bool value)
 	{
 		m_isFocused = value;
 	}
 
-	void Window::set_event_callback(eventCallback&& callback)
+	void Window::setEventCallback(eventCallback&& callback)
 	{
 		m_eventCallback = callback;
 	}
