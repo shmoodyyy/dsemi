@@ -3,6 +3,7 @@
 #include <dsemi/graphics/api_include.h>
 #include <dsemi/graphics/framebuffer.h>
 #include <dsemi/graphics/resources/texture2d.h>
+#include <dsemi/graphics/rendertarget.h>
 
 namespace dsemi
 {
@@ -11,7 +12,7 @@ namespace dsemi
 
 namespace dsemi::graphics
 {
-    class SwapChain
+    class SwapChain : public RenderTarget // this doesnt feel like a good approach
     {
     public:
         enum ErrNo
@@ -25,14 +26,13 @@ namespace dsemi::graphics
 
         auto resize(unsigned width, unsigned height) -> ErrNo;
         auto present() -> ErrNo;
-        auto getFrontBuffer() -> ComPtr<ID3D11Texture2D> { return m_frontBuffer; }
         // auto getRenderTarget() -> void;
 
 #if defined (_WIN32)
         ComPtr<IDXGISwapChain> m_swapChain;
-        ComPtr<ID3D11Texture2D> m_frontBuffer;
     private:
-        void setFrontBuffer();
+        void setFrameBufferTexture();
+        void setRenderTargetView();
 #endif
     private:
         // std::shared_ptr<FrameBuffer> m_frontBuffer;

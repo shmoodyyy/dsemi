@@ -26,6 +26,7 @@ namespace dsemi
 		void setFullscreen(unsigned monitor = 0u, bool val = false);
 
         auto getSwapChain() -> std::shared_ptr<graphics::SwapChain>;
+        auto getRenderTarget() -> std::shared_ptr<graphics::RenderTarget>;
 
 	private:
 		void onFullscreen();

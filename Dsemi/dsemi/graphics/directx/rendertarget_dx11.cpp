@@ -5,13 +5,6 @@ dsemi::graphics::RenderTarget::RenderTarget()
     : m_renderTexture(nullptr)
     , m_renderTargetView(nullptr)
 {
-    D3D11_RENDER_TARGET_VIEW_DESC rtvd;
-    memset(&rtvd, 0, sizeof(rtvd));
-    GFX_THROW_FAILED(Device::get().get_dx_device()->CreateRenderTargetView(
-        framebuf.Get(),
-        0u,
-        &m_renderTargetView
-    ));
 }
 
 void dsemi::graphics::RenderTarget::clear()

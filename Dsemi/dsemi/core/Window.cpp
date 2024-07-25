@@ -2,11 +2,6 @@
 #define DIRECTINPUT_VERSION 0x0800
 #include "window.h"
 
-namespace
-{
-    void defaultCallback(dsemi::ievent&) { return; }
-}
-
 namespace dsemi 
 {
     auto Window::getWidth() -> unsigned const
@@ -20,6 +15,11 @@ namespace dsemi
     }
 
     auto Window::getSwapChain() -> std::shared_ptr<graphics::SwapChain>
+    {
+        return m_swapChain;
+    }
+
+    auto Window::getRenderTarget() -> std::shared_ptr<graphics::RenderTarget>
     {
         return m_swapChain;
     }

@@ -47,13 +47,6 @@ auto DevApp::onWindowResize(dsemi::WindowResizeEvent& e) -> bool
 {
     if (_dx_context) {
         HRESULT hr;
-        _rt_view = nullptr;
-
-        GFX_THROW_FAILED(_dx_device->CreateRenderTargetView(
-            m_window->getSwapChain()->getFrontBuffer().Get(),
-            0u,
-            &_rt_view
-        ));
         _viewport.Width  = m_window->getWidth();
         _viewport.Height = m_window->getHeight();
         _dx_context->RSSetViewports(1u, &_viewport);
@@ -114,11 +107,6 @@ void DevApp::initDX()
     // =======================================================
     //		CREATE RENDER TARGET VIEW
     // =======================================================
-    GFX_THROW_FAILED(_dx_device->CreateRenderTargetView(
-        m_window->getSwapChain()->getFrontBuffer().Get(),
-        0u,
-        &_rt_view
-    ));
     GFX_LOG_DEBUG(L"Created DX11 RenderTargetView.");
 
     // =======================================================
@@ -228,7 +216,7 @@ void DevApp::initDX()
     _dx_context->VSSetShader(_vertex_shader.Get(), nullptr, 0u);
     _dx_context->PSSetShader(_pixel_shader.Get(), nullptr, 0u);
     _dx_context->IASetInputLayout(_input_layout.Get());
-    _dx_context->OMSetRenderTargets(1u, _rt_view.GetAddressOf(), nullptr);
+    m_window->getRenderTarget()->set();
     _dx_context->RSSetViewports(1u, &_viewport);
     _dx_context->VSSetConstantBuffers(0u, 1u, _view_const_buffer.GetAddressOf());
     _vbuf->bind();
@@ -238,8 +226,8 @@ void DevApp::initDX()
 
 void DevApp::drawTriangle()
 {
-    _dx_context->ClearRenderTargetView(_rt_view.Get(), _clear_color.as_array());
-    _dx_context->OMSetRenderTargets(1u, _rt_view.GetAddressOf(), nullptr);
+    m_window->getRenderTarget()->clear();
+    m_window->getRenderTarget()->set();
     _dx_context->Draw(_vbuf->get_count(), 0u);
 
     HRESULT hr;
