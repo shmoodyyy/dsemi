@@ -1,4 +1,8 @@
 #include "app.h"
+#include <iostream>
+#include <dxgidebug.h>
+
+#pragma comment(lib, "dxguid.lib")
 
 DevApp::DevApp()
 {
@@ -13,7 +17,7 @@ void DevApp::onInit()
     m_activeScene = &m_testScene;
     m_window = std::make_shared<dsemi::Window>(1280, 720, "gfx window");
     m_window->setEventCallback(BIND_EVENT(DevApp::onEvent));
-    _dx_swap_chain = m_window->getSwapChain()->m_swapChain;
+    m_window->getSwapChain()->m_swapChain = m_window->getSwapChain()->m_swapChain;
 
     _device = &dsemi::graphics::Device::get();
     _dx_device = _device->get_dx_device();
@@ -43,15 +47,9 @@ auto DevApp::onWindowResize(dsemi::WindowResizeEvent& e) -> bool
 {
     if (_dx_context) {
         HRESULT hr;
-        DXGI_SWAP_CHAIN_DESC desc;
-
         _rt_view = nullptr;
-
-        _dx_swap_chain->GetDesc(&desc);
-        _dx_swap_chain->ResizeBuffers(desc.BufferCount, 0u, 0u, DXGI_FORMAT_UNKNOWN, desc.Flags);
-
         ComPtr<ID3D11Texture2D> framebuf = nullptr;
-        GFX_THROW_FAILED(_dx_swap_chain->GetBuffer(
+        GFX_THROW_FAILED(m_window->getSwapChain()->m_swapChain->GetBuffer(
             0u,
             __uuidof(ID3D11Texture2D),
             &framebuf
@@ -87,6 +85,33 @@ auto DevApp::onWindowResize(dsemi::WindowResizeEvent& e) -> bool
     return true;
 }
 
+void logDirectX_thread() // absolutely unconcerned with thread-safety or race conditions here
+{
+    // holy shit i love win32 who needs manpages anyways
+    using namespace dsemi::graphics;
+    typedef HRESULT (WINAPI* DXGIGetDebugInterface)(REFIID, void**);
+    ComPtr<IDXGIInfoQueue> dxgiDebugQueue;
+    auto handle = LoadLibraryEx("dxgidebug.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
+    const auto DxgiGetDebugInterface = reinterpret_cast<DXGIGetDebugInterface>(
+        reinterpret_cast<void*>(GetProcAddress(handle, "DXGIGetDebugInterface"))
+    );
+    DxgiGetDebugInterface(__uuidof(IDXGIInfoQueue), &dxgiDebugQueue);
+    while (true) {
+        for (unsigned i = 0; i < dxgiDebugQueue->GetNumStoredMessages(DXGI_DEBUG_ALL); ++i) {
+            SIZE_T len = 0;
+            dxgiDebugQueue->GetMessage(DXGI_DEBUG_ALL, i, nullptr, &len);
+            DXGI_INFO_QUEUE_MESSAGE* msg = (DXGI_INFO_QUEUE_MESSAGE*)malloc(len);
+            dxgiDebugQueue->GetMessage(DXGI_DEBUG_ALL, i, msg, &len);
+            if (msg->Producer == DXGI_DEBUG_DX)
+                std::cout << "D3D11 [";
+            else if (msg->Producer == DXGI_DEBUG_DXGI)
+                std::cout << "DXGI [";
+            std::cout << msg->Severity << "]: " << msg->pDescription << '\n';
+            free(msg);
+        }
+        dxgiDebugQueue->ClearStoredMessages(DXGI_DEBUG_ALL);
+    }
+}
 
 void DevApp::initDX()
 {
@@ -96,24 +121,24 @@ void DevApp::initDX()
     //		CREATE RENDER TARGET VIEW
     // =======================================================
     ComPtr<ID3D11Texture2D> framebuf = nullptr;
-    GFX_THROW_FAILED(_dx_swap_chain->GetBuffer(
-                0u,
-                __uuidof(ID3D11Texture2D),
-                &framebuf
-                ));
+    GFX_THROW_FAILED(m_window->getSwapChain()->m_swapChain->GetBuffer(
+        0u,
+        __uuidof(ID3D11Texture2D),
+        &framebuf
+    ));
 
     GFX_THROW_FAILED(_dx_device->CreateRenderTargetView(
-                framebuf.Get(),
-                0u,
-                &_rt_view
-                ));
+        framebuf.Get(),
+        0u,
+        &_rt_view
+    ));
     GFX_LOG_DEBUG(L"Created DX11 RenderTargetView.");
 
     // =======================================================
     //		CREATE VIEW PORT
     // =======================================================
     unsigned int vp_width  = m_window->getWidth();
-    unsigned int vp_height = m_window->getHeight();		
+    unsigned int vp_height = m_window->getHeight();
     _viewport.TopLeftX = 0u;
     _viewport.TopLeftY = 0u;
     _viewport.Width    = vp_width;
@@ -121,13 +146,12 @@ void DevApp::initDX()
     _viewport.MinDepth = 0u;
     _viewport.MaxDepth = 1u;
 
-
     // =======================================================
     //		CREATE VERTEX & PIXEL SHADERS
     // =======================================================
 
     UINT shader_flags = D3DCOMPILE_ENABLE_STRICTNESS;
-#ifdef DEBUG
+#ifndef _NDEBUG
     shader_flags |= D3DCOMPILE_DEBUG;
 #endif
 
@@ -139,11 +163,11 @@ void DevApp::initDX()
     GFX_THROW_FAILED(D3DReadFileToBlob(L"shaders/default_vs.cso", &vs_blob));
     // create in gpu
     GFX_THROW_FAILED(_dx_device->CreateVertexShader(
-                vs_blob->GetBufferPointer(),
-                vs_blob->GetBufferSize(),
-                nullptr,
-                &_vertex_shader
-                ));
+        vs_blob->GetBufferPointer(),
+        vs_blob->GetBufferSize(),
+        nullptr,
+        &_vertex_shader
+    ));
 
     int* test = new int(4);
     delete test;
@@ -224,6 +248,9 @@ void DevApp::initDX()
     _dx_context->RSSetViewports(1u, &_viewport);
     _dx_context->VSSetConstantBuffers(0u, 1u, _view_const_buffer.GetAddressOf());
     _vbuf->bind();
+
+    // create logging thread
+    std::thread(logDirectX_thread).detach();
 }
 
 void DevApp::drawTriangle()
@@ -233,7 +260,7 @@ void DevApp::drawTriangle()
     _dx_context->Draw(_vbuf->get_count(), 0u);
 
     HRESULT hr;
-    if (FAILED(hr = _dx_swap_chain->Present(0, 0)))
+    if (FAILED(hr = m_window->getSwapChain()->m_swapChain->Present(0, 0)))
     {
         if (hr == DXGI_ERROR_DEVICE_REMOVED)
         {
