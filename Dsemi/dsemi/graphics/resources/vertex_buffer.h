@@ -211,7 +211,7 @@ namespace dsemi
 			vertex_layout     _layout;
 		};
 
-		class vertex_buffer : public bindable
+		class vertex_buffer : public Bindable
 		{
 		public:
 			vertex_buffer(Device* device, vertex_array& vertices, uint32_t offset = 0u);
@@ -221,7 +221,7 @@ namespace dsemi
 			inline size_t get_count() { return _count; }
 			//inline size_t get_byte_width()
 
-			inline virtual void bind() const override;
+			virtual void bind() override;
 			//vertex_view operator[](size_t i);
 
 		protected:

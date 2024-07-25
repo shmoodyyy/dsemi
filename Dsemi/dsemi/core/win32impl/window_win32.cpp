@@ -63,8 +63,14 @@ auto dsemi::Window::getHwnd() -> HWND
     return m_hwnd;
 }
 
-void dsemi::Window::resize()
+void dsemi::Window::resize(unsigned width, unsigned height)
 {
+    m_width = width;
+    m_height = height;
+    if (m_swapChain)
+        m_swapChain->resize(width, height);
+    WindowResizeEvent e(m_width, m_height);
+    m_eventCallback(e);
 }
 
 LRESULT CALLBACK dsemi::Window::_setup_wnd_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -180,32 +186,16 @@ LRESULT dsemi::Window::_wnd_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
         break;
     }
     case WM_SIZE: {
-        if (!m_eventCallback)
-            break;
-        m_width = LOWORD(lParam);
-        m_height = HIWORD(lParam);
-
         // resize render context
         // renderContext.UpdateBuffers(vector2f((float)m_Data.Width, (float)m_Data.Height));
-
-        // send event
-        WindowResizeEvent e(m_width, m_height);
-        m_eventCallback(e);
+        resize(LOWORD(lParam), HIWORD(lParam));
         break;
     }
     case WM_SIZING: {
-        if (!m_eventCallback)
-            break;
         RECT cur_size = *(RECT*)lParam;
-        m_width = cur_size.right - cur_size.left;
-        m_height = cur_size.bottom - cur_size.top;
-
+        resize(cur_size.right - cur_size.left, cur_size.bottom - cur_size.top);
         // resize render context
         // renderContext.UpdateBuffers(vector2f((float)m_Data.Width, (float)m_Data.Height));
-
-        // send event
-        WindowResizeEvent e(m_width, m_height);
-        m_eventCallback(e);
         break;
     }
     case WM_CLOSE: {

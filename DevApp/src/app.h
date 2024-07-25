@@ -10,7 +10,7 @@
 #include <dsemi/graphics/resources/resource_include.h>
 
 // temporary includes for writing the graphics abstractions
-#include <dsemi/graphics/render_target.h>
+#include <dsemi/graphics/rendertarget.h>
 
 class DevApp : public dsemi::application
 {
@@ -31,6 +31,7 @@ private:
 
     TestScene2D m_testScene;
     std::shared_ptr<dsemi::Window> m_window;
+    std::shared_ptr<dsemi::Window> m_windowSecondary;
 
 	dsemi::graphics::Device*		_device;
 	ComPtr<ID3D11Device>			_dx_device;
@@ -45,7 +46,7 @@ private:
 	D3D11_VIEWPORT					_viewport;
 	dsemi::colorf					_clear_color;
 
-	dsemi::graphics::render_target _render_target;
+	dsemi::graphics::RenderTarget _render_target;
 	//dsemi::graphics::viewport _viewport;
 	//dsemi::graphics::viewport _viewport;
 

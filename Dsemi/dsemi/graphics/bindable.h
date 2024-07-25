@@ -1,21 +1,13 @@
-#pragma once
+#ifndef DSEMI_GRAPHICS_BINDABLE
+#define DSEMI_GRAPHICS_BINDABLE
 
-namespace dsemi
+namespace dsemi::graphics
 {
-	namespace graphics
-	{
-		class Device;
-
-		class bindable
-		{
-		public:
-			bindable(Device* parent_device) : m_device(*parent_device) {} virtual ~bindable() = default;
-
-			inline virtual void bind() const = 0;
-		protected:
-			inline Device& getDevice() const { return m_device; }
-		private:
-			Device& m_device;
-		};
-	}
+    class Bindable
+    {
+    public:
+        virtual ~Bindable() = default;
+        virtual void bind() = 0;
+	};
 }
+#endif

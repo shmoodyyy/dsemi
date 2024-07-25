@@ -58,7 +58,7 @@ namespace dsemi
 
 			HRESULT hr;
 			UINT device_create_flags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
-#ifdef _DEBUG
+#ifndef NDEBUG
 			device_create_flags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
@@ -222,50 +222,50 @@ namespace dsemi
 		//	));
 		//}
 
-		void Device::create_render_target(render_target* render_target, ID3D11Resource* source)
+		void Device::create_render_target(RenderTarget* render_target, ID3D11Resource* source)
 		{
-			HRESULT hr;
+			//HRESULT hr;
 
 			//if (!source)
 			//	GFX_THROW_FAILED(_active_swap_chain._dxgi_swap_chain->GetBuffer(0, __uuidof(ID3D11Resource), (void**)&source));
 
-			GFX_THROW_FAILED(_dx_device->CreateRenderTargetView(
-				source,
-				nullptr,
-				&render_target->_dx_render_target_view
-			));
-			source->Release();
+			//GFX_THROW_FAILED(_dx_device->CreateRenderTargetView(
+			//	source,
+			//	nullptr,
+			//	&render_target->m_renderTargetView
+			//));
+			//source->Release();
 
-			//render_target->_dx_view_port.Width = window->width();
-			//render_target->_dx_view_port.Height = window->height();
-			render_target->_dx_view_port.TopLeftX = 0u;
-			render_target->_dx_view_port.TopLeftY = 0u;
-			render_target->_dx_view_port.MinDepth = 0.0f;
-			render_target->_dx_view_port.MaxDepth = 1.0f;
+			////render_target->_dx_view_port.Width = window->width();
+			////render_target->_dx_view_port.Height = window->height();
+			//render_target->m_viewPort.TopLeftX = 0u;
+			//render_target->m_viewPort.TopLeftY = 0u;
+			//render_target->m_viewPort.MinDepth = 0.0f;
+			//render_target->m_viewPort.MaxDepth = 1.0f;
 		}
 
 		void Device::bind_vertex_buffer(const vertex_buffer* vertex_buffer)
 		{
-			UINT offset = 0u;
+			//UINT offset = 0u;
 			//_dx_context->IASetVertexBuffers(0u, 1u, vertex_buffer->get_dx_buffer().GetAddressOf(), &vertex_buffer->get_stride(), &offset);
 		}
 
 		void Device::bind_vertex_shader(vertex_shader* vertex_shader)
 		{
-			_dx_context->VSSetShader(vertex_shader->_dx_vertex_shader.Get(), nullptr, 0u);
+			//_dx_context->VSSetShader(vertex_shader->_dx_vertex_shader.Get(), nullptr, 0u);
 			//_dx_context->IASetInputLayout(vertex_shader->_input_layout._dx_input_layout.Get());
 		}
 
 		void Device::bind_fragment_shader(fragment_shader* fragment_shader)
 		{
-			_dx_context->PSSetShader(fragment_shader->_dx_pixel_shader.Get(), nullptr, 0u);
+			//_dx_context->PSSetShader(fragment_shader->_dx_pixel_shader.Get(), nullptr, 0u);
 		}
 
-		void Device::bind_render_target(render_target* render_target)
+		void Device::bind_render_target(RenderTarget* render_target)
 		{
-			_dx_context->OMSetRenderTargets(1u, render_target->_dx_render_target_view.GetAddressOf(), nullptr);
-			_dx_context->RSSetViewports(1u, &render_target->_dx_view_port);
-			//_active_render_target = render_target;
+			//_dx_context->OMSetRenderTargets(1u, render_target->_dx_render_target_view.GetAddressOf(), nullptr);
+			//_dx_context->RSSetViewports(1u, &render_target->_dx_view_port);
+			////_active_render_target = render_target;
 		}
 
 	} // namespace graphics

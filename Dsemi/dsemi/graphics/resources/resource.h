@@ -1,23 +1,23 @@
-#ifndef HEADER_DSEMI_GRAPHICS_RESOURCES_RESOUCE
-#define HEADER_DSEMI_GRAPHICS_RESOURCES_RESOURCE
+#ifndef DSEMI_GRAPHICS_RESOURCE
+#define DSEMI_GRAPHICS_RESOURCE
+#include "dsemi/graphics/api_include.h"
+#include "dsemi/graphics/bindable.h"
 
-namespace dsemi 
+namespace dsemi::graphics
 {
-	namespace graphics 
-	{
-		class Device;
+    class Resource : public Bindable
+    {
+    public:
+        Resource();
+        ~Resource();
 
-		class iresource {
-		public:
-			iresource() {};
-			virtual ~iresource() { release(); };
-			virtual void create(Device* device) = 0;
-			virtual void release() {};
-		protected:
-			inline Device* get_device() { return _device; }
-			Device* _device;
-		};
-	}
+        virtual void bind() override;
+
+#if defined (_WIN32)
+    protected:
+        ComPtr<ID3D11Resource> m_resource;
+#endif
+    };
 }
 
 #endif

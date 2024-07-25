@@ -7,10 +7,10 @@ namespace dsemi
 {
 	namespace graphics
 	{
-		class ishader : public bindable
+		class ishader : public Bindable
 		{
 		public:
-			ishader(Device* device) : bindable(device) {}
+			ishader(Device* device) : Bindable() {}
 			virtual ~ishader() = default;
 
 			//virtual void bind() const = 0;

@@ -7,7 +7,7 @@
 namespace dsemi {
 	namespace graphics {
 		class Device;
-		class render_target;
+		class RenderTarget;
 
 		// an abstraction of the directx device context
 		// to allow the set up of either an immediate
@@ -19,8 +19,8 @@ namespace dsemi {
 		public:
 			render_context(Device* device);
 
-			void set_render_target(render_target* render_target);
-			render_target* get_render_target() const;
+			void set_render_target(RenderTarget* render_target);
+			RenderTarget* get_render_target() const;
 
 			Device* get_device() const;
 
@@ -40,7 +40,7 @@ namespace dsemi {
 
 		protected:
 			Device* _device;
-			render_target* _render_target;
+			RenderTarget* _render_target;
 		};
 
 	}

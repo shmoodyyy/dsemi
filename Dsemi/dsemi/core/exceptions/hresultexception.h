@@ -9,7 +9,7 @@
 #define HRESULT_EXCEPTION_TYPE(hr, type) dsemi::hresult_exception(__LINE__, __FILE__, hr, type)
 
 #define THROW_FAILED(fn) if(FAILED(hr = (fn))) { __debugbreak(); throw HRESULT_EXCEPTION(hr); }
-#define THROW_FAILED_TYPE(fn, type) if(!SUCCEEDED((hr = fn))) { auto e = HRESULT_EXCEPTION_TYPE(hr, type); dsemi::display_except(e.what(), type); __debugbreak(); abort(); }
+#define THROW_FAILED_TYPE(fn, type) if(!SUCCEEDED((hr = fn))) { auto e = HRESULT_EXCEPTION_TYPE(hr, type); dsemi::display_except(e.what(), type); __debugbreak(); abort(); } do { (void)(0); } while (false)
 
 // specific throw macros
 

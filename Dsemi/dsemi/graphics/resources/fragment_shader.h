@@ -1,6 +1,5 @@
 #ifndef GRAPHICS_FRAGMENT_SHADER_H
 #define GRAPHICS_FRAGMENT_SHADER_H
-
 #include "Dsemi/graphics/api_include.h"
 
 namespace dsemi {

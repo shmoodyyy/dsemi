@@ -2,7 +2,7 @@
 #define GRAPHICS_DEVICE_H
 
 #include "dsemi/graphics/api_include.h"
-#include "dsemi/graphics/render_target.h"
+#include "dsemi/graphics/rendertarget.h"
 #include "dsemi/graphics/render_context.h"
 #include "dsemi/graphics/resources/resource_include.h"
 #include "dsemi/graphics/swapchain.h"
@@ -18,6 +18,7 @@ namespace dsemi::graphics {
         }
 
 #if defined (_WIN32)
+        // this is bad
         auto get_dx_factory() -> IDXGIFactory* const { return _dxgi_factory; }
         auto get_dx_device() -> ID3D11Device* const { return _dx_device.Get(); }
         auto get_context() -> ID3D11DeviceContext* const { return _dx_context.Get(); }
@@ -28,12 +29,12 @@ namespace dsemi::graphics {
         void create_index_buffer(index_buffer* index_buffer);
         void create_vertex_shader(vertex_shader* vertex_shader, vertex_shader_desc desc);
         void create_fragment_shader(fragment_shader* fragment_shader, fragment_shader_desc desc);
-        void create_render_target(render_target* render_target, ID3D11Resource* source); // temp pointer for until i implement own basic resource class
+        void create_render_target(RenderTarget* render_target, ID3D11Resource* source); // temp pointer for until i implement own basic resource class
         void bind_vertex_buffer(const vertex_buffer* vertex_buffer);
         //void bind_input_layout(input_layout* layout);
         void bind_vertex_shader(vertex_shader* vertex_shader);
         void bind_fragment_shader(fragment_shader* fragment_shader);
-        void bind_render_target(render_target* render_target);
+        void bind_render_target(RenderTarget* render_target);
         //void create_triangle_resources();
 
     private:

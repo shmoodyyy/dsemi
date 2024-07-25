@@ -5,9 +5,9 @@
 dsemi::graphics::SwapChain::SwapChain(Window& wnd)
 {
     auto& device = Device::get();
-    DXGI_SWAP_CHAIN_DESC sd = {};
-    sd.BufferDesc.Width = 1280;
-    sd.BufferDesc.Height = 720;
+    DXGI_SWAP_CHAIN_DESC sd = {{0}};
+    sd.BufferDesc.Width = wnd.getWidth();
+    sd.BufferDesc.Height = wnd.getHeight();
     sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
     sd.BufferDesc.RefreshRate.Numerator = 0;
     sd.BufferDesc.RefreshRate.Denominator = 0;
@@ -23,10 +23,15 @@ dsemi::graphics::SwapChain::SwapChain(Window& wnd)
     HRESULT hr;
     auto dxgi_factory = device.get_dx_factory();
     GFX_THROW_FAILED(dxgi_factory->CreateSwapChain(
-                device.get_dx_device(),
-                &sd,
-                &m_swapChain
-                ));
+        device.get_dx_device(),
+        &sd,
+        &m_swapChain
+    ));
+    GFX_THROW_FAILED(m_swapChain->GetBuffer(
+        0u,
+        __uuidof(ID3D11Texture2D),
+        &m_frontBuffer
+    ));
     GFX_LOG_DEBUG(L"created new swapchain for test window");
 }
 
@@ -36,18 +41,14 @@ dsemi::graphics::SwapChain::~SwapChain()
 
 auto dsemi::graphics::SwapChain::resize(unsigned width, unsigned height) -> ErrNo
 {
-    HRESULT hr;
     if (!m_swapChain)
         return badMemory;
+    // release all render target views holding reference to our buffer
+    m_frontBuffer = nullptr;
     DXGI_SWAP_CHAIN_DESC sd;
     m_swapChain->GetDesc(&sd);
-    m_swapChain->ResizeBuffers(sd.BufferCount, 0u, 0u, DXGI_FORMAT_UNKNOWN, sd.Flags);
-    ComPtr<ID3D11Texture2D> framebuf = nullptr;
-    GFX_THROW_FAILED(m_swapChain->GetBuffer(
-                0u,
-                __uuidof(ID3D11Texture2D),
-                &framebuf
-                ));
+    m_swapChain->ResizeBuffers(sd.BufferCount, 0, 0, DXGI_FORMAT_UNKNOWN, sd.Flags);
+    setFrontBuffer();
     return ok;
 }
 
@@ -55,4 +56,15 @@ auto dsemi::graphics::SwapChain::present() -> ErrNo
 {
     m_swapChain->Present(0, 0);
     return ok;
+}
+
+void dsemi::graphics::SwapChain::setFrontBuffer()
+{
+    m_frontBuffer = nullptr;
+    HRESULT hr;
+    GFX_THROW_FAILED(m_swapChain->GetBuffer(
+        0u,
+        __uuidof(ID3D11Texture2D),
+        &m_frontBuffer
+    ));
 }

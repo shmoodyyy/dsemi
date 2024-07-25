@@ -35,7 +35,7 @@ namespace dsemi {
 		===================================*/
 
 		// Graphics State Management
-		void set_render_target(render_target* render_target)
+		void set_render_target(RenderTarget* render_target)
 		{
 		}
 

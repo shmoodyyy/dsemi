@@ -146,7 +146,7 @@ namespace dsemi
 		// ------------------------------------------------------
 		// vertex_buffer implementation
 		//
-		vertex_buffer::vertex_buffer(Device* device, vertex_array& vertices, uint32_t offset /*= 0u*/) : bindable(device), _layout(vertices.get_layout()), _dx_buffer(nullptr), _stride(vertices.get_vertex_stride()), _offset(0u), _count(vertices.get_vertex_count())
+		vertex_buffer::vertex_buffer(Device* device, vertex_array& vertices, uint32_t offset /*= 0u*/) : Bindable(), _layout(vertices.get_layout()), _dx_buffer(nullptr), _stride(vertices.get_vertex_stride()), _offset(0u), _count(vertices.get_vertex_count())
 		{
 			// =======================================================
 			//		CREATE VERTEX BUFFER
@@ -162,7 +162,7 @@ namespace dsemi
 			bsrd.pSysMem = vertices.get_data();
 
 			HRESULT hr;
-			GFX_THROW_FAILED(getDevice().get_dx_device()->CreateBuffer(
+			GFX_THROW_FAILED(Device::get().get_dx_device()->CreateBuffer(
 				&bd,
 				&bsrd,
 				&_dx_buffer
@@ -176,12 +176,10 @@ namespace dsemi
 			GFX_LOG_DEBUG(L"released graphics::vertex_buffer");
 		}
 
-		void vertex_buffer::bind() const
+		void vertex_buffer::bind()
 		{
-			getDevice().get_context()->IASetVertexBuffers(0u, 1u, &this->_dx_buffer, &this->_stride, &_offset);
+            Device::get().get_context()->IASetVertexBuffers(0u, 1u, &this->_dx_buffer, &this->_stride, &_offset);
 			GFX_LOG_DEBUG(L"bound graphics::vertex_buffer to pipeline");
 		}
-
-
 	} // namespace graphics
 } // namespace dsemi

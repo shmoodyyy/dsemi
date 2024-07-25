@@ -48,15 +48,9 @@ auto DevApp::onWindowResize(dsemi::WindowResizeEvent& e) -> bool
     if (_dx_context) {
         HRESULT hr;
         _rt_view = nullptr;
-        ComPtr<ID3D11Texture2D> framebuf = nullptr;
-        GFX_THROW_FAILED(m_window->getSwapChain()->m_swapChain->GetBuffer(
-            0u,
-            __uuidof(ID3D11Texture2D),
-            &framebuf
-        ));
 
         GFX_THROW_FAILED(_dx_device->CreateRenderTargetView(
-            framebuf.Get(),
+            m_window->getSwapChain()->getFrontBuffer().Get(),
             0u,
             &_rt_view
         ));
@@ -120,15 +114,8 @@ void DevApp::initDX()
     // =======================================================
     //		CREATE RENDER TARGET VIEW
     // =======================================================
-    ComPtr<ID3D11Texture2D> framebuf = nullptr;
-    GFX_THROW_FAILED(m_window->getSwapChain()->m_swapChain->GetBuffer(
-        0u,
-        __uuidof(ID3D11Texture2D),
-        &framebuf
-    ));
-
     GFX_THROW_FAILED(_dx_device->CreateRenderTargetView(
-        framebuf.Get(),
+        m_window->getSwapChain()->getFrontBuffer().Get(),
         0u,
         &_rt_view
     ));
@@ -168,9 +155,6 @@ void DevApp::initDX()
         nullptr,
         &_vertex_shader
     ));
-
-    int* test = new int(4);
-    delete test;
 
     // read from file
     GFX_THROW_FAILED(D3DReadFileToBlob(L"shaders/default_ps.cso", &ps_blob));
@@ -249,7 +233,6 @@ void DevApp::initDX()
     _dx_context->VSSetConstantBuffers(0u, 1u, _view_const_buffer.GetAddressOf());
     _vbuf->bind();
 
-    // create logging thread
     std::thread(logDirectX_thread).detach();
 }
 

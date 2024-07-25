@@ -16,7 +16,7 @@ namespace dsemi
 
 		auto getWidth() -> unsigned const;
 		auto getHeight() -> unsigned const;
-        void resize();
+        void resize(unsigned width, unsigned height);
 
 		auto hasFocus() -> bool const;
 		void setFocus(bool value);

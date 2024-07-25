@@ -10,8 +10,8 @@
 #define GFX_LOG_ERROR(x)	LOG_ERROR(GFX_LOG_PREFIX_API x)
 #define GFX_LOG_CRITICAL(x) LOG_CRITICAL(GFX_LOG_PREFIX_API x)
 
-#if (defined _WIN32 || defined _WIN64)
-#include "dsemi/graphics/directx/directx11.h"
+#ifdef _WIN32
+#include <dsemi/graphics/directx/directx11.h>
 
 #undef	GFX_LOG_PREFIX_API
 #define GFX_LOG_PREFIX_API L"[DX11] "

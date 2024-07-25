@@ -9,11 +9,13 @@
 #pragma comment(lib, "d3dcompiler.lib")
 #pragma comment(lib, "d2d1")
 #pragma comment(lib, "dwrite")
+#pragma comment(lib, "dxguid.lib")
 
 #include <d3d11.h>
 #include <dwrite_3.h>
 #include <DirectXMath.h>
 #include <d3dcompiler.h>
+#include <dxgidebug.h>
 
 using Microsoft::WRL::ComPtr;
 

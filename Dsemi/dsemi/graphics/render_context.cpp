@@ -1,6 +1,6 @@
 #include "dsemi/graphics/render_context.h"
 
-#include "dsemi/graphics/render_target.h"
+#include "dsemi/graphics/rendertarget.h"
 #include "dsemi/graphics/device.h"
 
 namespace dsemi {
@@ -17,7 +17,7 @@ namespace dsemi {
 		}
 
 
-		void render_context::set_render_target(render_target* render_target)
+		void render_context::set_render_target(RenderTarget* render_target)
 		{
 			_render_target = render_target;
 		}
