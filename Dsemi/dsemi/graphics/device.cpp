@@ -123,7 +123,7 @@ namespace dsemi
 		// resource creation
 		======================*/
 		// D3D
-		void Device::create_vertex_buffer(vertex_buffer* vertex_buffer)
+		void Device::create_vertex_buffer(VertexBuffer* vertex_buffer)
 		{
 			HRESULT hr;
 
@@ -136,7 +136,7 @@ namespace dsemi
 			D3D11_SUBRESOURCE_DATA sd = {};
 			//sd.pSysMem = desc.data_pointer;
 
-			//vertex_buffer->_stride = desc.data_stride;
+			//VertexBuffer->_stride = desc.data_stride;
 
 			//GFX_THROW_FAILED(_dx_device->CreateBuffer(&bd, &sd, &vertex_buffer->_dx_buffer));
 		}
@@ -244,7 +244,7 @@ namespace dsemi
 			//render_target->m_viewPort.MaxDepth = 1.0f;
 		}
 
-		void Device::bind_vertex_buffer(const vertex_buffer* vertex_buffer)
+		void Device::bind_vertex_buffer(const VertexBuffer* vertex_buffer)
 		{
 			//UINT offset = 0u;
 			//_dx_context->IASetVertexBuffers(0u, 1u, vertex_buffer->get_dx_buffer().GetAddressOf(), &vertex_buffer->get_stride(), &offset);

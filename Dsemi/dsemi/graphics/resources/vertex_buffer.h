@@ -6,235 +6,182 @@
 #include <vector>
 #include <utility>
 
-namespace dsemi
+namespace dsemi::graphics
 {
-	namespace graphics
-	{
-		class Device;
+    // TODO: 
+    // consider possible issues that could come up due to byte padding
+    // to keep 4-byte alignment of allocated memory
+    // 26.07.2024: my past haunts my future with bad comments
 
-		// TODO: 
-		// consider possible issues that could come up due to byte padding
-		// to keep 4-byte alignment of allocated memory
-		//
+    // todo: move this to a header file unifying vertex/index/instance buffers
+    enum class ShaderDataType
+    {
+        INVALID = 0,
+        FLOAT, FLOAT2, FLOAT3, FLOAT4,
+        SINT, SINT2, SINT3, SINT4,
+        UINT, UINT2, UINT3, UINT4,
+    };
+    auto ShaderDataType_size(ShaderDataType type) -> const size_t;
+    auto ShaderDataType_toDXGI(ShaderDataType type) -> const DXGI_FORMAT;
 
-		// todo: move this to a header file unifying vertex/index/instance buffers
-		enum class shader_data_type
-		{
-			INVALID = 0,
-			FLOAT, FLOAT2, FLOAT3, FLOAT4,
-			SINT, SINT2, SINT3, SINT4,
-			UINT, UINT2, UINT3, UINT4,
-		}; // enum class shader_data_type
+    class VertexLayout
+    {
+        using self = VertexLayout;
+    public:
+        VertexLayout();
 
-		static size_t shader_data_type_size(shader_data_type type)
-		{
-			switch (type)
-			{
-			case shader_data_type::FLOAT:	return 4u;
-			case shader_data_type::FLOAT2:	return 4u * 2u;
-			case shader_data_type::FLOAT3:	return 4u * 3u;
-			case shader_data_type::FLOAT4:	return 4u * 4u;
-			case shader_data_type::SINT:	return 4u;
-			case shader_data_type::SINT2:	return 4u * 2u;
-			case shader_data_type::SINT3:	return 4u * 3u;
-			case shader_data_type::SINT4:	return 4u * 4u;
-			case shader_data_type::INVALID:	return 0u;
-			}
-			ASSERT(false, "Passed an invalid shader_data_type.");
-			return 0;
-		}
+        auto append(std::string_view semantic, ShaderDataType type) -> VertexLayout&;
+        auto stride() const -> size_t;
+        auto size() const -> size_t;
+        auto d3dLayout() const -> std::vector<D3D11_INPUT_ELEMENT_DESC>;
 
-		static DXGI_FORMAT shader_data_type_to_dx(shader_data_type type)
-		{
-			switch (type)
-			{
-			case shader_data_type::FLOAT:	return DXGI_FORMAT_R32_FLOAT;
-			case shader_data_type::FLOAT2:	return DXGI_FORMAT_R32G32_FLOAT;
-			case shader_data_type::FLOAT3:	return DXGI_FORMAT_R32G32B32_FLOAT;
-			case shader_data_type::FLOAT4:	return DXGI_FORMAT_R32G32B32A32_FLOAT;
-			case shader_data_type::SINT:	return DXGI_FORMAT_R32_SINT;
-			case shader_data_type::SINT2:	return DXGI_FORMAT_R32G32_SINT;
-			case shader_data_type::SINT3:	return DXGI_FORMAT_R32G32B32_SINT;
-			case shader_data_type::SINT4:	return DXGI_FORMAT_R32G32B32A32_SINT;
-			}
-			ASSERT(false, "Passed an invalid shader_data_type.");
-			return DXGI_FORMAT_UNKNOWN;
-		}
+        class Element
+        {
+            friend class VertexLayout;
+        public:
+            Element();
+            Element(std::string semantic, ShaderDataType type);
+            auto semantic() const -> std::string_view;
+            auto type() const -> ShaderDataType;
+            auto size() const -> size_t;
+            auto offset() const -> size_t;
+            auto d3dElement() const -> D3D11_INPUT_ELEMENT_DESC;
 
-		class vertex_layout
-		{
-		public:
+        private:
+            std::string     m_semantic;
+            ShaderDataType  m_type;
+            size_t          m_size;
+            size_t          m_offset;
+        };
+        VertexLayout(std::initializer_list<Element> elements);
+        auto get(size_t i) -> const Element&;
+        auto get(std::string_view semantic) -> const Element&;
+        auto begin() -> std::vector<Element>::iterator;
+        auto end() -> std::vector<Element>::iterator;
 
-			class element
-			{
-				friend class vertex_layout;
-			public:
-				// idea: look into how std::string and std::string_view works
-				// for taking ownership of strings provided into function parameters
-				// or maybe make a custom string class to handle transfering
-				// of string content ownership as hardcoded const char* parameter
-				// values might end up floating around in memory with a lifetime
-				// equivalent to the application lifetime
-				element() = default;
-				element(std::string semantic, shader_data_type type);
-				const std::string& get_semantic()    const { return _semantic; }
-				shader_data_type         get_type()        const { return _type; }
-				// returns size_t in bytes
-				size_t                   get_size()        const { return _size; }
-				size_t                   get_offset()      const { return _offset; }
-				D3D11_INPUT_ELEMENT_DESC get_d3d_element() const;
+    private:
+        std::vector<Element> m_elements;
+        size_t               m_stride;
+    };
 
-			private:
-				std::string      _semantic;
-				shader_data_type _type;
-				size_t           _size;
-				size_t           _offset;
-			}; // class element
+    // todo: add some template (meta)programming into getters and types to allow for a cleaner interface
+    // of accessing vertex data without requiring manual type checking and casting
+    // the data buffer to the correct type
+    //
+    class VertexView
+    {
+        friend class VertexArray;
+    protected:
+        VertexView(char* starting_byte, VertexLayout& layout);
 
-			vertex_layout();
-			vertex_layout(const std::initializer_list<element>& elements);
+    public:
+        ShaderDataType get(std::string_view semantic, void* pointer_to_element);
+        ShaderDataType get(size_t index, void* pointer_to_element);
 
-			vertex_layout& append(const std::string& semantic, shader_data_type type);
+        // these templates were a lot more fun at the time of writing them
+        template<typename T>
+        void setByIndex(size_t index, T&& value)
+        {
+            ASSERT(index > 0 && index < m_layout.size(), "Index out of range");
+            //ASSERT(_layout.get_by_index(index).get_size() == sizeof(T), "Vertex parameter input memory size mismatch. \n [SEMANTIC: " + _layout.get_by_index(index).get_semantic() + "]");
 
-			// vertex size in bytes
-			size_t                                get_stride() const { return _stride; }
-			size_t                                get_element_count() const { return _elements.size(); }
-			std::vector<D3D11_INPUT_ELEMENT_DESC> get_d3d_layout() const;
+            *(T*)m_elements[m_layout.get(index).offset()] = value;
+        }
 
-			const element& get_by_index(size_t i);
-			const element& get_by_semantic(const std::string& semantic);
+        template<typename T>
+        void setByIndex(size_t index, std::initializer_list<T>&& values)
+        {
+            ASSERT(index > 0 && index < m_layout.size(), 
+                "Index out of range");
+            ASSERT(m_layout.get(index).size() == sizeof(T) * values.size(), 
+                "Vertex parameter input memory size mismatch. \n [SEMANTIC: " << m_layout.get(index).semantic() << "]");
+            *(T**)m_elements[m_layout.get(index).offset()] = values.begin();
+        }
 
-			std::vector<element>::iterator begin() { return _elements.begin(); }
-			std::vector<element>::iterator end()   { return _elements.end(); }
+    private:
+        // parameter packing
+        template<typename param_first, typename ...param_rest>
+        void setByIndex(size_t index, param_first&& first, param_rest&&... rest)
+        {
+            setByIndex(index, std::forward<param_first>(first));
+            setByIndex(index + 1, std::forward<param_rest>(rest)...);
+        }
+        /*template<typename T>
+        void setByIndex(size_t index, T&& value)
+        {
+        }*/
 
-		private:
-			static element       _invalid_element;
-			std::vector<element> _elements;
-			size_t               _stride;
-		};
+    private:
+        std::vector<char*> m_elements;
+        VertexLayout& m_layout;
+    };
 
+    class VertexArray
+    {
+    public:
+        VertexArray(VertexLayout layout, size_t size = 0u);
 
+        auto data() const -> const char*            { return m_bytes.data(); } // will i ever use this?
+        auto size() const -> size_t                 { return m_bytes.size() / m_layout.stride(); }
+        auto stride() const -> size_t               { return m_layout.stride(); };
+        auto byteWidth() const -> size_t            { return m_bytes.size(); };
+        auto layout() const -> const VertexLayout&  { return m_layout; }
 
-		// todo: add some template (meta)programming into getters and types to allow for a cleaner interface
-		// of accessing vertex data without requiring manual type checking and casting
-		// the data buffer to the correct type
-		//
-		class vertex_view
-		{
-			friend class vertex_array;
-		protected:
-			vertex_view(char* starting_byte, vertex_layout& layout);
+        template<typename ...param_types>
+        VertexArray& emplaceBack(param_types&&... params)
+        {
+            // TODO: assert that size and count of elements match to the vertex layout
+            //ASSERT(sizeof...(param_types) == _layout.get_element_count(), "Vertex parameter count doesn't match the specified vertex_array layout element count.");
+            emplaceBack_setData(std::forward<param_types>(params)...);
+            return *this;
+        }
 
-		public:
-			shader_data_type get_by_semantic(const std::string& semantic, void* pointer_to_element);
-			shader_data_type get_by_index(size_t index, void* pointer_to_element);
+    private:
+        // what does 'setData' mean here?
+        template<typename T, typename... types>
+        void emplaceBack_setData(T param_first, types... param_rest)
+        {
+            emplaceBack_setData(param_first);
+            emplaceBack_setData(param_rest...);
+        }
+        template<typename T>
+        void emplaceBack_setData(T param)
+        {
+            m_bytes.resize(m_bytes.size() + sizeof(T));
+            auto tail = (m_bytes.end() - sizeof(T));
+            auto dst = &*tail;
+            auto src = reinterpret_cast<char*>(&param);
+            memcpy(dst, src, sizeof(T));
+            /*_bytes.resize(_bytes.size() + sizeof(T));
+            auto tail = _bytes.end() - sizeof(T);*/
+            //*(reinterpret_cast<T*>(&(*tail))) = param;
+        }
 
-			template<typename T>
-			void set_by_index(size_t index, T&& value)
-			{
-				ASSERT(index > 0 && index < _layout.get_element_count(), "Index out of range");
-				//ASSERT(_layout.get_by_index(index).get_size() == sizeof(T), "Vertex parameter input memory size mismatch. \n [SEMANTIC: " + _layout.get_by_index(index).get_semantic() + "]");
+        std::vector<char> m_bytes; // TODO: dont do this outside of dynamic buffers
+        VertexLayout m_layout;
+    };
 
-				*(T*)_element_pointers[_layout.get_by_index(index).get_offset()] = value;
-			}
-			template<typename T>
-			void set_by_index(size_t index, std::initializer_list<T>&& values)
-			{
-				ASSERT(index > 0 && index < _layout.get_element_count(), "Index out of range");
+    class VertexBuffer : public Bindable
+    {
+    public:
+        VertexBuffer(VertexArray& vertices, uint32_t offset = 0u);
+        ~VertexBuffer();
 
-				ASSERT(_layout.get_by_index(index).get_size() == sizeof(T) * values.size(), "Vertex parameter input memory size mismatch. \n [SEMANTIC: " + _layout.get_by_index(index).get_semantic() + "]");
-				*(T**)_element_pointers[_layout.get_by_index(index).get_offset()] = values.begin();
-			}
+        auto stride() -> size_t { return m_stride; }
+        auto size() -> size_t { return m_size; }
+        //inline size_t get_byte_width()
 
-		private:
-			// parameter packing
-			template<typename param_first, typename ...param_rest>
-			void set_by_index(size_t index, param_first&& first, param_rest&&... rest)
-			{
-				set_by_index(index, std::forward<param_first>(first));
-				set_by_index(index + 1, std::forward<param_rest>(rest)...);
-			}
-			/*template<typename T>
-			void set_by_index(size_t index, T&& value)
-			{
-			}*/
+        virtual void bind() override;
+        //VertexView operator[](size_t i);
 
-		private:
-			std::vector<char*> _element_pointers;
-			vertex_layout& _layout;
+    private:
+        uint32_t m_stride;
+        uint32_t m_offset;
+        uint32_t m_size;
+        VertexLayout m_layout;
+        ID3D11Buffer* m_d3d11Buffer;
+    };
 
-		}; // class vertex
-
-
-
-		class vertex_array
-		{
-		public:
-			vertex_array(vertex_layout layout, size_t size = 0u);
-
-			inline char*                get_data()                { return _bytes.data(); }
-			inline size_t               get_vertex_count()  const { return _bytes.size() / _layout.get_stride(); }
-			inline size_t               get_vertex_stride() const { return _layout.get_stride(); };
-			inline size_t               get_byte_width()    const { return _bytes.size(); };
-			inline const vertex_layout& get_layout()        const { return _layout; }
-
-			template<typename ...param_types>
-			vertex_array& emplace_back(param_types&&... params)
-			{
-				// TODO: assert that size and count of elements match to the vertex layout
-				//ASSERT(sizeof...(param_types) == _layout.get_element_count(), "Vertex parameter count doesn't match the specified vertex_array layout element count.");
-				_emplace_back_set_data(std::forward<param_types>(params)...);
-				return *this;
-			}
-
-		private:
-			template<typename T, typename... types>
-			void _emplace_back_set_data(T param_first, types... param_rest)
-			{
-				_emplace_back_set_data(param_first);
-				_emplace_back_set_data(param_rest...);
-			}
-			template<typename T>
-			void _emplace_back_set_data(T param)
-			{
-				_bytes.resize(_bytes.size() + sizeof(T));
-				auto tail = (_bytes.end() - sizeof(T));
-				auto dst = &*tail;
-				auto src = reinterpret_cast<char*>(&param);
-				memcpy(dst, src, sizeof(T));
-				/*_bytes.resize(_bytes.size() + sizeof(T));
-				auto tail = _bytes.end() - sizeof(T);*/
-				//*(reinterpret_cast<T*>(&(*tail))) = param;
-			}
-
-			std::vector<char> _bytes; // TODO: storing vertices in cpu memory is dumb outside of a dynamic vertex buffer
-			vertex_layout     _layout;
-		};
-
-		class vertex_buffer : public Bindable
-		{
-		public:
-			vertex_buffer(Device* device, vertex_array& vertices, uint32_t offset = 0u);
-			~vertex_buffer();
-
-			inline size_t get_stride() { return _stride; }
-			inline size_t get_count() { return _count; }
-			//inline size_t get_byte_width()
-
-			virtual void bind() override;
-			//vertex_view operator[](size_t i);
-
-		protected:
-
-		private:
-			uint32_t		_stride;
-			uint32_t		_offset;
-			uint32_t		_count;
-			vertex_layout	_layout;
-			ID3D11Buffer*	_dx_buffer;
-		};
-
-		// TODO: dynamic vertex buffer class
-		//
-	}
+    // TODO: dynamic vertex buffer class
+        //
 }

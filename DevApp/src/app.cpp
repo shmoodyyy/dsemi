@@ -202,14 +202,14 @@ void DevApp::initDX()
     // =======================================================
     //		CREATE VERTEX BUFFER
     // =======================================================
-    dsemi::graphics::vertex_layout layout;
-    layout.append("Position", dsemi::graphics::shader_data_type::SINT2);
+    dsemi::graphics::VertexLayout layout;
+    layout.append("Position", dsemi::graphics::ShaderDataType::SINT2);
 
-    dsemi::graphics::vertex_array vertices(layout);
+    dsemi::graphics::VertexArray vertices(layout);
     int w = m_window->getWidth() / 2;
     int h = m_window->getHeight() / 2;
-    vertices.emplace_back(0, h).emplace_back(w, -h).emplace_back(-w, -h);
-    _vbuf = std::make_unique<dsemi::graphics::vertex_buffer>(_device, vertices);
+    vertices.emplaceBack(0, h).emplaceBack(w, -h).emplaceBack(-w, -h);
+    _vbuf = std::make_unique<dsemi::graphics::VertexBuffer>(vertices);
 
     uint32_t strides = 8u;
     uint32_t offsets = 0u;
@@ -228,7 +228,7 @@ void DevApp::drawTriangle()
 {
     m_window->getRenderTarget()->clear();
     m_window->getRenderTarget()->set();
-    _dx_context->Draw(_vbuf->get_count(), 0u);
+    _dx_context->Draw(_vbuf->size(), 0u);
 
     HRESULT hr;
     if (FAILED(hr = m_window->getSwapChain()->m_swapChain->Present(0, 0)))

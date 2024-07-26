@@ -14,9 +14,10 @@ set(CMAKE_EXE_LINKER_FLAGS_INIT "/INCREMENTAL:YES")
 set(CMAKE_EXE_LINKER_FLAGS_RELEASE_INIT "/INCREMENTAL:YES")
 set(CMAKE_CXX_FLAGS_RELEASE "/INCREMENTAL:YES ${CMAKE_CXX_FLAGS_RELEASE}")
 set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=-*,readability-*)
-
 set(CMAKE_CXX_STANDARD 23)
+
 
 add_subdirectory(dsemi)
 add_subdirectory(devapp)
 add_compile_definitions(_DEBUG)
+add_compile_definitions(DSEMI_DEBUG)

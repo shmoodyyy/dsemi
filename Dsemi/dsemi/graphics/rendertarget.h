@@ -8,7 +8,6 @@ namespace dsemi::graphics
 {
     class RenderTarget
     {
-        friend class RenderTargetView;
     public:
         RenderTarget();
         ~RenderTarget() = default;

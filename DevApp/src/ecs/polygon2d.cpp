@@ -2,7 +2,7 @@
 
 void render_polygon2d(polygon2d* poly_component, dsemi::graphics::Device* gfx)
 {
-	//dsemi::graphics::vertex_buffer buf;
+	//dsemi::graphics::VertexBuffer buf;
 
 	//dsemi::graphics::vertex_buffer_desc vbd = {};
 	//vbd.data_pointer = poly_component->vertices.data();

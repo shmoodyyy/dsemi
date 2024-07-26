@@ -25,12 +25,12 @@ namespace dsemi::graphics {
 #endif
 
         auto createSwapChain() -> std::shared_ptr<SwapChain>;
-        void create_vertex_buffer(vertex_buffer* vertex_buffer);
+        void create_vertex_buffer(VertexBuffer* vertex_buffer);
         void create_index_buffer(index_buffer* index_buffer);
         void create_vertex_shader(vertex_shader* vertex_shader, vertex_shader_desc desc);
         void create_fragment_shader(fragment_shader* fragment_shader, fragment_shader_desc desc);
         void create_render_target(RenderTarget* render_target, ID3D11Resource* source); // temp pointer for until i implement own basic resource class
-        void bind_vertex_buffer(const vertex_buffer* vertex_buffer);
+        void bind_vertex_buffer(const VertexBuffer* vertex_buffer);
         //void bind_input_layout(input_layout* layout);
         void bind_vertex_shader(vertex_shader* vertex_shader);
         void bind_fragment_shader(fragment_shader* fragment_shader);

@@ -5,7 +5,7 @@ int main(int argc, const char** argv)
 	using namespace dsemi::graphics;
 	DevApp app;
 
-	//vertex_layout layout = {
+	//VertexLayout layout = {
 	//	{"Position", shader_data_type::FLOAT3},
 	//	{"Normal", shader_data_type::FLOAT3},
 	//	{"TexCoord", shader_data_type::FLOAT2},

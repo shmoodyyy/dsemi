@@ -12,7 +12,12 @@ namespace dsemi
 
 namespace dsemi::graphics
 {
-    class SwapChain : public RenderTarget // this doesnt feel like a good approach
+    // this doesnt feel like a good approach
+    // TODO: model the swapchain the way it actually is
+    // using a collection of underlying framebuffers
+    // still need to figure out how to properly abstract
+    // that part with DX11 already doing it on its own
+    class SwapChain : public RenderTarget
     {
     public:
         enum ErrNo

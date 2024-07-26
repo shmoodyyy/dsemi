@@ -50,7 +50,7 @@ private:
 	//dsemi::graphics::viewport _viewport;
 	//dsemi::graphics::viewport _viewport;
 
-	std::unique_ptr<dsemi::graphics::vertex_buffer> _vbuf;
+	std::unique_ptr<dsemi::graphics::VertexBuffer> _vbuf;
 
 	struct vertex
 	{

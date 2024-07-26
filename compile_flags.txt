@@ -3,3 +3,5 @@ dsemi/
 devapp/src
 -std=c++23
 -Wall
+-D
+DSEMI_DEBUG
