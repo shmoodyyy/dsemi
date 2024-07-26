@@ -1,9 +1,7 @@
 #ifndef GRAPHICS_DEVICE_H
 #define GRAPHICS_DEVICE_H
-
 #include "dsemi/graphics/api_include.h"
 #include "dsemi/graphics/rendertarget.h"
-#include "dsemi/graphics/render_context.h"
 #include "dsemi/graphics/resources/resource_include.h"
 #include "dsemi/graphics/swapchain.h"
 

@@ -1,7 +1,6 @@
 #ifndef DSEMI_GRAPHICS_SWAPCHAIN
 #define DSEMI_GRAPHICS_SWAPCHAIN
 #include <dsemi/graphics/api_include.h>
-#include <dsemi/graphics/framebuffer.h>
 #include <dsemi/graphics/resources/texture2d.h>
 #include <dsemi/graphics/rendertarget.h>
 

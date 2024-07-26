@@ -28,11 +28,8 @@ namespace dsemi
 			} mode;
 
 			//static renderer create(window* target_window);
-
 			void clear(color32 color);
-
-			void draw_triangle(vector2f position);
-
+			void draw_triangle(Vector2f position);
 			void present();
 
 		protected:
