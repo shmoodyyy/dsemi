@@ -3,13 +3,12 @@
 #include <iostream>
 #include <dsemi/util/logger.h>
 #include <dsemi/ecs/ecs.h>
-#include "../ecs/test2dcomponents.h"
 
 void test_layer_2dgfx::on_attach()
 {
-	dsemi::ecs::entity_handle new_ent = _entities->create_entity();
-	new_ent.add_component<transform2d>();
-	new_ent.add_component<sprite_render>();
+	// dsemi::ecs::entity_handle new_ent = _entities->create_entity();
+	// new_ent.add_component<transform2d>();
+	// new_ent.add_component<sprite_render>();
 }
 
 void test_layer_2dgfx::on_update(const float dt)

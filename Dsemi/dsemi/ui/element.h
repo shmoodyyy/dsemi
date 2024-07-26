@@ -14,19 +14,19 @@ namespace dsemi {
 
 	public:
 		virtual void on_update(const float dt) = 0;
-		virtual void on_render(const vector2f& parent_offset) = 0;
+		virtual void on_render(const Vector2f& parent_offset) = 0;
 
 	public:
 		void update(const float dt);
-		void render(const vector2f& parent_offset);
+		void render(const Vector2f& parent_offset);
 
 		void add_child(ui_element* element);
 		const std::vector<ui_element*>& get_children() const { return _children; }
 
 	public:
-		vector2f offset;
-		vector2f position;
-		vector2f size;
+		Vector2f offset;
+		Vector2f position;
+		Vector2f size;
 		color32 background_colour;
 		color32 outline_colour;
 		float outline_thickness;

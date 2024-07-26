@@ -64,7 +64,7 @@ namespace dsemi {
 		void clear();
 		//void render2d_fill_rect(vector2i pos, vector2i dimensions);
 		void render2d_fill_poly();
-		//void render2d_fill_circle(vector2f pos, float radius);
+		//void render2d_fill_circle(Vector2f pos, float radius);
 		void render2d_fill_triangle();
 		void present();
 

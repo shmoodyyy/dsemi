@@ -21,7 +21,7 @@ namespace dsemi
 
 		}
 
-		void renderer::draw_triangle(vector2f position)
+		void renderer::draw_triangle(Vector2f position)
 		{
 
 		}

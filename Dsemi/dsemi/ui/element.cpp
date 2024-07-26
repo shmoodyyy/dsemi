@@ -30,7 +30,7 @@ namespace dsemi {
 		}
 	}
 
-	void ui_element::render(const vector2f& parent_offset)
+	void ui_element::render(const Vector2f& parent_offset)
 	{
 		on_render(parent_offset);
 		for (auto child : _children)

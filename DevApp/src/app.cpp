@@ -46,7 +46,6 @@ auto DevApp::onWindowClose(dsemi::WindowCloseEvent &e) -> bool
 auto DevApp::onWindowResize(dsemi::WindowResizeEvent& e) -> bool
 {
     if (_dx_context) {
-        HRESULT hr;
         _viewport.Width  = m_window->getWidth();
         _viewport.Height = m_window->getHeight();
         _dx_context->RSSetViewports(1u, &_viewport);
@@ -64,7 +63,7 @@ auto DevApp::onWindowResize(dsemi::WindowResizeEvent& e) -> bool
             0u,
             NULL,
             view_scale_2d.data(),
-            sizeof(float) * view_scale_2d.size(),
+            sizeof(unsigned) * view_scale_2d.size(),
             0u
         );
         //_dx_context->VSSetConstantBuffers(0u, 1u, _view_const_buffer.GetAddressOf());
@@ -72,7 +71,7 @@ auto DevApp::onWindowResize(dsemi::WindowResizeEvent& e) -> bool
     return true;
 }
 
-void logDirectX_thread() // absolutely unconcerned with thread-safety or race conditions here
+void logDirectX_thread() // absolutely unconcerned with race conditions here
 {
     // holy shit i love win32 who needs manpages anyways
     using namespace dsemi::graphics;

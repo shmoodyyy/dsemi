@@ -16,7 +16,7 @@ namespace dsemi {
 		}
 	}
 
-	rect::rect(vector2f top_left, vector2f bottom_right)
+	rect::rect(Vector2f top_left, Vector2f bottom_right)
 	{
 		x = top_left.x;
 		y = top_left.y;

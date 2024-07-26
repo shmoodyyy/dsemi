@@ -4,8 +4,8 @@
 namespace dsemi {
 
 	bool Input::s_bRawInput = true;
-	vector2i Input::s_mousePos;
-	vector2i Input::s_mouseDelta;
+	Vector2i Input::s_mousePos;
+	Vector2i Input::s_mouseDelta;
 
 	Input* Input::m_Instance = new Input();
 
@@ -70,6 +70,6 @@ namespace dsemi {
 
 	void Input::ResetMouseDelta()
 	{
-		s_mouseDelta = vector2i();
+		s_mouseDelta = Vector2i();
 	}
 }

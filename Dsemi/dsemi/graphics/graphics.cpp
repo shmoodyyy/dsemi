@@ -40,7 +40,7 @@ namespace dsemi {
 		}
 
 		// Render Calls
-		void render2d_fill_circle(vector2f pos, float radius)
+		void render2d_fill_circle(Vector2f pos, float radius)
 		{
 		}
 	}

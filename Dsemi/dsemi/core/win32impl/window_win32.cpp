@@ -177,7 +177,7 @@ LRESULT dsemi::Window::_wnd_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
     }
     case WM_MOUSEMOVE: {
         mouse_move_event e(LOWORD(lParam), HIWORD(lParam));
-        vector2i newPos = vector2i((int)e.GetX(), (int)e.GetY());
+        Vector2i newPos = Vector2i((int)e.GetX(), (int)e.GetY());
         if (!Input::IsMouseRawInput()) {
             Input::s_mouseDelta += Input::s_mousePos - newPos;
         }
@@ -187,7 +187,7 @@ LRESULT dsemi::Window::_wnd_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
     }
     case WM_SIZE: {
         // resize render context
-        // renderContext.UpdateBuffers(vector2f((float)m_Data.Width, (float)m_Data.Height));
+        // renderContext.UpdateBuffers(Vector2f((float)m_Data.Width, (float)m_Data.Height));
         resize(LOWORD(lParam), HIWORD(lParam));
         break;
     }
@@ -195,7 +195,7 @@ LRESULT dsemi::Window::_wnd_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
         RECT cur_size = *(RECT*)lParam;
         resize(cur_size.right - cur_size.left, cur_size.bottom - cur_size.top);
         // resize render context
-        // renderContext.UpdateBuffers(vector2f((float)m_Data.Width, (float)m_Data.Height));
+        // renderContext.UpdateBuffers(Vector2f((float)m_Data.Width, (float)m_Data.Height));
         break;
     }
     case WM_CLOSE: {
@@ -223,11 +223,12 @@ LRESULT dsemi::Window::_wnd_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
 
         RAWINPUT* pRaw = (RAWINPUT*)lpb;
         if (pRaw->header.dwType == RIM_TYPEMOUSE)
-            Input::s_mouseDelta += vector2i((int)pRaw->data.mouse.lLastX, (int)pRaw->data.mouse.lLastY);
+            Input::s_mouseDelta += Vector2i((int)pRaw->data.mouse.lLastX, (int)pRaw->data.mouse.lLastY);
         break;
     }
-    default: return DefWindowProc(hwnd, msg, wParam, lParam);
+    default: break;
     }
+    return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
 // win32 window class

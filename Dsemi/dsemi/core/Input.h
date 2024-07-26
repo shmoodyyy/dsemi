@@ -17,9 +17,9 @@ namespace dsemi {
 
 		void MapButton(const std::string& button, int key);
 
-		static vector2i GetMousePos() { return s_mousePos; }
+		static Vector2i GetMousePos() { return s_mousePos; }
 		// Replace with buffered shit
-		static vector2i GetMouseDelta() { return s_mouseDelta;	}
+		static Vector2i GetMouseDelta() { return s_mouseDelta;	}
 
 		static bool IsMouseRawInput() { return s_bRawInput; }
 		static bool SetMouseRawInput(bool bEnable) { s_bRawInput = bEnable; }
@@ -42,6 +42,6 @@ namespace dsemi {
 		bool Init();
 
 		static bool s_bRawInput;
-		static vector2i s_mousePos, s_mouseDelta;
+		static Vector2i s_mousePos, s_mouseDelta;
 	};
 }
