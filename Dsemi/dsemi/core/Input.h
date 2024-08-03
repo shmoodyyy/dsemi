@@ -1,5 +1,6 @@
 #pragma once
 #include <unordered_map>
+#include <string>
 #include "Dsemi/Math/vector2.h"
 
 namespace dsemi {
@@ -35,6 +36,7 @@ namespace dsemi {
 		static void ResetMouseDelta();
 
 		// Singleton code safety
+        // -- 03.08.2024: lmao paradigms moment
 		Input();
 		Input(const Input&) = delete;
 		Input& operator=(const Input&) = delete;

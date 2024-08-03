@@ -2,7 +2,6 @@
 #include "Dsemi/Core/Input.h"
 
 namespace dsemi {
-
 	bool Input::s_bRawInput = true;
 	Vector2i Input::s_mousePos;
 	Vector2i Input::s_mouseDelta;
@@ -11,7 +10,6 @@ namespace dsemi {
 
 	Input::Input()
 	{
-
 	}
 
 	Input* Input::Instance()
@@ -21,8 +19,7 @@ namespace dsemi {
 
 	bool Input::Init()
 	{
-		// TODO: set up initialization
-		// wtf am i gonna initialize in this whore? oh the mapping for each different platform ig
+        // 03.08.2024: this is all so bad
 		return true;
 	}
 

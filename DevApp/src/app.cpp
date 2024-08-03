@@ -1,6 +1,7 @@
 #include "app.h"
 #include <iostream>
 #include <dxgidebug.h>
+#include <dsemi/core/input.h>
 
 #pragma comment(lib, "dxguid.lib")
 
@@ -34,6 +35,21 @@ void DevApp::onEvent(dsemi::ievent& e)
 
 void DevApp::onUpdate(const float dt)
 {
+    auto moveViewport = [&](bool vertical, char keycode, float vel)
+    {
+        if (dsemi::Input::Instance()->GetKeyDown(keycode)) {
+            if (vertical)
+                m_viewport.setY(m_viewport.getY() + vel * dt);
+            else
+                m_viewport.setX(m_viewport.getX() + vel * dt);
+        }
+    };
+    moveViewport(true, 'W', 500.0f);
+    moveViewport(false, 'A', 500.0f);
+    moveViewport(true, 'S', -500.0f);
+    moveViewport(false, 'D', -500.0f);
+    m_viewport.bind();
+
     drawTriangle();
 }
 

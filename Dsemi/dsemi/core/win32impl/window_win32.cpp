@@ -116,6 +116,7 @@ LRESULT dsemi::Window::_wnd_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
     case WM_KEYDOWN: {
         key_press_event e_repeat((unsigned int)wParam);
         KeyDownEvent e((unsigned int)wParam);
+        Input::Instance()->OnKeyDown(wParam);
         if ((lParam & (1 << 30)) == 0)
             m_eventCallback(e); // first message for key down
         m_eventCallback(e_repeat);
@@ -215,15 +216,15 @@ LRESULT dsemi::Window::_wnd_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
 
         UINT dwSize = 0u;
         GetRawInputData((HRAWINPUT)lParam, RID_INPUT, nullptr, &dwSize, sizeof(RAWINPUTHEADER));
-        LPBYTE lpb = new BYTE[dwSize];
-        if (!lpb)
-            return 0;
-        if (GetRawInputData((HRAWINPUT)lParam, RID_INPUT, lpb, &dwSize, sizeof(RAWINPUTHEADER)) != dwSize)
+        if (dwSize == 0)
             break;
-
-        RAWINPUT* pRaw = (RAWINPUT*)lpb;
-        if (pRaw->header.dwType == RIM_TYPEMOUSE)
-            Input::s_mouseDelta += Vector2i((int)pRaw->data.mouse.lLastX, (int)pRaw->data.mouse.lLastY);
+        LPBYTE lpb = new BYTE[dwSize];
+        if (GetRawInputData((HRAWINPUT)lParam, RID_INPUT, lpb, &dwSize, sizeof(RAWINPUTHEADER)) == dwSize) {
+            RAWINPUT* pRaw = (RAWINPUT*)lpb;
+            if (pRaw->header.dwType == RIM_TYPEMOUSE)
+                Input::s_mouseDelta += Vector2i((int)pRaw->data.mouse.lLastX, (int)pRaw->data.mouse.lLastY);
+        }
+        delete[] lpb;
         break;
     }
     default: break;
