@@ -6,8 +6,10 @@
 #include <dsemi/graphics/render2d.h>
 #include <dsemi/graphics/api_include.h>
 #include <dsemi/graphics/color.h>
+#include <dsemi/graphics/viewport.h>
 
 #include <dsemi/graphics/resources/resource_include.h>
+#include <dsemi/events/keyboardevent.h>
 
 // temporary includes for writing the graphics abstractions
 #include <dsemi/graphics/rendertarget.h>
@@ -25,6 +27,7 @@ private:
 
     auto onWindowClose(dsemi::WindowCloseEvent& e) -> bool;
     auto onWindowResize(dsemi::WindowResizeEvent& e) -> bool;
+    auto onKeyDown(dsemi::KeyDownEvent& e) -> bool;
 
     void initDX();
     void drawTriangle();
@@ -43,6 +46,7 @@ private:
 	ComPtr<ID3D11PixelShader>		_pixel_shader;
 	ComPtr<ID3D11RenderTargetView>	_rt_view;
 	ComPtr<ID3D11InputLayout>		_input_layout;
+    dsemi::graphics::Viewport       m_viewport;
 	D3D11_VIEWPORT					_viewport;
 	dsemi::colorf					_clear_color;
 

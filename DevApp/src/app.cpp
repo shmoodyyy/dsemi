@@ -46,9 +46,8 @@ auto DevApp::onWindowClose(dsemi::WindowCloseEvent &e) -> bool
 auto DevApp::onWindowResize(dsemi::WindowResizeEvent& e) -> bool
 {
     if (_dx_context) {
-        _viewport.Width  = m_window->getWidth();
-        _viewport.Height = m_window->getHeight();
-        _dx_context->RSSetViewports(1u, &_viewport);
+        m_viewport.setSize(m_window->getWidth(), m_window->getHeight());
+        m_viewport.bind();
 
         // update constant buffer for view dimensions
         float view_w = m_window->getWidth();
@@ -68,6 +67,12 @@ auto DevApp::onWindowResize(dsemi::WindowResizeEvent& e) -> bool
         );
         //_dx_context->VSSetConstantBuffers(0u, 1u, _view_const_buffer.GetAddressOf());
     }
+    return true;
+}
+
+auto DevApp::onKeyDown(dsemi::KeyDownEvent& e) -> bool
+{
+    e.handled = true;
     return true;
 }
 
@@ -106,29 +111,23 @@ void DevApp::initDX()
     // =======================================================
     //		CREATE RENDER TARGET VIEW
     // =======================================================
-    GFX_LOG_DEBUG(L"Created DX11 RenderTargetView.");
+    // created in dsemi::graphics::SwapChain
+    // GFX_LOG_DEBUG(L"Created DX11 RenderTargetView.");
 
     // =======================================================
     //		CREATE VIEW PORT
-    // =======================================================
+   // =======================================================
     unsigned int vp_width  = m_window->getWidth();
     unsigned int vp_height = m_window->getHeight();
-    _viewport.TopLeftX = 0u;
-    _viewport.TopLeftY = 0u;
-    _viewport.Width    = vp_width;
-    _viewport.Height   = vp_height;
-    _viewport.MinDepth = 0u;
-    _viewport.MaxDepth = 1u;
+    m_viewport.setSize(vp_width, vp_height);
 
     // =======================================================
     //		CREATE VERTEX & PIXEL SHADERS
     // =======================================================
-
     UINT shader_flags = D3DCOMPILE_ENABLE_STRICTNESS;
 #ifndef _NDEBUG
     shader_flags |= D3DCOMPILE_DEBUG;
 #endif
-
     ComPtr<ID3DBlob> vs_blob  = nullptr;
     ComPtr<ID3DBlob> ps_blob  = nullptr;
     ComPtr<ID3DBlob> err_blob = nullptr;
@@ -147,11 +146,11 @@ void DevApp::initDX()
     GFX_THROW_FAILED(D3DReadFileToBlob(L"shaders/default_ps.cso", &ps_blob));
     // create in gpu
     GFX_THROW_FAILED(_dx_device->CreatePixelShader(
-                ps_blob->GetBufferPointer(),
-                ps_blob->GetBufferSize(),
-                nullptr,
-                &_pixel_shader
-                ));
+        ps_blob->GetBufferPointer(),
+        ps_blob->GetBufferSize(),
+        nullptr,
+        &_pixel_shader
+    ));
 
     // =======================================================
     //		CREATE INPUT LAYOUT
@@ -216,7 +215,7 @@ void DevApp::initDX()
     _dx_context->PSSetShader(_pixel_shader.Get(), nullptr, 0u);
     _dx_context->IASetInputLayout(_input_layout.Get());
     m_window->getRenderTarget()->set();
-    _dx_context->RSSetViewports(1u, &_viewport);
+    m_viewport.bind();
     _dx_context->VSSetConstantBuffers(0u, 1u, _view_const_buffer.GetAddressOf());
     _vbuf->bind();
 

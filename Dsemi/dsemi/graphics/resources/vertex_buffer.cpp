@@ -82,6 +82,10 @@ auto dsemi::graphics::VertexLayout::d3dLayout() const -> std::vector<D3D11_INPUT
     return out;
 }
 
+void dsemi::graphics::VertexLayout::bind()
+{
+}
+
 dsemi::graphics::VertexLayout::VertexLayout(std::initializer_list<Element> elements)
 {
     for (auto& element : elements)

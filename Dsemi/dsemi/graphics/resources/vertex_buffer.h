@@ -1,8 +1,7 @@
 #pragma once
 #include "dsemi/graphics/api_include.h"
-#include "dsemi/graphics/resources/resource.h"
-#include "dsemi/graphics/bindable.h"
-#include "dsemi/util/assert.h"
+#include <dsemi/graphics/bindable.h>
+#include <dsemi/util/assert.h>
 #include <vector>
 #include <utility>
 
@@ -24,7 +23,7 @@ namespace dsemi::graphics
     auto ShaderDataType_size(ShaderDataType type) -> const size_t;
     auto ShaderDataType_toDXGI(ShaderDataType type) -> const DXGI_FORMAT;
 
-    class VertexLayout
+    class VertexLayout : public Bindable
     {
         using self = VertexLayout;
     public:
@@ -34,6 +33,8 @@ namespace dsemi::graphics
         auto stride() const -> size_t;
         auto size() const -> size_t;
         auto d3dLayout() const -> std::vector<D3D11_INPUT_ELEMENT_DESC>;
+
+        virtual void bind() override;
 
         class Element
         {
@@ -144,6 +145,7 @@ namespace dsemi::graphics
             emplaceBack_setData(param_first);
             emplaceBack_setData(param_rest...);
         }
+
         template<typename T>
         void emplaceBack_setData(T param)
         {
