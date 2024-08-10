@@ -1,79 +1,23 @@
 #pragma once
-#include "dsemi/graphics/api_include.h"
 #include <dsemi/graphics/bindable.h>
+#include <dsemi/graphics/resources/vertexarray.h>
 #include <dsemi/util/assert.h>
 #include <vector>
 #include <utility>
 
 namespace dsemi::graphics
 {
-    // TODO: 
-    // consider possible issues that could come up due to byte padding
-    // to keep 4-byte alignment of allocated memory
-    // 26.07.2024: my past haunts my future with bad comments
-
-    // todo: move this to a header file unifying vertex/index/instance buffers
-    enum class ShaderDataType
-    {
-        INVALID = 0,
-        FLOAT, FLOAT2, FLOAT3, FLOAT4,
-        SINT, SINT2, SINT3, SINT4,
-        UINT, UINT2, UINT3, UINT4,
-    };
-    auto ShaderDataType_size(ShaderDataType type) -> const size_t;
-    auto ShaderDataType_toDXGI(ShaderDataType type) -> const DXGI_FORMAT;
-
-    class VertexLayout : public Bindable
-    {
-        using self = VertexLayout;
-    public:
-        VertexLayout();
-
-        auto append(std::string_view semantic, ShaderDataType type) -> VertexLayout&;
-        auto stride() const -> size_t;
-        auto size() const -> size_t;
-        auto d3dLayout() const -> std::vector<D3D11_INPUT_ELEMENT_DESC>;
-
-        virtual void bind() override;
-
-        class Element
-        {
-            friend class VertexLayout;
-        public:
-            Element();
-            Element(std::string semantic, ShaderDataType type);
-            auto semantic() const -> std::string_view;
-            auto type() const -> ShaderDataType;
-            auto size() const -> size_t;
-            auto offset() const -> size_t;
-            auto d3dElement() const -> D3D11_INPUT_ELEMENT_DESC;
-
-        private:
-            std::string     m_semantic;
-            ShaderDataType  m_type;
-            size_t          m_size;
-            size_t          m_offset;
-        };
-        VertexLayout(std::initializer_list<Element> elements);
-        auto get(size_t i) -> const Element&;
-        auto get(std::string_view semantic) -> const Element&;
-        auto begin() -> std::vector<Element>::iterator;
-        auto end() -> std::vector<Element>::iterator;
-
-    private:
-        std::vector<Element> m_elements;
-        size_t               m_stride;
-    };
-
     // todo: add some template (meta)programming into getters and types to allow for a cleaner interface
     // of accessing vertex data without requiring manual type checking and casting
     // the data buffer to the correct type
     //
+    // 09.08.2024: every old comment may as well be fluffed with a big "what?"
     class VertexView
     {
+        // 03.08.2024: what is this class for again?
         friend class VertexArray;
     protected:
-        VertexView(char* starting_byte, VertexLayout& layout);
+        VertexView(char* starting_byte, std::shared_ptr<VertexLayout> layout);
 
     public:
         ShaderDataType get(std::string_view semantic, void* pointer_to_element);
@@ -83,20 +27,20 @@ namespace dsemi::graphics
         template<typename T>
         void setByIndex(size_t index, T&& value)
         {
-            ASSERT(index > 0 && index < m_layout.size(), "Index out of range");
+            ASSERT(index > 0 && index < m_layout->size(), "Index out of range");
             //ASSERT(_layout.get_by_index(index).get_size() == sizeof(T), "Vertex parameter input memory size mismatch. \n [SEMANTIC: " + _layout.get_by_index(index).get_semantic() + "]");
 
-            *(T*)m_elements[m_layout.get(index).offset()] = value;
+            *(T*)m_elements[m_layout->get(index).offset()] = value;
         }
 
         template<typename T>
         void setByIndex(size_t index, std::initializer_list<T>&& values)
         {
-            ASSERT(index > 0 && index < m_layout.size(), 
+            ASSERT(index > 0 && index < m_layout->size(), 
                 "Index out of range");
-            ASSERT(m_layout.get(index).size() == sizeof(T) * values.size(), 
-                "Vertex parameter input memory size mismatch. \n [SEMANTIC: " << m_layout.get(index).semantic() << "]");
-            *(T**)m_elements[m_layout.get(index).offset()] = values.begin();
+            ASSERT(m_layout->get(index).size() == sizeof(T) * values.size(), 
+                "Vertex parameter input memory size mismatch. \n [SEMANTIC: " << m_layout->get(index).semantic() << "]");
+            *(T**)m_elements[m_layout->get(index).offset()] = values.begin();
         }
 
     private:
@@ -114,54 +58,9 @@ namespace dsemi::graphics
 
     private:
         std::vector<char*> m_elements;
-        VertexLayout& m_layout;
+        std::shared_ptr<VertexLayout> m_layout;
     };
 
-    class VertexArray
-    {
-    public:
-        VertexArray(VertexLayout layout, size_t size = 0u);
-
-        auto data() const -> const char*            { return m_bytes.data(); } // will i ever use this?
-        auto size() const -> size_t                 { return m_bytes.size() / m_layout.stride(); }
-        auto stride() const -> size_t               { return m_layout.stride(); };
-        auto byteWidth() const -> size_t            { return m_bytes.size(); };
-        auto layout() const -> const VertexLayout&  { return m_layout; }
-
-        template<typename ...param_types>
-        VertexArray& emplaceBack(param_types&&... params)
-        {
-            // TODO: assert that size and count of elements match to the vertex layout
-            //ASSERT(sizeof...(param_types) == _layout.get_element_count(), "Vertex parameter count doesn't match the specified vertex_array layout element count.");
-            emplaceBack_setData(std::forward<param_types>(params)...);
-            return *this;
-        }
-
-    private:
-        // what does 'setData' mean here?
-        template<typename T, typename... types>
-        void emplaceBack_setData(T param_first, types... param_rest)
-        {
-            emplaceBack_setData(param_first);
-            emplaceBack_setData(param_rest...);
-        }
-
-        template<typename T>
-        void emplaceBack_setData(T param)
-        {
-            m_bytes.resize(m_bytes.size() + sizeof(T));
-            auto tail = (m_bytes.end() - sizeof(T));
-            auto dst = &*tail;
-            auto src = reinterpret_cast<char*>(&param);
-            memcpy(dst, src, sizeof(T));
-            /*_bytes.resize(_bytes.size() + sizeof(T));
-            auto tail = _bytes.end() - sizeof(T);*/
-            //*(reinterpret_cast<T*>(&(*tail))) = param;
-        }
-
-        std::vector<char> m_bytes; // TODO: dont do this outside of dynamic buffers
-        VertexLayout m_layout;
-    };
 
     class VertexBuffer : public Bindable
     {
@@ -180,7 +79,7 @@ namespace dsemi::graphics
         uint32_t m_stride;
         uint32_t m_offset;
         uint32_t m_size;
-        VertexLayout m_layout;
+        //std::shared_ptr<VertexLayout> m_layout;
         ID3D11Buffer* m_d3d11Buffer;
     };
 

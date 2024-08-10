@@ -21,8 +21,6 @@ void DevApp::onInit()
     m_window->getSwapChain()->m_swapChain = m_window->getSwapChain()->m_swapChain;
 
     _device = &dsemi::graphics::Device::get();
-    _dx_device = _device->get_dx_device();
-    _dx_context = _device->get_context();
     initDX();
 }
 
@@ -61,28 +59,28 @@ auto DevApp::onWindowClose(dsemi::WindowCloseEvent &e) -> bool
 
 auto DevApp::onWindowResize(dsemi::WindowResizeEvent& e) -> bool
 {
-    if (_dx_context) {
-        m_viewport.setSize(m_window->getWidth(), m_window->getHeight());
-        m_viewport.bind();
+    if (!_device->getContext())
+        return true;
+    m_viewport.setSize(m_window->getWidth(), m_window->getHeight());
+    m_viewport.bind();
 
-        // update constant buffer for view dimensions
-        float view_w = m_window->getWidth();
-        float view_h = m_window->getHeight();
-        std::vector<float> view_scale_2d = {
-            view_w,
-            view_h
-        };
-        // send new view dimensions to GPU memory
-        _dx_context->UpdateSubresource(
-            _view_const_buffer.Get(),
-            0u,
-            NULL,
-            view_scale_2d.data(),
-            sizeof(unsigned) * view_scale_2d.size(),
-            0u
-        );
-        //_dx_context->VSSetConstantBuffers(0u, 1u, _view_const_buffer.GetAddressOf());
-    }
+    // update constant buffer for view dimensions
+    float view_w = m_window->getWidth();
+    float view_h = m_window->getHeight();
+    std::vector<float> view_scale_2d = {
+        view_w,
+        view_h
+    };
+    // send new view dimensions to GPU memory
+    _device->getContext()->UpdateSubresource(
+        _view_const_buffer.Get(),
+        0u,
+        NULL,
+        view_scale_2d.data(),
+        sizeof(unsigned) * view_scale_2d.size(),
+        0u
+    );
+    //_device->getContext()->VSSetConstantBuffers(0u, 1u, _view_const_buffer.GetAddressOf());
     return true;
 }
 
@@ -103,6 +101,8 @@ void logDirectX_thread() // absolutely unconcerned with race conditions here
         reinterpret_cast<void*>(GetProcAddress(handle, "DXGIGetDebugInterface"))
     );
     DxgiGetDebugInterface(__uuidof(IDXGIInfoQueue), &dxgiDebugQueue);
+    dxgiDebugQueue->ClearStorageFilter(DXGI_DEBUG_ALL);
+    dxgiDebugQueue->ClearRetrievalFilter(DXGI_DEBUG_ALL);
     while (true) {
         for (unsigned i = 0; i < dxgiDebugQueue->GetNumStoredMessages(DXGI_DEBUG_ALL); ++i) {
             SIZE_T len = 0;
@@ -122,7 +122,7 @@ void logDirectX_thread() // absolutely unconcerned with race conditions here
 
 void DevApp::initDX()
 {
-    _clear_color = 0.0f;
+    std::thread(logDirectX_thread).detach();
     HRESULT hr;
     // =======================================================
     //		CREATE RENDER TARGET VIEW
@@ -132,7 +132,7 @@ void DevApp::initDX()
 
     // =======================================================
     //		CREATE VIEW PORT
-   // =======================================================
+    // =======================================================
     unsigned int vp_width  = m_window->getWidth();
     unsigned int vp_height = m_window->getHeight();
     m_viewport.setSize(vp_width, vp_height);
@@ -141,7 +141,7 @@ void DevApp::initDX()
     //		CREATE VERTEX & PIXEL SHADERS
     // =======================================================
     UINT shader_flags = D3DCOMPILE_ENABLE_STRICTNESS;
-#ifndef _NDEBUG
+#ifdef DSEMI_DEBUG
     shader_flags |= D3DCOMPILE_DEBUG;
 #endif
     ComPtr<ID3DBlob> vs_blob  = nullptr;
@@ -149,39 +149,13 @@ void DevApp::initDX()
     ComPtr<ID3DBlob> err_blob = nullptr;
 
     // read from file
-    GFX_THROW_FAILED(D3DReadFileToBlob(L"shaders/default_vs.cso", &vs_blob));
-    // create in gpu
-    GFX_THROW_FAILED(_dx_device->CreateVertexShader(
-        vs_blob->GetBufferPointer(),
-        vs_blob->GetBufferSize(),
-        nullptr,
-        &_vertex_shader
-    ));
-
-    // read from file
     GFX_THROW_FAILED(D3DReadFileToBlob(L"shaders/default_ps.cso", &ps_blob));
     // create in gpu
-    GFX_THROW_FAILED(_dx_device->CreatePixelShader(
-        ps_blob->GetBufferPointer(),
-        ps_blob->GetBufferSize(),
-        nullptr,
-        &_pixel_shader
-    ));
-
-    // =======================================================
-    //		CREATE INPUT LAYOUT
-    // =======================================================
-    // input parameters
-    const D3D11_INPUT_ELEMENT_DESC input_elements[] = {
-        {"Position", 0u, DXGI_FORMAT_R32G32_SINT, 0u, 0u, D3D11_INPUT_PER_VERTEX_DATA, 0u}
-    };
-    // create in gpu
-    GFX_THROW_FAILED(_dx_device->CreateInputLayout(
-                input_elements,
-                1u,
-                vs_blob->GetBufferPointer(),
-                vs_blob->GetBufferSize(),
-                &_input_layout
+    GFX_THROW_FAILED(dsemi::graphics::Device::get().getDxDevice()->CreatePixelShader(
+                ps_blob->GetBufferPointer(),
+                ps_blob->GetBufferSize(),
+                nullptr,
+                &_pixel_shader
                 ));
 
     // =======================================================
@@ -211,45 +185,50 @@ void DevApp::initDX()
     D3D11_SUBRESOURCE_DATA vmsrd = {};
     vmsrd.pSysMem = view_scale_2d.data();
 
-    GFX_THROW_FAILED(_dx_device->CreateBuffer(&vmcbd, &vmsrd, &_view_const_buffer));
+    GFX_THROW_FAILED(_device->getDxDevice()->CreateBuffer(&vmcbd, &vmsrd, &_view_const_buffer));
 
     // =======================================================
     //		CREATE VERTEX BUFFER
     // =======================================================
-    dsemi::graphics::VertexLayout layout;
-    layout.append("Position", dsemi::graphics::ShaderDataType::SINT2);
 
-    dsemi::graphics::VertexArray vertices(layout);
+    // 09.08.2024: i think the vertex shader should own the layout, it seems to make the most sense as of now
+    auto layout = std::make_shared<dsemi::graphics::VertexLayout>();
+    layout->append("Position", dsemi::graphics::ShaderDataType::SINT2);
+
+    m_vertexShader = std::make_unique<dsemi::graphics::VertexShader>("default_vs", layout);
+
+    m_vertices = std::make_shared<dsemi::graphics::VertexArray>(layout);
     int w = m_window->getWidth() / 2;
     int h = m_window->getHeight() / 2;
-    vertices.emplaceBack(0, h).emplaceBack(w, -h).emplaceBack(-w, -h);
-    _vbuf = std::make_unique<dsemi::graphics::VertexBuffer>(vertices);
+    m_vertices->emplace(0, h)
+        .emplace(w, -h)
+        .emplace(-w, -h)
+        .emplace(-w, -h)
+        .emplace(w, -h)
+        .emplace(0, -h * 2);
+    _vbuf = std::make_unique<dsemi::graphics::VertexBuffer>(*m_vertices);
 
-    uint32_t strides = 8u;
-    uint32_t offsets = 0u;
-    _dx_context->VSSetShader(_vertex_shader.Get(), nullptr, 0u);
-    _dx_context->PSSetShader(_pixel_shader.Get(), nullptr, 0u);
-    _dx_context->IASetInputLayout(_input_layout.Get());
+    m_vertexShader->bind();
+    _device->getContext()->PSSetShader(_pixel_shader.Get(), nullptr, 0u);
     m_window->getRenderTarget()->set();
     m_viewport.bind();
-    _dx_context->VSSetConstantBuffers(0u, 1u, _view_const_buffer.GetAddressOf());
+    _device->getContext()->VSSetConstantBuffers(0u, 1u, _view_const_buffer.GetAddressOf());
     _vbuf->bind();
 
-    std::thread(logDirectX_thread).detach();
 }
 
 void DevApp::drawTriangle()
 {
     m_window->getRenderTarget()->clear();
     m_window->getRenderTarget()->set();
-    _dx_context->Draw(_vbuf->size(), 0u);
+    _device->getContext()->Draw(_vbuf->size(), 0u);
 
     HRESULT hr;
     if (FAILED(hr = m_window->getSwapChain()->m_swapChain->Present(0, 0)))
     {
         if (hr == DXGI_ERROR_DEVICE_REMOVED)
         {
-            throw HRESULT_EXCEPTION(_dx_device->GetDeviceRemovedReason());
+            throw HRESULT_EXCEPTION(_device->getDxDevice()->GetDeviceRemovedReason());
         }
         else
         {

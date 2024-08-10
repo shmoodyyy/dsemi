@@ -24,9 +24,9 @@ dsemi::graphics::SwapChain::SwapChain(Window& wnd)
     sd.Windowed = TRUE;
     sd.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
     HRESULT hr;
-    auto dxgi_factory = device.get_dx_factory();
+    auto dxgi_factory = device.getDxFactory();
     GFX_THROW_FAILED(dxgi_factory->CreateSwapChain(
-        device.get_dx_device(),
+        device.getDxDevice(),
         &sd,
         &m_swapChain
     ));
@@ -73,7 +73,7 @@ void dsemi::graphics::SwapChain::setFrameBufferTexture()
 void dsemi::graphics::SwapChain::setRenderTargetView()
 {
     HRESULT hr;
-    GFX_THROW_FAILED(Device::get().get_dx_device()->CreateRenderTargetView(
+    GFX_THROW_FAILED(Device::get().getDxDevice()->CreateRenderTargetView(
         m_renderTexture.Get(),
         0u,
         &m_renderTargetView

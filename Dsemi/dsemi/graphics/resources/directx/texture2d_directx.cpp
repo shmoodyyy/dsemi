@@ -14,7 +14,7 @@ dsemi::graphics::Texture2D::Texture2D(unsigned width, unsigned height)
     td.BindFlags = D3D11_BIND_SHADER_RESOURCE;
     td.MiscFlags = 0;
     HRESULT hr;
-    GFX_THROW_FAILED(Device::get().get_dx_device()->CreateTexture2D(
+    GFX_THROW_FAILED(Device::get().getDxDevice()->CreateTexture2D(
         &td,
         nullptr,
         &m_texture2d

@@ -97,5 +97,5 @@ void dsemi::graphics::Viewport::setY(float val)
 
 void dsemi::graphics::Viewport::bind()
 {
-    Device::get().get_context()->RSSetViewports(1u, &m_d3d11Viewport);
+    Device::get().getContext()->RSSetViewports(1u, &m_d3d11Viewport);
 }

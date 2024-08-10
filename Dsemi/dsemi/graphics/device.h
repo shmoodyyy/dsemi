@@ -17,23 +17,23 @@ namespace dsemi::graphics {
 
 #if defined (_WIN32)
         // this is bad
-        auto get_dx_factory() -> IDXGIFactory* const { return _dxgi_factory; }
-        auto get_dx_device() -> ID3D11Device* const { return _dx_device.Get(); }
-        auto get_context() -> ID3D11DeviceContext* const { return _dx_context.Get(); }
+        auto getDxFactory() -> IDXGIFactory* const { return _dxgi_factory; }
+        auto getDxDevice() -> ID3D11Device* const { return _dx_device.Get(); }
+        auto getContext() -> ID3D11DeviceContext* const { return _dx_context.Get(); }
 #endif
 
         auto createSwapChain() -> std::shared_ptr<SwapChain>;
-        void create_vertex_buffer(VertexBuffer* vertex_buffer);
-        void create_index_buffer(index_buffer* index_buffer);
-        void create_vertex_shader(vertex_shader* vertex_shader, vertex_shader_desc desc);
-        void create_fragment_shader(fragment_shader* fragment_shader, fragment_shader_desc desc);
-        void create_render_target(RenderTarget* render_target, ID3D11Resource* source); // temp pointer for until i implement own basic resource class
-        void bind_vertex_buffer(const VertexBuffer* vertex_buffer);
-        //void bind_input_layout(input_layout* layout);
-        void bind_vertex_shader(vertex_shader* vertex_shader);
-        void bind_fragment_shader(fragment_shader* fragment_shader);
-        void bind_render_target(RenderTarget* render_target);
-        //void create_triangle_resources();
+        //void create_vertex_buffer(VertexBuffer* vertex_buffer);
+        //void create_index_buffer(index_buffer* index_buffer);
+        //void create_vertex_shader(vertex_shader* vertex_shader, vertex_shader_desc desc);
+        //void create_fragment_shader(fragment_shader* fragment_shader, fragment_shader_desc desc);
+        //void create_render_target(RenderTarget* render_target, ID3D11Resource* source); // temp pointer for until i implement own basic resource class
+        //void bind_vertex_buffer(const VertexBuffer* vertex_buffer);
+        ////void bind_input_layout(input_layout* layout);
+        //void bind_vertex_shader(vertex_shader* vertex_shader);
+        //void bind_fragment_shader(fragment_shader* fragment_shader);
+        //void bind_render_target(RenderTarget* render_target);
+        ////void create_triangle_resources();
 
     private:
         Device();

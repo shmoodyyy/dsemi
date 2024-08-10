@@ -37,22 +37,14 @@ private:
     std::shared_ptr<dsemi::Window> m_windowSecondary;
 
 	dsemi::graphics::Device*		_device;
-	ComPtr<ID3D11Device>			_dx_device;
-	ComPtr<ID3D11DeviceContext>		_dx_context;
-	ComPtr<IDXGISwapChain>			_dx_swap_chain;
-	ComPtr<ID3D11Buffer>			_vertex_buffer;
 	ComPtr<ID3D11Buffer>			_view_const_buffer;
-	ComPtr<ID3D11VertexShader>		_vertex_shader;
+    std::shared_ptr<dsemi::graphics::VertexShader> m_vertexShader;
+    std::shared_ptr<dsemi::graphics::VertexArray> m_vertices;
 	ComPtr<ID3D11PixelShader>		_pixel_shader;
-	ComPtr<ID3D11RenderTargetView>	_rt_view;
 	ComPtr<ID3D11InputLayout>		_input_layout;
     dsemi::graphics::Viewport       m_viewport;
-	D3D11_VIEWPORT					_viewport;
-	dsemi::colorf					_clear_color;
 
-	dsemi::graphics::RenderTarget _render_target;
-	//dsemi::graphics::viewport _viewport;
-	//dsemi::graphics::viewport _viewport;
+	dsemi::graphics::RenderTarget   _render_target;
 
 	std::unique_ptr<dsemi::graphics::VertexBuffer> _vbuf;
 

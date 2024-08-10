@@ -1,5 +1,5 @@
 #include "Dsemi/graphics/resources/vertex_buffer.h"
 #include "Dsemi/graphics/resources/index_buffer.h"
 #include "Dsemi/graphics/resources/input_layout.h"
-#include "Dsemi/graphics/resources/vertex_shader.h"
+#include "Dsemi/graphics/resources/vertexshader.h"
 #include "Dsemi/graphics/resources/fragment_shader.h"

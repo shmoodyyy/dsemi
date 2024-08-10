@@ -9,10 +9,10 @@ dsemi::graphics::RenderTarget::RenderTarget()
 
 void dsemi::graphics::RenderTarget::clear()
 {
-    Device::get().get_context()->ClearRenderTargetView(m_renderTargetView.Get(), m_clearColor.as_array());
+    Device::get().getContext()->ClearRenderTargetView(m_renderTargetView.Get(), m_clearColor.as_array());
 }
 
 void dsemi::graphics::RenderTarget::set()
 {
-    Device::get().get_context()->OMSetRenderTargets(1u, m_renderTargetView.GetAddressOf(), nullptr);
+    Device::get().getContext()->OMSetRenderTargets(1u, m_renderTargetView.GetAddressOf(), nullptr);
 }
