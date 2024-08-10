@@ -144,19 +144,6 @@ void DevApp::initDX()
 #ifdef DSEMI_DEBUG
     shader_flags |= D3DCOMPILE_DEBUG;
 #endif
-    ComPtr<ID3DBlob> vs_blob  = nullptr;
-    ComPtr<ID3DBlob> ps_blob  = nullptr;
-    ComPtr<ID3DBlob> err_blob = nullptr;
-
-    // read from file
-    GFX_THROW_FAILED(D3DReadFileToBlob(L"shaders/default_ps.cso", &ps_blob));
-    // create in gpu
-    GFX_THROW_FAILED(dsemi::graphics::Device::get().getDxDevice()->CreatePixelShader(
-                ps_blob->GetBufferPointer(),
-                ps_blob->GetBufferSize(),
-                nullptr,
-                &_pixel_shader
-                ));
 
     // =======================================================
     //		CREATE CONSTANT BUFFER (2D VIEW MATRIX)
@@ -195,21 +182,31 @@ void DevApp::initDX()
     auto layout = std::make_shared<dsemi::graphics::VertexLayout>();
     layout->append("Position", dsemi::graphics::ShaderDataType::SINT2);
 
-    m_vertexShader = std::make_unique<dsemi::graphics::VertexShader>("default_vs", layout);
+    m_vertexShader = std::make_shared<dsemi::graphics::VertexShader>("default_vs", layout);
 
     m_vertices = std::make_shared<dsemi::graphics::VertexArray>(layout);
     int w = m_window->getWidth() / 2;
     int h = m_window->getHeight() / 2;
-    m_vertices->emplace(0, h)
-        .emplace(w, -h)
-        .emplace(-w, -h)
-        .emplace(-w, -h)
-        .emplace(w, -h)
-        .emplace(0, -h * 2);
+    int scale = 100;
+    m_vertices
+        ->emplace(-2*scale,scale*0)
+        .emplace(-1*scale,scale*1)
+        .emplace(0*scale,scale*0)
+
+        .emplace(0*scale,scale*0)
+        .emplace(1*scale,scale*1)
+        .emplace(2*scale,scale*0)
+
+        .emplace(-2*scale,scale*0)
+        .emplace(2*scale,scale*0)
+        .emplace(0*scale,scale*-2);
+
     _vbuf = std::make_unique<dsemi::graphics::VertexBuffer>(*m_vertices);
 
+    m_fragmentShader = std::make_shared<dsemi::graphics::FragmentShader>("default_ps");
+
     m_vertexShader->bind();
-    _device->getContext()->PSSetShader(_pixel_shader.Get(), nullptr, 0u);
+    m_fragmentShader->bind();
     m_window->getRenderTarget()->set();
     m_viewport.bind();
     _device->getContext()->VSSetConstantBuffers(0u, 1u, _view_const_buffer.GetAddressOf());

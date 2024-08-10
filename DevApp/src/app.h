@@ -40,7 +40,7 @@ private:
 	ComPtr<ID3D11Buffer>			_view_const_buffer;
     std::shared_ptr<dsemi::graphics::VertexShader> m_vertexShader;
     std::shared_ptr<dsemi::graphics::VertexArray> m_vertices;
-	ComPtr<ID3D11PixelShader>		_pixel_shader;
+    std::shared_ptr<dsemi::graphics::FragmentShader> m_fragmentShader;
 	ComPtr<ID3D11InputLayout>		_input_layout;
     dsemi::graphics::Viewport       m_viewport;
 

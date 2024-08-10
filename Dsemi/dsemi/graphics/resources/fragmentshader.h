@@ -8,7 +8,7 @@ namespace dsemi::graphics
     class FragmentShader : public Bindable
     {
     public:
-        FragmentShader();
+        FragmentShader(std::string_view name);
 
         virtual void bind() override;
 
