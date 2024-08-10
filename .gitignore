@@ -461,3 +461,6 @@ FodyWeavers.xsd
 *.vcxproj.filters
 */*.vcxproj
 */*.vcxproj.filters
+
+# Compiled Shader Files
+*.cso
