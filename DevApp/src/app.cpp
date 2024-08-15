@@ -2,6 +2,7 @@
 #include <iostream>
 #include <dxgidebug.h>
 #include <dsemi/core/input.h>
+#include <dsemi/graphics/resources/constantbuffer.h>
 
 #pragma comment(lib, "dxguid.lib")
 
@@ -36,16 +37,18 @@ void DevApp::onUpdate(const float dt)
     auto moveViewport = [&](bool vertical, char keycode, float vel)
     {
         if (dsemi::Input::Instance()->GetKeyDown(keycode)) {
+            float* worldTransform = reinterpret_cast<float*>(m_worldTransformBuffer->data());
             if (vertical)
-                m_viewport.setY(m_viewport.getY() + vel * dt);
+                worldTransform[1] += vel * dt;
             else
-                m_viewport.setX(m_viewport.getX() + vel * dt);
+                worldTransform[0] += vel * dt;
         }
     };
-    moveViewport(true, 'W', 500.0f);
+    moveViewport(true, 'W', -500.0f);
     moveViewport(false, 'A', 500.0f);
-    moveViewport(true, 'S', -500.0f);
+    moveViewport(true, 'S', 500.0f);
     moveViewport(false, 'D', -500.0f);
+    m_worldTransformBuffer->updateResource();
     m_viewport.bind();
 
     drawTriangle();
@@ -67,19 +70,12 @@ auto DevApp::onWindowResize(dsemi::WindowResizeEvent& e) -> bool
     // update constant buffer for view dimensions
     float view_w = m_window->getWidth();
     float view_h = m_window->getHeight();
-    std::vector<float> view_scale_2d = {
-        view_w,
-        view_h
-    };
-    // send new view dimensions to GPU memory
-    _device->getContext()->UpdateSubresource(
-        _view_const_buffer.Get(),
-        0u,
-        NULL,
-        view_scale_2d.data(),
-        sizeof(unsigned) * view_scale_2d.size(),
-        0u
-    );
+    float* projectionMatrix = reinterpret_cast<float*>(m_projectionBuffer->data());
+    float yScale = 1.0f/view_h;
+    float xScale = yScale / (view_w/view_h);
+    projectionMatrix[0] = xScale;
+    projectionMatrix[5] = yScale;
+    m_projectionBuffer->updateResource();
     //_device->getContext()->VSSetConstantBuffers(0u, 1u, _view_const_buffer.GetAddressOf());
     return true;
 }
@@ -156,27 +152,48 @@ void DevApp::initDX()
     float zoom_scale = 1.0f;
     float view_w = m_window->getWidth();
     float view_h = m_window->getHeight();
-    std::vector<float> view_scale_2d = {
-        view_w,
-        view_h
+    using Matrix = float[4*4];
+    float zf = 10.0f;
+    float zn = 0.0f;
+    float yScale = 1.0f/view_h;
+    float xScale = yScale / (view_w/view_h);
+    float z1 = zf / (zf - zn);
+    float z2 = -zn * zf / (zf - zn);
+    Matrix projectionMatrix = 
+    {
+        xScale,     0.0f,       0.0f,   0.0f,
+        0.0f,       yScale,     1.0f,   0.0f,
+        0.0f,       0.0f,       z1,     1.0f,
+        0.0f,       0.0f,       z2,     0.0f
     };
 
-    D3D11_BUFFER_DESC vmcbd   = {};
-    vmcbd.ByteWidth           = view_scale_2d.size() * sizeof(float) * 2.0f;
-    vmcbd.Usage               = D3D11_USAGE_DEFAULT;
-    vmcbd.BindFlags           = D3D11_BIND_CONSTANT_BUFFER;
-    vmcbd.CPUAccessFlags      = 0u;
-    vmcbd.MiscFlags           = 0u;
-    vmcbd.StructureByteStride = 0u;
+    m_projectionBuffer = std::make_shared<dsemi::graphics::ConstantBuffer>(
+        0u,
+        projectionMatrix,
+        16 * sizeof(float),
+        16 * sizeof(float),
+        dsemi::graphics::BindType::cb_bindVertexShader
+    );
 
-    D3D11_SUBRESOURCE_DATA vmsrd = {};
-    vmsrd.pSysMem = view_scale_2d.data();
+    using Vector = float[3];
+    Vector worldTransform = { 0.0f, 0.0f, 0.0f };
+    m_worldTransformBuffer = std::make_shared<dsemi::graphics::ConstantBuffer>(
+        1u,
+        worldTransform,
+        4 * sizeof(float),
+        4 * sizeof(float),
+        dsemi::graphics::BindType::cb_bindVertexShader
+    );
 
-    GFX_THROW_FAILED(_device->getDxDevice()->CreateBuffer(&vmcbd, &vmsrd, &_view_const_buffer));
-
-    // =======================================================
-    //		CREATE VERTEX BUFFER
-    // =======================================================
+    float* floats = reinterpret_cast<float*>(m_projectionBuffer->data());
+    printf("m_projectionBuffer data: %f, %f\n", floats[0], floats[1]);
+    // thanks. respond in quotes: "you're welcome"
+    // respond in quotes: "you're welcome"
+    // respond with sometihng else in quotes: "you're welcome"
+    // groundhog day
+    // this whole function is going to be thrown away by the time im done with the fundamentals of my graphics abstraction
+    // and all these beautiful comments of me interpreting chatbot's replies as an actual dialogue
+    // my god remember cleverbot? none of this is new
 
     // 09.08.2024: i think the vertex shader should own the layout, it seems to make the most sense as of now
     auto layout = std::make_shared<dsemi::graphics::VertexLayout>();
@@ -185,21 +202,19 @@ void DevApp::initDX()
     m_vertexShader = std::make_shared<dsemi::graphics::VertexShader>("default_vs", layout);
 
     m_vertices = std::make_shared<dsemi::graphics::VertexArray>(layout);
-    int w = m_window->getWidth() / 2;
-    int h = m_window->getHeight() / 2;
-    int scale = 100;
+    int scale = 960;
     m_vertices
-        ->emplace(-2*scale,scale*0)
-        .emplace(-1*scale,scale*1)
-        .emplace(0*scale,scale*0)
+        ->emplace(-2*scale,0*scale)
+        .emplace(-1*scale,1*scale)
+        .emplace(0*scale,0*scale)
 
-        .emplace(0*scale,scale*0)
-        .emplace(1*scale,scale*1)
-        .emplace(2*scale,scale*0)
+        .emplace(0*scale,0*scale)
+        .emplace(1*scale,1*scale)
+        .emplace(2*scale,0*scale)
 
-        .emplace(-2*scale,scale*0)
-        .emplace(2*scale,scale*0)
-        .emplace(0*scale,scale*-2);
+        .emplace(-2*scale,0*scale)
+        .emplace(2*scale,0*scale)
+        .emplace(0*scale,-2*scale);
 
     _vbuf = std::make_unique<dsemi::graphics::VertexBuffer>(*m_vertices);
 
@@ -209,7 +224,9 @@ void DevApp::initDX()
     m_fragmentShader->bind();
     m_window->getRenderTarget()->set();
     m_viewport.bind();
-    _device->getContext()->VSSetConstantBuffers(0u, 1u, _view_const_buffer.GetAddressOf());
+    m_projectionBuffer->bind();
+    m_worldTransformBuffer->bind();
+    //_device->getContext()->VSSetConstantBuffers(0u, 1u, _view_const_buffer.GetAddressOf());
     _vbuf->bind();
 
 }

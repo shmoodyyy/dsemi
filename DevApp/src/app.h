@@ -36,23 +36,18 @@ private:
     std::shared_ptr<dsemi::Window> m_window;
     std::shared_ptr<dsemi::Window> m_windowSecondary;
 
-	dsemi::graphics::Device*		_device;
-	ComPtr<ID3D11Buffer>			_view_const_buffer;
+    dsemi::graphics::Device*        _device;
+    std::shared_ptr<dsemi::graphics::ConstantBuffer> m_projectionBuffer;
+    std::shared_ptr<dsemi::graphics::ConstantBuffer> m_worldTransformBuffer;
+    ComPtr<ID3D11Buffer>            _view_const_buffer;
     std::shared_ptr<dsemi::graphics::VertexShader> m_vertexShader;
     std::shared_ptr<dsemi::graphics::VertexArray> m_vertices;
     std::shared_ptr<dsemi::graphics::FragmentShader> m_fragmentShader;
-	ComPtr<ID3D11InputLayout>		_input_layout;
     dsemi::graphics::Viewport       m_viewport;
 
-	dsemi::graphics::RenderTarget   _render_target;
+    dsemi::graphics::RenderTarget   _render_target;
 
-	std::unique_ptr<dsemi::graphics::VertexBuffer> _vbuf;
-
-	struct vertex
-	{
-		int x;
-		int y;
-	};
+    std::unique_ptr<dsemi::graphics::VertexBuffer> _vbuf;
 };
 
 #endif

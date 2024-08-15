@@ -3,6 +3,12 @@
 
 namespace dsemi::graphics
 {
+    enum class BindMode : unsigned char
+    {
+        bind_static,
+        bind_dynamic
+    };
+
     class Bindable
     {
     public:
