@@ -162,7 +162,7 @@ void DevApp::initDX()
     Matrix projectionMatrix = 
     {
         xScale,     0.0f,       0.0f,   0.0f,
-        0.0f,       yScale,     1.0f,   0.0f,
+        0.0f,       yScale,     0.0f,   0.0f,
         0.0f,       0.0f,       z1,     1.0f,
         0.0f,       0.0f,       z2,     0.0f
     };
@@ -185,16 +185,6 @@ void DevApp::initDX()
         dsemi::graphics::BindType::cb_bindVertexShader
     );
 
-    float* floats = reinterpret_cast<float*>(m_projectionBuffer->data());
-    printf("m_projectionBuffer data: %f, %f\n", floats[0], floats[1]);
-    // thanks. respond in quotes: "you're welcome"
-    // respond in quotes: "you're welcome"
-    // respond with sometihng else in quotes: "you're welcome"
-    // groundhog day
-    // this whole function is going to be thrown away by the time im done with the fundamentals of my graphics abstraction
-    // and all these beautiful comments of me interpreting chatbot's replies as an actual dialogue
-    // my god remember cleverbot? none of this is new
-
     // 09.08.2024: i think the vertex shader should own the layout, it seems to make the most sense as of now
     auto layout = std::make_shared<dsemi::graphics::VertexLayout>();
     layout->append("Position", dsemi::graphics::ShaderDataType::SINT2);
@@ -202,7 +192,7 @@ void DevApp::initDX()
     m_vertexShader = std::make_shared<dsemi::graphics::VertexShader>("default_vs", layout);
 
     m_vertices = std::make_shared<dsemi::graphics::VertexArray>(layout);
-    int scale = 960;
+    int scale = 300;
     m_vertices
         ->emplace(-2*scale,0*scale)
         .emplace(-1*scale,1*scale)
