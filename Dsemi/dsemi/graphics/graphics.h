@@ -8,7 +8,7 @@
 ==================================================*/
 
 #include "Dsemi/graphics/device.h"
-#include "Dsemi/Math/vector3f.h"
+#include "Dsemi/Math/Vector3f.h"
 #include "Dsemi/Math/vector2.h"
 
 namespace dsemi {
@@ -56,8 +56,8 @@ namespace dsemi {
 		===================================*/
 
 		// Graphics State Management
-		//void set_colour(vector3f rgb);
-		//void set_clear_colour(vector3f rgb);
+		//void set_colour(Vector3f rgb);
+		//void set_clear_colour(Vector3f rgb);
 
 		// Render calls
 

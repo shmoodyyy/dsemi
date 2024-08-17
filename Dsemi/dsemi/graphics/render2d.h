@@ -1,6 +1,0 @@
-#ifndef DSEMI_GRAPHICS_RENDER2D_H
-#define DSEMI_GRAPHICS_RENDER2D_H
-
-
-
-#endif

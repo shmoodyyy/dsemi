@@ -13,7 +13,7 @@ namespace dsemi {
 	{
 	}
 
-	Quaternion::Quaternion(const vector3f& n, float angle)
+	Quaternion::Quaternion(const Vector3f& n, float angle)
 	{
 		// Convert from degrees to radians
 		angle = angle / 360 * c_pi * 2;

@@ -3,7 +3,6 @@
 #include <dsemi/Dsemi.h>
 #include "scenes/testscene2d.h"
 #include <dsemi/graphics/color.h>
-#include <dsemi/graphics/render2d.h>
 #include <dsemi/graphics/api_include.h>
 #include <dsemi/graphics/color.h>
 #include <dsemi/graphics/viewport.h>
